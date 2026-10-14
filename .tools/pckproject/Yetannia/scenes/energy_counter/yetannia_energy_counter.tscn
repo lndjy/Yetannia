@@ -1,0 +1,207 @@
+[gd_scene load_steps=12 format=3]
+
+; Yetannia's combat energy counter.
+;
+; The skeleton is the base game's scenes/combat/energy_counters/ironclad_energy_counter.tscn with the
+; five orb layers swapped for our purple hue-migrated copies and the two ironclad-only VFX children
+; removed. Notes on what had to stay exactly as vanilla:
+;
+;  * the root must carry NEnergyCounter.cs at its ORIGINAL path - that is the script that drives the
+;    counter (it rotates %RotationLayers, flashes the burst and writes the "3/3" label), and it looks
+;    its children up with %Layers / %RotationLayers, so both nodes keep unique_name_in_owner = true
+;    and keep their names. The two-layer split matters: Layers holds the static layers, and the two
+;    rotating layers live under Layers/RotationLayers.
+;  * node order inside Layers is the draw order, bottom to top: Layer1, RotationLayers(Layer2,
+;    Layer3), Layer4, Layer5.
+;  * materials/ui/energy_orb_dark.tres and themes/kreon_bold_shared.tres are shared with the base
+;    game's own counters, so they are referenced at their original res:// paths and deliberately NOT
+;    copied into this pack.
+;  * the two PackedScene children of the vanilla scene (scenes/vfx/energy/ironclad/
+;    ironclad_energy_vfx_back.tscn and _front.tscn) are NOT instantiated - they are ironclad flame
+;    effects. BUT the nodes still have to exist: NEnergyCounter._Ready looks them up with
+;    GetNode<NParticlesContainer>("%EnergyVfxBack") / ("%EnergyVfxFront"), and GetNode THROWS when the
+;    node is missing. Dropping them outright threw two errors per combat and aborted the rest of
+;    _Ready, which skipped RefreshLabel() (the label sat at its authored "3/3" until the first energy
+;    change) and left _hoverTip unbuilt. So two EMPTY NParticlesContainer nodes are kept in their
+;    original positions - behind Layers and in front of it - and only the flame contents are gone.
+;  * those two nodes are NOT merely present, they must be USABLE. NParticlesContainer's
+;    SetEmitting/Restart loop straight over `Array<GpuParticles2D> _particles` with no null guard, and
+;    NEnergyCounter.OnEnergyChanged calls Restart() on both whenever energy goes UP. Declaring the nodes
+;    with only `script` left `_particles` null, which turned "52 skipped calls" into a hard
+;    NullReferenceException that killed the run on the first energy gain. So each VFX node carries a
+;    real (inert) GpuParticles2D child and the exported node path, which is exactly how the vanilla
+;    ironclad_energy_vfx_back/front scenes do it.
+;  * TWO gotchas in that, both of which cost a full QA round to find:
+;      - the node type must be written as Godot's ClassDB name `GPUParticles2D`, NOT the C# spelling
+;        `GpuParticles2D`. The engine does not error out on an unknown class; it logs
+;        "Cannot get class" + "a placeholder will be created instead" and quietly substitutes a plain
+;        Node, so the exported array holds a reference that is not a GpuParticles2D and Restart() NREs.
+;      - `node_paths=PackedStringArray("_particles")` belongs in the [node ...] HEADER line, which is
+;        how every vanilla occurrence writes it, not on its own line below.
+;      - `visible = false` on the particle child is NOT redundant with `emitting = false`. Godot's
+;        GPUParticles2D.Restart() flips emitting back to TRUE, and OnEnergyChanged calls Restart() on
+;        every energy gain - so the authored `emitting = false` stops holding after the first one and a
+;        default 1x1 white square would restart on the orb. Hiding the node is what actually keeps it
+;        inert, and it does not affect Restart(), which is all the caller needs to succeed.
+;  * the label outline colour is the one non-texture red in the skeleton, so it was hue-migrated the
+;    same way as the layers: Color(0.3, 0.0759, 0.051) (hue ~6 deg) -> Color(0.136, 0.051, 0.3,
+;    hue ~260 deg), otherwise a dark red halo would sit on top of a purple orb.
+
+[ext_resource type="Script" path="res://src/Core/Nodes/Combat/NEnergyCounter.cs" id="1"]
+[ext_resource type="Texture2D" path="res://Yetannia/images/ui/energy_counter/yetannia_orb_layer_1.png" id="2"]
+[ext_resource type="Material" path="res://materials/ui/energy_orb_dark.tres" id="3"]
+[ext_resource type="Texture2D" path="res://Yetannia/images/ui/energy_counter/yetannia_orb_layer_4.png" id="4"]
+[ext_resource type="Texture2D" path="res://Yetannia/images/ui/energy_counter/yetannia_orb_layer_5.png" id="5"]
+[ext_resource type="FontVariation" path="res://themes/kreon_bold_shared.tres" id="6"]
+[ext_resource type="Texture2D" path="res://Yetannia/images/ui/energy_counter/yetannia_orb_layer_2.png" id="7"]
+[ext_resource type="Texture2D" path="res://Yetannia/images/ui/energy_counter/yetannia_orb_layer_3.png" id="8"]
+[ext_resource type="Script" path="res://addons/mega_text/MegaLabel.cs" id="9"]
+[ext_resource type="Script" path="res://src/Core/Nodes/Vfx/Utilities/NParticlesContainer.cs" id="10"]
+
+[sub_resource type="FontVariation" id="FontVariation_x0k5t"]
+base_font = ExtResource("6")
+spacing_glyph = 2
+
+[node name="YetanniaEnergyCounter" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 128.0
+offset_bottom = 128.0
+pivot_offset = Vector2(64, 64)
+script = ExtResource("1")
+
+[node name="EnergyVfxBack" type="Node2D" parent="." node_paths=PackedStringArray("_particles")]
+unique_name_in_owner = true
+script = ExtResource("10")
+_particles = [NodePath("Particles")]
+
+[node name="Particles" type="GPUParticles2D" parent="EnergyVfxBack"]
+visible = false
+emitting = false
+amount = 1
+lifetime = 0.1
+
+[node name="Layers" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Layer1" type="TextureRect" parent="Layers"]
+material = ExtResource("3")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="RotationLayers" type="Control" parent="Layers"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Layer2" type="TextureRect" parent="Layers/RotationLayers"]
+material = ExtResource("3")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(64, 64)
+mouse_filter = 2
+texture = ExtResource("7")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Layer3" type="TextureRect" parent="Layers/RotationLayers"]
+material = ExtResource("3")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(64, 64)
+mouse_filter = 2
+texture = ExtResource("8")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Layer4" type="TextureRect" parent="Layers"]
+material = ExtResource("3")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("4")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Layer5" type="TextureRect" parent="Layers"]
+material = ExtResource("3")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("5")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="EnergyVfxFront" type="Node2D" parent="." node_paths=PackedStringArray("_particles")]
+unique_name_in_owner = true
+script = ExtResource("10")
+_particles = [NodePath("Particles")]
+
+[node name="Particles" type="GPUParticles2D" parent="EnergyVfxFront"]
+visible = false
+emitting = false
+amount = 1
+lifetime = 0.1
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -29.0
+offset_right = -16.0
+offset_bottom = 29.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.964706, 0.886275, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.188235)
+theme_override_colors/font_outline_color = Color(0.136, 0.051, 0.3, 1)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 16
+theme_override_constants/shadow_outline_size = 16
+theme_override_fonts/font = SubResource("FontVariation_x0k5t")
+theme_override_font_sizes/font_size = 36
+text = "3/3"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("9")
+MinFontSize = 32
+MaxFontSize = 36

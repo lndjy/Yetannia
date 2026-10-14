@@ -1,0 +1,85 @@
+# ---------------------------------------------------------------------------
+# 发布用 .gitignore —— 目标：仓库里只有「源码 + 资源源件 + 构建脚本」
+#
+# !! 注意：.gitignore 不支持「行尾注释」。一行里 # 之后的任何内容都会成为模式的一部分，
+#    使整条规则失效。所以下面所有注释都必须独占一行 —— 这份文件的第一版就是因为行尾注释
+#    导致全部规则静默失效，差点把含 Steam 账号 id 的 QA 日志一起推上去。
+# ---------------------------------------------------------------------------
+
+# ---- 隐私：日志 / 存档 / 账号 / 截图 ---------------------------------------
+# 含 Steam 账号 id、settings.save 备份、游戏截图
+.tools/qa/
+.tools/out/
+.tools/pckdump/
+.tools/shots/
+.tools/gamefiles/
+.tools/clihome/
+.tools/package/
+.tools/uploader/
+.tools/decomp/
+.tools/decomp-proj/
+.tools/backup-charui-icons/
+.tools/icon-outline-before/
+.tools/art/ref/
+.tools/art/ref64/
+*.log
+settings.save*
+mod_configs/
+
+# ---- 版权：不宜公开再分发 -------------------------------------------------
+# 从《千年之旅》解包出来的模型资源、原始语音与卡图源件
+model/
+model.7z
+*.7z
+*.rar
+日配耶未解原文件/
+中配耶未解原文件/
+对话.zip
+椰奶*.7z
+6.rar
+.tools/cardart/
+.tools/voice/
+.tools/dialogue/
+.tools/frames/
+.tools/src/
+
+# ---- 工具链：体积大且可重建 -----------------------------------------------
+.tools/dotnet/
+.tools/ffmpeg/
+.tools/godot/
+.tools/tools/
+
+# ---- 测试脚手架（不是发布内容）--------------------------------------------
+YetanniaQA/
+
+# ---- 构建产物与引擎缓存 ---------------------------------------------------
+# .godot/ 是 Godot 的导入缓存（含 .ctex），可由 pckproject 重建
+**/.godot/
+Yetannia/bin/
+Yetannia/obj/
+Yetannia/build/
+*.pck
+*.pdb
+*.dll
+Yetannia-卡牌表.xlsx
+Yetannia-卡面预览器/
+Yetannia-卡面预览器.zip
+Yetannia-v*.zip
+
+# ---- 配音：用户要求不公开 -------------------------------------------------
+# 想连语音一起公开就删掉下面两行（版权风险自担）
+.tools/pckproject/Yetannia/audio/voice/
+*.ogg
+
+# ---- Python --------------------------------------------------------------
+__pycache__/
+*.pyc
+
+# ---- 编辑器 / 系统杂物 ---------------------------------------------------
+.vs/
+.idea/
+*.user
+*.suo
+Thumbs.db
+desktop.ini
+~$*

@@ -1,0 +1,76 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Deliberately a plain Microsoft.NET.Sdk project (not Godot.NET.Sdk).
+    The .NET side of this mod is code-only: no Godot scenes, no Godot C# source generators.
+    Art is packed separately by .tools/export-pck.ps1 (a script-free Godot project under
+    .tools/pckproject) and lands here as build/Yetannia.pck.
+  -->
+  <Import Project="Sts2PathDiscovery.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>Yetannia</AssemblyName>
+    <RootNamespace>Yetannia</RootNamespace>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <!-- Mods should stay platform-neutral MSIL so they load on every OS. -->
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+    <!--
+      Release must not embed build-machine paths, because that is what gets published.
+      With `portable` the compiler writes every source file's absolute path into the .pdb, and an
+      RSDS record naming the .pdb absolute path into the .dll. Verified by scanning the shipped
+      artifacts: the .dll contained the builder's obj\Release\Yetannia.pdb path and the .pdb
+      contained the builder's Code\... path for each source file. That leaks the builder's local
+      folder layout to anyone who downloads the mod, so Release emits no debug information at all.
+      Debug builds keep `portable` so local debugging still works normally.
+    -->
+    <DebugType Condition="'$(Configuration)' == 'Release'">none</DebugType>
+    <DebugType Condition="'$(Configuration)' != 'Release'">portable</DebugType>
+    <DebugSymbols Condition="'$(Configuration)' == 'Release'">false</DebugSymbols>
+    <NoWarn>$(NoWarn);MSB3270;CS0436;CS8618;CS0169</NoWarn>
+    <!-- Set to true to also copy the built mod into the game's mods folder. -->
+    <DeployToGame Condition="'$(DeployToGame)' == ''">false</DeployToGame>
+  </PropertyGroup>
+
+  <Target Name="CheckSts2DataDir" BeforeTargets="ResolveReferences">
+    <Error Condition="'$(Sts2DataDir)' == '' or !Exists('$(Sts2DataDir)\sts2.dll')"
+           Text="Slay the Spire 2 not found. Expected sts2.dll under '$(Sts2DataDir)'. Pass -p:Sts2Path=&quot;...&quot; to fix." />
+  </Target>
+
+  <ItemGroup>
+    <Reference Include="sts2">
+      <HintPath>$(Sts2DataDir)\sts2.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="GodotSharp">
+      <HintPath>$(Sts2DataDir)\GodotSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(Sts2DataDir)\0Harmony.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- BaseLib is a separate runtime mod; only its API surface is needed at compile time. -->
+    <PackageReference Include="Alchyr.Sts2.BaseLib" Version="3.4.7" PrivateAssets="all" />
+  </ItemGroup>
+
+  <Target Name="DeployModToGame" AfterTargets="Build" Condition="'$(DeployToGame)' == 'true'">
+    <MakeDir Directories="$(ModsPath)Yetannia" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ModsPath)Yetannia" />
+    <Copy SourceFiles="$(TargetDir)$(TargetName).pdb" DestinationFolder="$(ModsPath)Yetannia" Condition="Exists('$(TargetDir)$(TargetName).pdb')" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\Yetannia.json" DestinationFolder="$(ModsPath)Yetannia" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\build\Yetannia.pck" DestinationFolder="$(ModsPath)Yetannia" Condition="Exists('$(MSBuildProjectDirectory)\build\Yetannia.pck')" />
+    <Warning Condition="!Exists('$(MSBuildProjectDirectory)\build\Yetannia.pck')"
+             Text="build\Yetannia.pck is missing - run .tools\export-pck.ps1, otherwise the mod's art will not load." />
+    <Message Importance="high" Text="Deployed Yetannia to $(ModsPath)Yetannia" />
+  </Target>
+
+</Project>

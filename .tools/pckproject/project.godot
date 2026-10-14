@@ -1,0 +1,25 @@
+; Godot project used ONLY to pack the mod's assets into Yetannia.pck.
+;
+; The game loads mod art through ResourceLoader, which needs Godot's imported .ctex data,
+; so the images have to go through the Godot importer. This project deliberately contains no
+; C# and no scripts, so a stock Godot 4.5.1 build can export it without touching the mod's
+; .NET project. Run .tools/export-pck.ps1 to rebuild the pack.
+
+config_version=5
+
+[application]
+
+config/name="YetanniaAssets"
+config/features=PackedStringArray("4.5")
+
+[editor]
+
+; Keep .tscn files as text inside the pck instead of converting them to binary .scn + .remap.
+; BaseLib matches scenes by their ResourcePath ("res://Yetannia/scenes/....tscn"), and a binary
+; conversion rewrites that path to res://.godot/exported/... so the lookup would miss and no
+; conversion would happen. The base game ships its own scenes as plain .tscn for the same reason.
+export/convert_text_resources_to_binary=false
+
+[rendering]
+
+renderer/rendering_method="mobile"

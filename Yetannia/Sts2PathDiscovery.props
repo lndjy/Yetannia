@@ -1,0 +1,14 @@
+<Project>
+  <!--
+    Locates the Slay the Spire 2 installation and derives the paths we need.
+    Override Sts2Path on the command line or in a local.props if your install lives elsewhere:
+      dotnet build -p:Sts2Path="D:\path\to\Slay the Spire 2"
+  -->
+  <PropertyGroup>
+    <Sts2Path Condition="'$(Sts2Path)' == '' AND Exists('D:\SteamLibrary\steamapps\common\Slay the Spire 2')">D:\SteamLibrary\steamapps\common\Slay the Spire 2</Sts2Path>
+    <Sts2Path Condition="'$(Sts2Path)' == '' AND Exists('C:\Program Files (x86)\Steam\steamapps\common\Slay the Spire 2')">C:\Program Files (x86)\Steam\steamapps\common\Slay the Spire 2</Sts2Path>
+
+    <Sts2DataDir Condition="'$(Sts2DataDir)' == ''">$(Sts2Path)\data_sts2_windows_x86_64</Sts2DataDir>
+    <ModsPath Condition="'$(ModsPath)' == ''">$(Sts2Path)\mods\</ModsPath>
+  </PropertyGroup>
+</Project>
