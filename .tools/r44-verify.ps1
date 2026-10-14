@@ -19,7 +19,10 @@ $root   = Split-Path $tools -Parent
 $game   = 'D:\SteamLibrary\steamapps\common\Slay the Spire 2'
 $modDir = Join-Path $game 'mods\Yetannia'
 $logDir = "$env:APPDATA\SlayTheSpire2\logs"
-$save   = "$env:APPDATA\SlayTheSpire2\steam\<steamid64>\settings.save"
+# The SteamID64 folder used to be hard-coded here. It is derived from the active account at run time
+# instead, because this file is tracked in a public repository and a hard-coded id publishes the account.
+$sid    = 76561197960265728 + (Get-ItemProperty 'HKCU:\Software\Valve\Steam\ActiveProcess' -Name ActiveUser).ActiveUser
+$save   = "$env:APPDATA\SlayTheSpire2\steam\$sid\settings.save"
 $outDir = Join-Path $tools ("out\r44" + $(if ($Language) { "-$Language" } else { '' }))
 New-Item -ItemType Directory -Force -Path $outDir | Out-Null
 

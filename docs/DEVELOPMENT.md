@@ -760,8 +760,10 @@ retail 禁用的 AutoSlay 机器人**真打，外加卡池覆盖、只读探针�
 
 ```powershell
 # 启用测试台（测完记得关回去；settings.save 必须保持无 BOM）
+# SteamID64 目录名从当前登录账号推导出来，不写死——这份文档是公开的，写死等于公开账号。
+$sid = 76561197960265728 + (Get-ItemProperty 'HKCU:\Software\Valve\Steam\ActiveProcess' -Name ActiveUser).ActiveUser
 node D:\桌面\sts2mod\.tools\set-mod-enabled.js `
-  "C:\Users\<user>\AppData\Roaming\SlayTheSpire2\steam\<steamid64>\settings.save" YetanniaQA true
+  "$env:APPDATA\SlayTheSpire2\steam\$sid\settings.save" YetanniaQA true
 
 # 起一局：自动选人 / 卡池覆盖 / 遗物 / 探针 / 终局模式
 Start-Process "D:\SteamLibrary\steamapps\common\Slay the Spire 2\SlayTheSpire2.exe" `
@@ -802,7 +804,7 @@ Start-Process "D:\SteamLibrary\steamapps\common\Slay the Spire 2\SlayTheSpire2.e
 & D:\桌面\sts2mod\.tools\package-mod.ps1 -SkipBuild   # 复用上次构建，只重新打包
 ```
 
-产出 `Yetannia-v<版本>-test.zip`（当前 ≈20 MB；正式发布时用 `-Out Yetannia-v1.0.0.zip` 指定名字）。
+产出 `Yetannia-v<版本>-test.zip`（当前 ≈20 MB；正式发布时用 `-Out Yetannia-v1.0.1.zip` 指定名字）。
 压缩包**顶层就是 `Yetannia/` 文件夹**，
 所以「解压到 `...\Slay the Spire 2\mods\`」正好得到 `mods\Yetannia\...`——
 不会像常见的「解压出一层同名目录」那样多套一层。
@@ -838,7 +840,7 @@ Start-Process "D:\SteamLibrary\steamapps\common\Slay the Spire 2\SlayTheSpire2.e
 
 为了让验证能跑起来，我改过一处游戏设置，如需还原可以自行处理：
 
-- 文件：`%APPDATA%\SlayTheSpire2\steam\<steamid64>\settings.save`
+- 文件：`%APPDATA%\SlayTheSpire2\steam\<SteamID64>\settings.save`
 - 改动：把 `mod_settings.mod_list` 里 `Yetannia` 的 `is_enabled` 从 `false` 改成 `true`
   （原文件已备份为同目录下的 `settings.save.bak`）。
 - 需要的话也可以在游戏内 Mod 列表里手动开关，效果一样。

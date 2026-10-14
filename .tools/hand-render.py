@@ -19,9 +19,21 @@
 #      crop sideways within 0.12 m);
 #   3. each finger's three bones get an extra local rotation about a curl axis DERIVED from the rig
 #      (the knuckle line), applied in the bone's parent frame so the joint itself does not move;
-#   4. the camera's up axis is set to the measured fingertip direction and its back axis to the
-#      measured palm/back normal, so the fingers point up the image and the hand is seen face-on.
+#   4. the camera's up axis is the ARM axis (elbow->wrist) and its back axis the measured palm/back
+#      normal, so the FOREARM is vertical in the image exactly like the vanilla art, and the hand
+#      sits on top of it with its natural wrist angle.
 #   Every number below is either read from the bundle or measured by `probe`, never eyeballed.
+#
+# WHY THE CAMERA FRAME CHANGED (was: up = measured fingertip direction, --cam-up finger)
+#   The hand bone is not collinear with the forearm: measured, angle(finger_dir, wrist-elbow) =
+#   7.52 deg in every gesture. Aiming the camera up at the fingers therefore ROLLED the whole image
+#   -- forearm included -- by those 7.5 deg, and the arm came out diagonal. Measured on the shipped
+#   PNGs with .tools/out/hands/axis_tilt.py: arm axis 7.3-8.0 deg off image-vertical, and the four
+#   gestures all rotated the same way. All 20 vanilla multiplayer_hand_*.png measure 0.4 deg or less
+#   off vertical (ironclad +/-0.4, silent -0.2, defect +0.4). Vanilla keeps the ARM vertical, so the
+#   image up axis has to be the arm; the 7.5 deg then shows up where it belongs, as a natural wrist
+#   angle between hand and forearm instead of as a global rotation. Confirmed by looking at the
+#   renders (see .tools/qa/RPS-HAND-FIX.md), not assumed.
 #
 # usage:
 #   python .tools/hand-render.py probe            # identify the hand's sides/thumb -> a sheet
@@ -363,6 +375,21 @@ def measured_frame(hand):
     return d, k, n
 
 
+def measured_arm_up(hand):
+    """Image-up axis = elbow->wrist, i.e. the FOREARM's own direction. See the header note."""
+    s = hand.scene
+    up = world_pos(s, hand.hand) - world_pos(s, hand.forearm)
+    return up / np.linalg.norm(up)
+
+
+def cam_up(hand, args):
+    """The camera's image-up axis: 'arm' (default, vanilla convention) or 'finger' (the old frame)."""
+    if args.cam_up == "finger":
+        d, _k, _n = measured_frame(hand)
+        return d
+    return measured_arm_up(hand)
+
+
 # --------------------------------------------------------------------------------- camera
 def oriented_camera(lo, hi, up, back, px_w, px_h, fov, margin=1.06, iters=5):
     """Perspective camera with a SPECIFIED image-up and image-back, framed on the world box [lo,hi]."""
@@ -393,19 +420,27 @@ def oriented_camera(lo, hi, up, back, px_w, px_h, fov, margin=1.06, iters=5):
     return MVP, center, eye, near, far, dist
 
 
-def arm_box(hand, tip_pad, bottom_pad, radius):
-    """World-space box around hand + forearm only, built from bone positions, padded by `radius`."""
+def arm_box(hand, tip_pad, bottom_pad, radius, past=0.0, arm_up=None):
+    """World-space box around hand + forearm only, built from bone positions, padded by `radius`.
+
+    `past` (metres) additionally reaches `past` metres down the UPPER arm along `arm_up` (the
+    elbow->wrist direction). That is what lets the sleeve fill the bottom of a 422x1200 canvas: the
+    forearm alone is only 0.19 m, which cannot reach the bottom edge at the vanilla scale.
+    """
     s = hand.scene
+    d, k, n = measured_frame(hand)
+    up = d if arm_up is None else np.asarray(arm_up, np.float64)
     pts = [world_pos(s, c[2]) for c in hand.fingers]
     pts.append(world_pos(s, hand.forearm))     # the elbow
     pts.append(world_pos(s, hand.hand))        # the wrist
     pts.append(world_pos(s, hand.fingers[2][1]))
+    if past > 0.0:
+        pts.append(world_pos(s, hand.forearm) - up * past)
     P = np.array(pts)
-    d, k, n = measured_frame(hand)
     lo = P.min(0) - radius
     hi = P.max(0) + radius
     hi = np.maximum(hi, P.max(0) + d * tip_pad)
-    lo = np.minimum(lo, P.min(0) - d * bottom_pad)
+    lo = np.minimum(lo, P.min(0) - up * bottom_pad)
     return lo, hi
 
 
@@ -442,6 +477,42 @@ def project_pts(MVP, pts, W, H):
     return np.stack([(ndc[:, 0] + 1.0) * 0.5 * W, (1.0 - ndc[:, 1]) * 0.5 * H], 1)
 
 
+def silhouette_tilt(mask):
+    """Degrees off image-vertical of a finished silhouette: (forearm slope, principal axis).
+
+    The forearm slope is the least-squares slope of (row -> silhouette centroid x) over the lower
+    half of the silhouette; the principal axis is the second-order image moment. Both were measured
+    the same way on every vanilla texture by .tools/out/hands/axis_tilt.py, so before/after are
+    directly comparable.
+    """
+    ys, xs = np.nonzero(mask)
+    if len(ys) < 8:
+        return float("nan"), float("nan")
+    y0, y1 = int(ys.min()), int(ys.max())
+    yy, cx = [], []
+    for y in range(y0 + (y1 - y0) // 2, y1 + 1):
+        r = np.nonzero(mask[y])[0]
+        if len(r):
+            yy.append(y)
+            cx.append(0.5 * (r[0] + r[-1]))
+    slope = float("nan")
+    if len(yy) >= 8:
+        slope = math.degrees(math.atan(np.polyfit(np.asarray(yy, float),
+                                                  np.asarray(cx, float), 1)[0]))
+    X = xs.astype(float) - xs.mean()
+    Y = ys.astype(float) - ys.mean()
+    cov = np.array([[float((X * X).mean()), float((X * Y).mean())],
+                    [float((X * Y).mean()), float((Y * Y).mean())]])
+    ev, evec = np.linalg.eigh(cov)
+    v = evec[:, int(np.argmax(ev))]
+    pca = math.degrees(math.atan2(v[0], v[1]))
+    if pca > 90:
+        pca -= 180
+    if pca < -90:
+        pca += 180
+    return slope, pca
+
+
 # In the bind A-pose the hand hangs at hip height (measured: wrist y=1.02 m on a 1.70 m character),
 # i.e. right beside the skirt, the hip ribbons AND the tips of her very long hair
 # (mx_3015004_01_hair reaches x=-0.432 while the hand is at x=-0.365). A hand close-up therefore has
@@ -450,6 +521,13 @@ def project_pts(MVP, pts, W, H):
 #   * keep only triangles near the FINGERTIP->WRIST->ELBOW polyline and start it AT the elbow, so
 #     the upper arm, shoulder, torso and skirt can never enter the frame.
 KEEP_PARTS = ("mx_3015004_01_body", "mx_3015004_01_body_02")
+
+# How far BELOW the framed box the triangle-cull capsule must reach, in metres. The cull keeps
+# triangles whose centroid is within --cull-radius of the chain, so the chain's own end cap is a hard
+# edge of kept geometry; if that edge falls inside the frame it shows up as the row of thin white
+# spikes/splinters along the bottom of the render. Reaching this far past the box pushes the cap
+# outside the frame, so the arm is cut cleanly by the frame edge instead.
+CULL_TAIL = 0.030
 
 
 def scene_tris(rig, keep=None):
@@ -507,7 +585,7 @@ EXTENDED = {
     "paper":    (Hand.THUMB, Hand.INDEX, Hand.MIDDLE, Hand.RING, Hand.LITTLE),
     "scissors": (Hand.INDEX, Hand.MIDDLE),
 }
-SPREAD = {"point": 0.0, "rock": 0.0, "paper": 2.4, "scissors": 0.0}
+SPREAD = {"point": 0.0, "rock": 0.0, "paper": 6.0, "scissors": 14.0}
 # thumb flexion as a fraction of --closed. 0 = the bind pose (extended thumb).
 THUMB_FRACTION = {"point": 0.45, "rock": 0.75, "paper": 0.0, "scissors": 0.45}
 # Which fingers open, for the report.
@@ -599,6 +677,9 @@ def main():
     ap.add_argument("--rim", type=float, default=0.18)
     ap.add_argument("--rim-power", type=float, default=3.2)
     ap.add_argument("--spec", type=float, default=0.30)
+    ap.add_argument("--cam-up", default="arm", choices=("arm", "finger"),
+                    help="camera image-up axis: 'arm' = elbow->wrist (vanilla: forearm vertical), "
+                         "'finger' = measured fingertip direction (the old, tilted frame)")
     ap.add_argument("--outline", type=int, default=2,
                     help="baked silhouette outline width in px (same as the in-combat flipbook)")
     ap.add_argument("--outline-color", default="0.055,0.075,0.16")
@@ -794,9 +875,21 @@ def main():
               % (name, GESTURE_NOTE[name], np.round(curls, 1), spread))
 
         back = -n if palm_of(args.palm, name) == "palm" else n
-        lo, hi = arm_box(hand, 0.020, 0.015, 0.060)
-        MVP, c, e, near, _f, dist = oriented_camera(lo, hi, d, back, BIG_W, BIG_H, args.fov, 1.05)
-        chain = arm_chain(hand, d, args.past_elbow)
+        up = cam_up(hand, args)
+        br = np.cross(up, back)
+        br /= np.linalg.norm(br)
+        # the two angles this fix is about, measured on the posed rig rather than eyeballed
+        _e = world_pos(rig.scene, hand.forearm)
+        _w = world_pos(rig.scene, hand.hand)
+        _arm = (_w - _e) / np.linalg.norm(_w - _e)
+        print("[build] %s: cam-up=%s  forearm is %+.2f deg off image-vertical; "
+              "wrist angle (fingers vs forearm) = %.2f deg"
+              % (name, args.cam_up,
+                 math.degrees(math.atan2(float(np.dot(_arm, br)), float(np.dot(_arm, up)))),
+                 math.degrees(math.acos(max(-1.0, min(1.0, float(np.dot(d, up))))))))
+        lo, hi = arm_box(hand, 0.020, 0.015, 0.060, args.past_elbow, up)
+        MVP, c, e, near, _f, dist = oriented_camera(lo, hi, up, back, BIG_W, BIG_H, args.fov, 1.05)
+        chain = arm_chain(hand, d, args.past_elbow + args.cull_radius + CULL_TAIL)
         arr = render_pose(rig, pose, MVP, BIG_W, BIG_H, args.ssaa, near,
                           cull=(chain, args.cull_radius) if args.cull else None, shade_fwd=back)
         a = arr[..., 3] > 8
@@ -839,11 +932,15 @@ def main():
             if rows[y] >= lim:
                 hands_end = y
                 break
+        t_slope, t_pca = silhouette_tilt(a2)
         print("[build] %s: big bbox x=[%d,%d] y=[%d,%d] (%dx%d)  crop scale=%.4f  dist=%.3f\n"
               "            -> 422x1200  alpha>8 %.1f%%  bbox=%s  plateau_w=%d px  "
-              "hand region=%d px (%.1f%% of height);  vanilla: plateau 231-302 px, hand 4-15%%"
+              "hand region=%d px (%.1f%% of height)\n"
+              "            -> FINISHED PNG tilt: forearm slope %+.2f deg, principal axis %+.2f deg "
+              "off vertical;  vanilla: plateau 231-302 px, hand 4-15%%, tilt <0.5 deg"
               % (name, bx0, bx1, by0, by1, bw, bh, sc, dist, 100.0 * a2.mean(), bb, plateau,
-                 hands_end - int(nz.min()), 100.0 * (hands_end - nz.min()) / 1200.0))
+                 hands_end - int(nz.min()), 100.0 * (hands_end - nz.min()) / 1200.0,
+                 t_slope, t_pca))
         p = os.path.join(args.outdir, "multiplayer_hand_yetannia_%s.png" % name)
         Image.fromarray(out, "RGBA").save(p)
         Image.fromarray(out, "RGBA").resize((BIG_W, BIG_H), Image.NEAREST).save(
@@ -851,7 +948,9 @@ def main():
         summary[name] = dict(path=p, bbox=bb, curls=curls, spread=spread,
                              note=GESTURE_NOTE[name], fill=float(a2.mean()),
                              canvas=[VAN_W, VAN_H], crop_scale=float(sc),
-                             plateau_w=plateau, hand_px=hands_end - int(nz.min()))
+                             plateau_w=plateau, hand_px=hands_end - int(nz.min()),
+                             forearm_tilt_deg=t_slope, pca_tilt_deg=t_pca,
+                             cam_up=args.cam_up)
     with open(os.path.join(args.outdir, "hands.json"), "w", encoding="utf-8") as f:
         json.dump(summary, f, indent=1)
 

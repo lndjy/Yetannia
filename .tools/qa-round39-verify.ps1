@@ -17,7 +17,10 @@ $tools = $PSScriptRoot
 $root = Split-Path $tools -Parent
 $game = 'D:\SteamLibrary\steamapps\common\Slay the Spire 2'
 $logDir = "$env:APPDATA\SlayTheSpire2\logs"
-$save = "$env:APPDATA\SlayTheSpire2\steam\<steamid64>\settings.save"
+# The SteamID64 folder used to be hard-coded here. It is derived from the active account at run time
+# instead, because this file is tracked in a public repository and a hard-coded id publishes the account.
+$sid = 76561197960265728 + (Get-ItemProperty 'HKCU:\Software\Valve\Steam\ActiveProcess' -Name ActiveUser).ActiveUser
+$save = "$env:APPDATA\SlayTheSpire2\steam\$sid\settings.save"
 if (-not $OutDir) { $OutDir = Join-Path $tools 'out\qa39' }
 New-Item -ItemType Directory -Force -Path $OutDir | Out-Null
 

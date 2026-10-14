@@ -19,9 +19,7 @@ namespace Yetannia.YetanniaCode.Diagnostics;
 /// a task that simply never completes rather than an exception that gets caught.
 ///
 /// So every scry now logs a matched BEGIN/END pair, and a watchdog logs a loud error if the await is
-/// still pending after <see cref="WatchdogSeconds"/> seconds — 30s rather than 10 because a real player
-/// alt-tabbing away (the game throttles to 30 FPS in the background) made 10s fire on a scry that
-/// then completed normally. The BEGIN line carries everything
+/// still pending after <see cref="WatchdogSeconds"/> seconds. The BEGIN line carries everything
 /// needed to identify the situation: which card, how many cards, the concrete
 /// <see cref="PlayerChoiceContext"/> type, the turn, the draw pile size, and how many scries were
 /// already in flight. That last number matters: two overlapping scries would each wait for the other
@@ -31,7 +29,24 @@ namespace Yetannia.YetanniaCode.Diagnostics;
 /// </summary>
 internal static class ScryTrace
 {
-    private const int WatchdogSeconds = 30;
+    /// <summary>
+    /// How long a scry may sit unanswered before the watchdog calls it a hang.
+    ///
+    /// RAISED 30 -> 300 (five minutes). The 30s value was chosen from single-player reasoning only ("a
+    /// player alt-tabbing away throttles the game to 30 FPS, so 10s was too tight") and it was measured
+    /// firing on scries that then completed perfectly normally: the live multiplayer log has four of
+    /// them, every one with <c>ctx=HookPlayerChoiceContext</c> or <c>BranchingPlayerChoiceContext</c> —
+    /// i.e. the scry was waiting for a *human* to answer a card-selection screen, and in multiplayer
+    /// that human can be a teammate on the other side of the internet. Waiting on a real person is not a
+    /// hang, and a timeout that fires while somebody is simply thinking is worse than useless: it makes
+    /// the log lie, and it hands the in-flight slot back early (see <see cref="InFlightSlot"/>).
+    ///
+    /// Five minutes is deliberately far past any plausible human decision — the game's own turn timer
+    /// and every multiplayer pause mechanic live well inside it — so this is now a genuine-hang
+    /// detector rather than a slow-player detector. The cost of the change is only that a real hang is
+    /// reported later; the benefit is that the line means what it says.
+    /// </summary>
+    private const int WatchdogSeconds = 300;
 
     private static int _sequence;
     private static int _inFlight;
@@ -47,10 +62,10 @@ internal static class ScryTrace
     /// every later 先知 trigger into the queue instead of resolving it immediately, so 先知 effects
     /// stopped firing on discard until the next scry happened to drain them.
     ///
-    /// Releasing on the watchdog is the right call rather than leaving it stuck: after 30 seconds the
-    /// screen is already broken for the player, so the honest thing is to stop letting that one failure
-    /// corrupt everything after it. If the scry does eventually return, the counter is not decremented
-    /// a second time.
+    /// Releasing on the watchdog is the right call rather than leaving it stuck: after
+    /// <see cref="WatchdogSeconds"/> the screen is already broken for the player, so the honest thing is
+    /// to stop letting that one failure corrupt everything after it. If the scry does eventually return,
+    /// the counter is not decremented a second time.
     /// </summary>
     private sealed class InFlightSlot
     {

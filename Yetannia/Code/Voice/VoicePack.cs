@@ -21,16 +21,31 @@ internal enum VoiceLanguage
 /// new events. The only way to give a custom character her own voice is to play an ordinary audio file
 /// ourselves, which BaseLib exposes through <see cref="ModAudio"/>.
 ///
-/// There are **eleven moments**, in two groups, and both go through <see cref="PlayLine"/> so the language
+/// There are **eleven moments**, and all of them go through <see cref="PlayLine"/> so the language
 /// setting and 关闭 can only ever be implemented once:
 ///
-///   * Four are driven by <b>sentinels</b>: <c>YetanniaCharacter</c> points the game's own character-SFX
+///   * Four have a <b>sentinel</b>: <c>YetanniaCharacter</c> points the game's own character-SFX
 ///     slots at event paths that deliberately DO NOT EXIST (<c>.../yetannia/yetannia_attack</c>), and
 ///     <see cref="Patches.VoiceSfxPatch"/> / <see cref="Patches.VoiceAudioManagerPatch"/> watch for exactly
-///     those strings and play our ogg instead. This covers attack, cast, die and select, which is as much
-///     as a sentinel can cover: the sentinel only exists in the slots the game itself consults.
+///     those strings and play our ogg instead. This covers attack, cast, die and select — which is as much
+///     as a sentinel can cover, because a sentinel only exists in the slots the game itself consults.
 ///   * Seven have no slot to hijack — run start, combat start, card reward, rest site, shop, event and
 ///     relic — so <see cref="VoiceMoments"/> hooks the moment itself and calls <see cref="PlayLine"/>.
+///
+/// Three of the eleven end up with a moment hook as well as a sentinel entry, because for this character
+/// the slot is not a reliable producer. (Attack is the one that needs only the sentinel: the game's own
+/// AttackCommand fires its trigger generically for every attack, on every card, in every mod.)
+///
+///   * <b>die</b> — every route to the player's death SFX sits inside <c>if (_spineAnimator != null)</c>
+///     and this character is a Node2D flipbook, so the slot is never reached (VoiceMoments: death);
+///   * <b>select</b> — the slot's string reaches the audio layer without travelling through the patched
+///     method at all, so it cannot be relied on (VoiceMoments: select);
+///   * <b>cast</b> — the slot is only ever asked for by <c>CreatureCmd.TriggerAnim("Cast")</c>, which is
+///     fired by the *cards* themselves and which none of this mod's cards fire, so the slot is never
+///     asked at all (VoiceMoments: cast).
+///
+/// That last one is why <see cref="RouteDedupedStems"/> is not just about death any more: for die, select
+/// and cast two routes can now reach the same line, and the guard keeps exactly one of them.
 ///
 /// 关闭 is deliberately implemented as "swallow our own sentinel and play nothing". It never returns
 /// <c>false</c> for a sentinel, so it cannot accidentally fall through to some other sound — and because the
@@ -79,29 +94,34 @@ internal static class VoicePack
     };
 
     /// <summary>
-    /// How long the same line is ignored after it starts — and it only applies to the two stems that have
+    /// How long the same line is ignored after it starts — and it only applies to the stems that have
     /// TWO routes to the same line: the sentinel (when the game's own SFX slot is what fires) and the
     /// moment hook in <see cref="VoiceMoments"/> (which fires from the same call stack, microseconds later
-    /// for select, and from inside StartDeathAnim for die). Both routes are kept — the sentinel is the
+    /// for cast, and from inside StartDeathAnim for die). Both routes are kept — the sentinel is the
     /// forward-compatible one and the hook is the one that works when the slot is never consulted — so the
     /// second one has to be dropped, and 200 ms is far longer than that gap.
     ///
-    /// Everything else deliberately has NO guard: attack and cast have only the sentinel route, and the
-    /// other five moments fire from a single room/screen callback. Suppressing a repeat there would drop a
+    /// Everything else deliberately has NO guard: attack has only the sentinel route, and the other
+    /// moments fire from a single room/screen callback. Suppressing a repeat there would drop a
     /// real line (an attack animation that runs twice in a frame or two), which is the exact failure this
     /// whole file exists to fix.
     ///
     /// This is the ROUTE guard only — "two different code paths asked for the same line at the same
     /// instant, keep one". It is not the select screen's per-visit gate, which lives in
     /// <see cref="VoiceMoments"/> and answers a completely different question ("has this screen already
-    /// had its line?"). The two are deliberately disjoint: select is no longer reachable by two routes at
-    /// all (see <see cref="VisitOwnedStems"/>), so only die is left here.
+    /// had its line?"). The two are deliberately disjoint: select is not reachable by two *playing* routes
+    /// at all (see <see cref="VisitOwnedStems"/>), so it is not listed here.
     /// </summary>
     private const ulong RepeatGuardMs = 200;
 
+    /// <summary>
+    /// Stems whose two routes must collapse to one play. Kept to deaths and casts: for both of them the
+    /// sentinel and the moment hook watch the same card/creature event and would otherwise speak twice.
+    /// </summary>
     private static readonly HashSet<string> RouteDedupedStems = new(StringComparer.Ordinal)
     {
         DeathStem,
+        CastStem,
     };
 
     /// <summary>

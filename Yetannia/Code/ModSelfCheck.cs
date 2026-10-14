@@ -275,6 +275,23 @@ internal static class ModSelfCheck
             log.Info($"self-check art        : selectIcon={Describe(character.CharacterSelectIcon)} locked={Describe(character.CharacterSelectLockedIcon)} hud={Describe(character.IconTexture)}");
             log.Info($"self-check art paths  : {character.CustomCharacterSelectIconPath} | {character.CustomIconTexturePath}");
 
+            // The multiplayer-only "this is me" colours (the map quill's ink, a map ping, and the line
+            // drawn to whatever I am aiming at). Nothing in a single-player run reads them, so no other
+            // check in this file can cover them — printing the resolved values is what turns "the class
+            // overrides MapDrawingColor" into something a QA log can assert on.
+            //
+            // Read through a CharacterModel reference on purpose: these are virtuals whose base
+            // implementation is Colors.Black, so a silently-absent override shows up here as 000000
+            // instead of as a cheerful echo of what this file believes it wrote. (That was the actual
+            // state until now: BaseLib 3.4.7 does not mention any of the three, and BaseLib is what the
+            // arm textures and SFX slots come from, so there was nothing to derive them from.)
+            var asBaseModel = (CharacterModel)character;
+            log.Info(
+                $"self-check mp colours : draw={asBaseModel.MapDrawingColor.ToHtml(false)} " +
+                $"targeting={asBaseModel.RemoteTargetingLineColor.ToHtml(false)} " +
+                $"outline={asBaseModel.RemoteTargetingLineOutline.ToHtml(false)} " +
+                $"name={asBaseModel.NameColor.ToHtml(false)}");
+
             // Scene-based models (combat figure / campfire / merchant / select backdrop).
             // They are only *registered* later (BaseLib registers them from a ModelDb.Preload
             // postfix), so the actual instantiation check lives in ReportSceneConversions below.

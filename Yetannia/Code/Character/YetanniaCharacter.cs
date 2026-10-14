@@ -31,6 +31,40 @@ public class YetanniaCharacter : PlaceholderCharacterModel
     public override CharacterGender Gender => CharacterGender.Feminine;
     public override int StartingHp => 70;
 
+    // ------------------------------------------------------- multiplayer "this is me" colours
+    //
+    // The base game gives every character three colours that exist only in multiplayer, all three
+    // defaulting to BLACK on CharacterModel (MegaCrit.Sts2.Core.Models.CharacterModel):
+    //
+    //   MapDrawingColor         the ink of the map quill (cursor_quill) and the colour of a map ping
+    //   RemoteTargetingLineColor     the line drawn from my character to what I am aiming at
+    //   RemoteTargetingLineOutline   that line's dark outline
+    //
+    // MEASURED, two ways. (1) BaseLib 3.4.7 does NOT mention any of the three — the strings
+    // "MapDrawingColor" and "RemoteTargetingLineColor" do not occur anywhere in BaseLib.dll — so unlike
+    // the arm textures and the SFX slots there is no PlaceholderID-derived value and no patch; the class
+    // was silently inheriting `Colors.Black` for all three. (2) The gameplay consumer is
+    // NMapDrawingManager.CreateLineForPlayer, which does exactly
+    // `line2D.DefaultColor = player.Character.MapDrawingColor`, and NMapPingVfx, which does
+    // `nMapPingVfx.Modulate = player.Character.MapDrawingColor`.
+    //
+    // So in a multiplayer run every line Yetannia drew, and every ping she placed, was BLACK — the one
+    // colour that reads as "no colour" on the parchment map, and the same colour for every player who
+    // had not overridden it.
+    //
+    // The blue below is deliberately NOT the robot's. Measured in HSL from the values on
+    // CharacterModel's subclasses, the seven vanilla inks span lightness 28.2-50.0 % and hues all round
+    // the wheel; the only BLUE among them is 故障机器人/Defect's 0D638C at hue 199.4 / lightness 30.0 /
+    // saturation 83 — a dark teal-blue. This one is 1A3FC8: hue 227.2, lightness 44.3, saturation 77. It
+    // is 28 degrees further round the wheel than the robot's, near the top of the vanilla lightness band,
+    // and no other vanilla ink is within 29 degrees of it — which is what makes it read as a royal blue
+    // beside the robot's teal rather than as a second shade of the same colour. The targeting pair
+    // follows the vanilla shape (Defect's fill 70B6EDFF is lighter than its ink, its outline 163E64FF
+    // darker): a lighter fill of the same hue at 71.6 % lightness, and a darker outline at 25.3 %.
+    public override Color MapDrawingColor => new("1A3FC8");
+    public override Color RemoteTargetingLineColor => new("6E8CFFFF");
+    public override Color RemoteTargetingLineOutline => new("0F2372FF");
+
     /// <summary>
     /// 4 打击 + 4 防御（本 Mod 自己的等价卡，用的是空白卡面），外加两张角色初始卡。
     /// 10 张牌，和基础游戏角色的初始牌组张数一致。

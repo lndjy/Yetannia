@@ -6,7 +6,8 @@
 - 创意工坊（订阅即装）：<https://steamcommunity.com/sharedfiles/filedetails/?id=3819506337>
 - 源码仓库：<https://github.com/lndjy/Yetannia>
 - 开发文档 / 项目历史：[`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md)
-- 当前版本：**v1.0.0**（以 `Yetannia/Yetannia.json` 为准）
+- 发布流程（含发布前的安全与隐私检查）：[`docs/RELEASE-WORKFLOW.md`](docs/RELEASE-WORKFLOW.md)
+- 当前版本：**v1.0.1**（以 `Yetannia/Yetannia.json` 为准）
 
 > ### ⚠️ 只支持 beta 分支 · BETA BRANCH ONLY
 >
