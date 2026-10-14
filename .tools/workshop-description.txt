@@ -1,0 +1,83 @@
+【只支持 beta 版 · BETA BRANCH ONLY】
+
+本 Mod 只在《杀戮尖塔 2》的 **beta 分支**上开发与测试。正式分支（非 beta）不保证能加载，
+可能出现角色不出现、卡图丢失、事件对话报错等问题。请在 Steam 里把游戏切到 beta 分支后再使用。
+
+────────────────────────────────
+
+## 这个 Mod 加了什么
+
+**新角色：耶坦尼娅 Yetannia**
+
+· **82 张卡牌**，围绕「记忆」与「预见」两条线
+· **关键词「先知」**：当此牌从抽牌堆进入弃牌堆时，触发它的先知效果
+· **初始遗物「先知发饰」**，其升级形态「先知头冠」（由欧洛巴斯的升级替换获得）
+· **11 处语音**：攻击、技能、受到致命伤、选人、开局、战斗开始、卡牌奖励、营火、商店、事件、遗物
+· **九位先古之民的专属对话**（涅奥 / 欧洛巴斯 / 佩尔 / 瓦库 / 坦克斯 / 特兹卡塔拉 / 诺奴佩普 / 达弗 / 建筑师）
+· 战斗、营火、商人三处都用**会动的角色**，不是静态立绘
+· 选人界面、能量球、地图标记、卡牌与遗物图标均为独立美术
+
+## 语音语言
+
+游戏设置里会多出一项 **语音语言**，可选 **中文 / 日语 / 关闭**。
+
+「关闭」只关掉她的语音，**不会影响游戏原版音效**。
+
+## 安装
+
+1. 先订阅 **BaseLib**（版本 ≥ 3.4.7）。没有它本 Mod 不会加载，日志里也不会有任何 `[Yetannia]` 字样。
+2. 把本 Mod 解压到 `...\Slay the Spire 2\mods\`，使结果是 `mods\Yetannia\Yetannia.dll` 这样的结构。
+3. 启动游戏，选人界面应能看到耶坦尼娅。
+
+## 说明
+
+· 内容基于《千年之旅》的角色耶坦尼娅创作，属同人作品。
+· 语音与立绘素材来源于原游戏；如有异议请联系我下架。
+· 遇到问题欢迎在创意工坊留言，附上日志（`%APPDATA%\SlayTheSpire2\logs\godot.log`）会快很多。
+
+────────────────────────────────
+
+# English
+
+**[BETA BRANCH ONLY]** — this mod is developed and tested on the **beta branch** of Slay the Spire 2
+only. On the public (non-beta) branch it is not guaranteed to load: the character may not appear, card
+art may be missing, or event dialogue may throw errors. Please switch the game to the beta branch in
+Steam first.
+
+## What this mod adds
+
+**New character: Yetannia**
+
+· **82 cards**, built around two themes: memory and foresight
+· **The "Prophet" keyword**: when the card moves from your draw pile to your discard pile, its Prophet
+  effect triggers
+· **Starter relic "Prophet's Hair Ornament"**, and its upgraded form **"Prophet's Crown"** (obtained
+  through Orobas's upgrade replacement)
+· **11 voiced moments**: attack, skill, taking fatal damage, character select, run start, combat start,
+  card reward, campfire, shop, event, relic
+· **Dedicated dialogue for all nine Ancients** (Neow / Orobas / Pael / Vakuu / Tanx / Tezcatara /
+  Nonupeipe / Darv / The Architect)
+· **Animated** figures in combat, at the campfire and in shops — not static portraits
+· Its own art for the character-select screen, the energy orb, the map marker, and the card and relic
+  icons
+
+## Voice language
+
+The game's settings gain a **Voice Language** option: **Chinese / Japanese / Off**.
+
+"Off" silences only her voice — **the game's own sound effects are unaffected**.
+
+## Installation
+
+1. Subscribe to **BaseLib** first (version ≥ 3.4.7). Without it this mod will not load, and there will
+   be no `[Yetannia]` lines in the log at all.
+2. Extract this mod into `...\Slay the Spire 2\mods\`, so that you end up with
+   `mods\Yetannia\Yetannia.dll`.
+3. Launch the game — Yetannia should appear on the character-select screen.
+
+## Notes
+
+· Fan work based on Yetannia, a character from the Chinese mobile game 《千年之旅》.
+· The voice and artwork come from the original game; contact me if you would like them removed.
+· Questions and bug reports are welcome in the Workshop comments — attaching the log
+  (`%APPDATA%\SlayTheSpire2\logs\godot.log`) helps a lot.
