@@ -416,3 +416,51 @@ plausible exactly where the engine waits for a *human* to answer a card-selectio
   for logging and Sentry purposes (159458, 190206, 211108, 212004).
 * **`--autoslay` driving the multiplayer run.** Dead in retail and singleplayer-only.
 * **Testing with a second Steam account.** Not needed for mechanism A, and not investigated.
+
+---
+
+## 8. What happened when it was actually run (round 48)
+
+The procedure above was executed, and it **works up to the lobby**. Two instances ran concurrently on
+this machine for the first time, with the mod loaded on both sides.
+
+**Verified, from the run's own log:**
+
+```
+Command Line Args: --force-steam=off --fastmp=join --clientId=1000 --autoslay --qacheck
+[ENetClient] Sending handshake with net ID 1000
+[HandshakeManager] Got handshake from sender 1. Version: v0.111.0 Branch: None Hash: 734471696
+[NetMessageBus] Received ... InitialGameInfoMessage, sending to 1 handlers
+[NetMessageBus] Received ClientLobbyJoinResponseMessage Players: 2 Ascension: 0
+```
+
+So: the host bound and listened, the client connected over the loopback ENet socket, **the join handshake
+passed** — same game version, and the same gameplay-mod hash `734471696` on both sides, i.e. no
+`ModMismatch` — and the lobby reported **two players**, with `[Yetannia] self-check character` in the log
+so the mod was loaded under `--force-steam=off`. The save-scope seeding in §3.2 worked: no "load mods?"
+prompt appeared and the game never quit itself.
+
+**Not achieved: an actual multiplayer run.** Starting one needs the host to press **Embark** after both
+players have a character, and that is a UI action. `--autoslay` did not produce it (consistent with §7:
+the bot drives the single-player flow), so play never began — which means the multiplayer-only paths
+(map drawing and pings, the RPS relic minigame, remote targeting lines, the 6 multiplayer-only cards)
+are still untested in a live run.
+
+**A second blocker, found by running it: both instances write to ONE log.** The log path comes from
+`OS.GetUserDataDir()` and is not account-scoped, so two processes interleave into
+`%APPDATA%\SlayTheSpire2\logs\godot.log` — and the interleaving is lossy. `Steam initialization skipped`
+appears **once** although two instances skipped Steam, and `YetanniaQA: initializing` is absent even
+though the harness is loaded on both. **Per-process attribution from that file is not trustworthy**, which
+is why the run above is cited by whole-file markers rather than by per-instance counts. Giving the second
+instance its own `%APPDATA%` should fix it and is worth doing before the next attempt (INFERENCE I6).
+
+### What the next attempt needs
+
+1. Per-instance logs (`APPDATA` override on the client), so each side can be attributed.
+2. A way to press Embark — either a scaffold patch that calls `NCharacterSelectScreen.OnEmbarkPressed`
+   once autoslay has chosen a character and every lobby player is ready, or UI automation.
+3. Then the six multiplayer-only cards via `--qagym` on both instances.
+
+`.tools/qa/rt48-mp.py` implements stage/run/unstage for all of the above and restores the mods folder
+afterwards; only the Embark step is missing.
+
