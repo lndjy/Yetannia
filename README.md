@@ -193,8 +193,9 @@ Chinese; this project reports problems on the Workshop page.
   导出 `.pck`；打包成 zip。
 - **不能一步到位：语音音频是刻意不入库的**（`.gitignore` 忽略
   `.tools/pckproject/Yetannia/audio/voice/` 和 `*.ogg`，因为语音素材来自原游戏、有版权顾虑）。
-  所以**从源码构建出来的 Mod 是没有语音的**：设置里的「语音语言」还在，但不会出声。
-  想要语音请用创意工坊版本或发行 zip。
+  所以**从源码构建出来的 Mod 是没有语音的**：设置里的「语音语言」还在，但不会出声，
+  只会在日志里留下一行 `[voice] missing audio file, playing nothing: ...` 警告
+  （这是设计好的降级路径，不报错、不会卡住游戏）。想要语音请用创意工坊版本或发行 zip。
 - 便携工具链也不入库：`.tools/dotnet/`（.NET 9 SDK）、`.tools/godot/`（Godot 4.5.1）、
   `.tools/src/` 都被忽略，需要自己装。
 - `Yetannia/nuget.config` 目前指向本项目构建环境里的本地 NuGet 代理
