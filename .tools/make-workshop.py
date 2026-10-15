@@ -28,7 +28,7 @@ cfg = {
     # Public: the user asked for the workshop item to be published openly. (The earlier "don't make
     # it public" referred to the *voice assets* on GitHub, not to this item's visibility.)
     "visibility": "public",
-    "changeNote": "v1.0.2：\n· 修好了联机状态分歧（desync）。「玛瑙的药水腰带」和「未命名·预见」的计数之前是普通私有字段，不参与同步。一局三人联机的分歧报告（RitsuLib checksum #797）显示：计数不同步时，先数到 3 瓶的那一端会单独抽共享的 CombatPotionGeneration 随机数、凭空多出一瓶迅捷药水，另一端完全看不到，于是校验和不一致。现在两个计数器都改成 [SavedProperty] 存档同步属性——原版 46 个遗物都是这么写的。\n· 八个能力 buff 的名称不再显示「未命名·xx」占位符，改成对应卡牌的名字：冰刃连斩 / 剑之所指 / 她眼中的世界 / 趁势而动 / 回应愿景之心 / 凯旋之路 / 临危不乱 / 幻想纯爱。\n· 自查新增两条断言：必须同步的计数器是否真的标了 [SavedProperty]，以及能力名不得还是占位符——以后再犯会直接在日志里报错。\n· 工坊说明已改为中英双语，并使用 Steam 支持的富文本格式。",
+    "changeNote": "v1.0.3：\n· 修好了联机时「预见」让卡牌卡在屏幕中间、整局动不了的问题。根因已由真实联机日志定位：战斗结束的那一瞬间，如果正好有一次预见在等玩家选牌，引擎会取消持有这次选择的那条操作，于是这次选择再也没人应答、等待永远不返回，牌就一直冻在屏幕上。现在战斗结束或即将结束时，这次预见会安全放弃，不再挂住整局。\n· 另有玩家反馈「预见时界面位置不对」，这一项目前还没能定位（实测两端渲染位置完全一致），本次没有改动它。",
     "tags": [],
     # 3737335127 is BaseLib's Workshop item id -- not a guess: the uploader itself resolves the mod's
     # declared BaseLib dependency to exactly this id and prints "Removed dependency on 3737335127" when
