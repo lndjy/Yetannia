@@ -49,30 +49,6 @@ namespace Yetannia.YetanniaCode.Diagnostics;
 internal static class ScryTrace
 {
     /// <summary>
-    /// A per-process diagnostic file, appended and flushed on every line.
-    ///
-    /// WHY THIS EXISTS NEXT TO THE LOGGER. The two instances of a local multiplayer test share one
-    /// <c>godot.log</c>, and Godot's file log is buffered — so a run that is force-killed (or still
-    /// running when the harness stops it) loses its tail, which is exactly where a scry hang happens.
-    /// This file is appended per line, so it survives any kill, and the pid in the name separates the
-    /// two peers. QA-only diagnostics: it changes no behaviour.
-    /// </summary>
-    private static readonly string DiagPath = System.IO.Path.Combine(
-        Godot.OS.GetUserDataDir(), $"scry-diag-{System.Environment.ProcessId}.log");
-
-    internal static void Diag(string line)
-    {
-        try
-        {
-            System.IO.File.AppendAllText(DiagPath, DateTime.Now.ToString("HH:mm:ss.fff") + "  " + line + "\n");
-        }
-        catch (Exception)
-        {
-            // Diagnostics must never be the thing that breaks a card.
-        }
-    }
-
-    /// <summary>
     /// How long a scry may sit unanswered before the watchdog calls it a hang.
     ///
     /// RAISED 30 -> 300 (five minutes). The 30s value was chosen from single-player reasoning only ("a
@@ -143,7 +119,6 @@ internal static class ScryTrace
         var begin = $"[scry] #{id} BEGIN {label} amount={amount} drawPile={drawPile} " +
                     $"ctx={contextName} turn={turn} inFlight={inFlight}";
         MainFile.Logger.Info(begin);
-        Diag("BEGIN " + begin);
 
         using var cancellation = new CancellationTokenSource();
         _ = Watchdog(id, label, amount, drawPile, contextName, turn, inFlight, slot, cancellation.Token);
@@ -253,7 +228,6 @@ internal static class ScryTrace
             $"[scry] #{id} STILL PENDING after {WatchdogSeconds}s: {label} amount={amount} " +
             $"drawPile={drawPile} ctx={contextName} turn={turn} inFlight={inFlight} " +
             "— the scry never returned, so the selection screen was never answered (or never shown)");
-        Diag($"STILL PENDING after {WatchdogSeconds}s: #{id} {label} ctx={contextName} turn={turn}");
 
         // Give up the claim so one hung scry cannot poison the rest of the session. See InFlightSlot
         // for what reading a stuck counter broke.

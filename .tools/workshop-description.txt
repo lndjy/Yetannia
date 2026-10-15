@@ -39,6 +39,14 @@
 [*]遇到问题欢迎在创意工坊留言，附上日志（[code]%APPDATA%\SlayTheSpire2\logs\godot.log[/code]）会快很多。
 [/list]
 
+[h2]更新记录[/h2]
+
+[b]v1.0.3[/b]
+[list]
+[*]修复[b]联机时「预见」会让卡牌卡在屏幕中间、整局动不了[/b]的问题。根因已经用真实联机日志定位：如果战斗结束的那一瞬间正好有一次预见在等玩家选牌，引擎会取消持有这次选择的那条操作，于是这次选择再也没人应答，等待就永远不返回——牌就一直冻在屏幕上。现在战斗只要结束或即将结束，这次预见会安全放弃，不再挂住整局。
+[*]另有玩家反馈「预见时界面位置不对」。这一项[b]目前还没能定位[/b]（实测两端渲染位置完全一致，也在继续排查），本次没有改动它。
+[/list]
+
 [hr][/hr]
 
 [h1]English[/h1]
@@ -77,4 +85,12 @@ The game's settings gain a [b]Voice Language[/b] option: [b]Chinese / Japanese /
 [*]Fan work based on Yetannia, a character from the Chinese mobile game 《千年之旅》.
 [*]The voice and artwork come from the original game; contact me if you would like them removed.
 [*]Questions and bug reports are welcome in the Workshop comments — attaching the log ([code]%APPDATA%\SlayTheSpire2\logs\godot.log[/code]) helps a lot.
+[/list]
+
+[h2]Changelog[/h2]
+
+[b]v1.0.3[/b]
+[list]
+[*]Fixed [b]a card freezing mid-screen and locking the whole run in multiplayer[/b]. The root cause was found in real multiplayer logs: if the combat ends at the exact moment a Scry is still waiting for its player choice, the engine cancels the action that owns that choice, so nothing ever answers it and the wait never returns — leaving the card frozen on screen forever. A Scry whose fight has ended (or is ending) is now abandoned safely instead of holding up the run.
+[*]A separate report of "the Scry screen is in the wrong place" is [b]still unresolved[/b] — the two peers were measured rendering it identically, and the investigation continues. Nothing was changed for it in this build.
 [/list]
