@@ -7,7 +7,7 @@ using MegaCrit.Sts2.Core.Entities.Powers;
 namespace Yetannia.YetanniaCode.Powers;
 
 /// <summary>
-/// 未命名·倍增 的能力（标记）：纯爱幻想/幻想纯爱 在结算「被消耗时」效果前会检查这个能力，
+/// 幻想纯爱 的能力（标记）：纯爱幻想/幻想纯爱 在结算「被消耗时」效果前会检查这个能力，
 /// 有则伤害/格挡翻倍。逻辑在卡牌侧（见 <c>StrikeStrike</c> / <c>DefendDefend</c>），
 /// 这里只负责「存在」。
 /// </summary>
@@ -33,12 +33,12 @@ public sealed class DoubleStatusPower : CustomPowerModel
     public override List<(string, string)> Localization => Loc.Pick(Chinese, English);
 
     private static readonly List<(string, string)> Chinese = new PowerLoc(
-        "未命名·倍增",
+        "幻想纯爱",
         "你的纯爱幻想和幻想纯爱造成的伤害、获得的格挡翻倍。",
         "你的纯爱幻想和幻想纯爱造成的伤害、获得的格挡翻倍。");
 
     private static readonly List<(string, string)> English = new PowerLoc(
-        "Unnamed (Double)",
+        "Fantasy of Pure Love",
         "Your Pure Love Fantasies and Fantasies of Pure Love deal double damage and gain double Block.",
         "Your Pure Love Fantasies and Fantasies of Pure Love deal double damage and gain double Block.");
 }

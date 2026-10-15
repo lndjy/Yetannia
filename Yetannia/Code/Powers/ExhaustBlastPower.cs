@@ -8,7 +8,7 @@ using MegaCrit.Sts2.Core.Models;
 
 namespace Yetannia.YetanniaCode.Powers;
 
-/// <summary>未命名·焚灭 的能力：每当你消耗一张牌，对所有敌人造成 3（升级 4）点伤害。</summary>
+/// <summary>冰刃连斩 的能力：每当你消耗一张牌，对所有敌人造成 3（升级 4）点伤害。</summary>
 public sealed class ExhaustBlastPower : CustomPowerModel
 {
     public override PowerType Type => PowerType.Buff;
@@ -50,12 +50,12 @@ public sealed class ExhaustBlastPower : CustomPowerModel
     public override List<(string, string)> Localization => Loc.Pick(Chinese, English);
 
     private static readonly List<(string, string)> Chinese = new PowerLoc(
-        "未命名·焚灭",
+        "冰刃连斩",
         "每当你消耗一张牌，对所有敌人造成 X 点伤害。",
         "每当你消耗一张牌，对所有敌人造成 X 点伤害。");
 
     private static readonly List<(string, string)> English = new PowerLoc(
-        "Unnamed (Immolate)",
+        "Ice Blade Barrage",
         "Whenever you exhaust a card, deal X damage to ALL enemies.",
         "Whenever you exhaust a card, deal X damage to ALL enemies.");
 }

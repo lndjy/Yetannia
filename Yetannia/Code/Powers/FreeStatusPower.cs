@@ -8,7 +8,7 @@ using Yetannia.YetanniaCode.Cards;
 
 namespace Yetannia.YetanniaCode.Powers;
 
-/// <summary>未命名·解放 的能力：你的纯爱幻想和幻想纯爱可以免费打出。</summary>
+/// <summary>剑之所指 的能力：你的纯爱幻想和幻想纯爱可以免费打出。</summary>
 public sealed class FreeStatusPower : CustomPowerModel
 {
     public override PowerType Type => PowerType.Buff;
@@ -41,12 +41,12 @@ public sealed class FreeStatusPower : CustomPowerModel
     public override List<(string, string)> Localization => Loc.Pick(Chinese, English);
 
     private static readonly List<(string, string)> Chinese = new PowerLoc(
-        "未命名·解放",
+        "剑之所指",
         "你可以免费打出你的纯爱幻想和幻想纯爱。",
         "你可以免费打出你的纯爱幻想和幻想纯爱。");
 
     private static readonly List<(string, string)> English = new PowerLoc(
-        "Unnamed (Liberate)",
+        "Where the Sword Points",
         "You may play your Pure Love Fantasies and Fantasies of Pure Love for free.",
         "You may play your Pure Love Fantasies and Fantasies of Pure Love for free.");
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Reflection;
 using BaseLib.Abstracts;
 using BaseLib.Utils.NodeFactories;
 using Godot;
@@ -12,6 +13,7 @@ using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.RestSite;
 using MegaCrit.Sts2.Core.Nodes.Screens.MainMenu;
 using MegaCrit.Sts2.Core.Nodes.Screens.Shops;
+using MegaCrit.Sts2.Core.Saves.Runs;
 using Yetannia.YetanniaCode.Cards;
 using Yetannia.YetanniaCode.Character;
 using Yetannia.YetanniaCode.Keywords;
@@ -148,6 +150,23 @@ internal static class ModSelfCheck
             {
                 var rendered = DescribePower(power);
                 log.Info($"self-check power desc : {power.Id.Entry} {rendered}");
+
+                // The buff name above the power's icon in combat comes from the power's own
+                // `powers` loc entry, NOT from the card that applied it. So a power whose card was
+                // renamed keeps showing the old name in the buff row — which is exactly how eight
+                // powers shipped displaying 「未命名·焚灭」/「Unnamed (Immolate)」 long after the card
+                // had become 冰刃连斩 / Ice Blade Barrage. Printing the resolved title is what makes
+                // that visible in a log instead of only in game, and the placeholder test below turns
+                // it into a hard failure so the same thing cannot ship quietly again.
+                var powerTitle = Resolve("powers", power.Id.Entry + ".title");
+                log.Info($"self-check power name : {power.Id.Entry} {powerTitle}");
+                if (power.IsVisible && (powerTitle.Contains("未命名") || powerTitle.Contains("Unnamed (")))
+                {
+                    log.Error(
+                        $"self-check PLACEHOLDER power name: {power.Id.Entry} renders as '{powerTitle}' " +
+                        "in the combat buff row, but its card has a real name — give the power the card's " +
+                        "name (or a deliberate buff name) instead of leaving the codename");
+                }
                 if (IsUnresolved(rendered))
                 {
                     unresolvedPowers.Add(power.Id.Entry);
@@ -291,6 +310,21 @@ internal static class ModSelfCheck
                 $"targeting={asBaseModel.RemoteTargetingLineColor.ToHtml(false)} " +
                 $"outline={asBaseModel.RemoteTargetingLineOutline.ToHtml(false)} " +
                 $"name={asBaseModel.NameColor.ToHtml(false)}");
+
+            // Multiplayer sync: every counter a player can accumulate has to be a [SavedProperty], or the
+            // two peers can disagree about it. That is not theoretical here — leaving AgatePotionBelt's
+            // counter as a plain field caused a real state divergence in a 3-player online run
+            // (RitsuLib checksum #797: an extra Swift Potion on one peer and the shared
+            // CombatPotionGeneration RNG drawn 2 vs 0), because the peer that reached the threshold first
+            // drew from the shared potion RNG and handed its owner a potion the other peer never saw.
+            //
+            // Nothing logs the saved-property map outside a divergence report, so this line is the only
+            // in-game evidence that the attribute is really on the property. A missing attribute prints
+            // WILL-DESYNC rather than a silent "ok".
+            log.Info(
+                $"self-check mp sync    : agateBelt={DescribeSavedProperty(typeof(AgatePotionBelt), "PotionsUsed")} " +
+                $"foresightCharm={DescribeSavedProperty(typeof(ForesightCharm), "Scried")} " +
+                $"growingStrike={DescribeSavedProperty(typeof(GrowingStrike), "BonusDamage")}");
 
             // Scene-based models (combat figure / campfire / merchant / select backdrop).
             // They are only *registered* later (BaseLib registers them from a ModelDb.Preload
@@ -741,6 +775,34 @@ internal static class ModSelfCheck
     /// <summary>Whether a res:// path shipped in the mod's pck is present.</summary>
     private static string Exists(string path) =>
         string.IsNullOrEmpty(path) ? "<unset>" : Godot.ResourceLoader.Exists(path).ToString();
+
+    /// <summary>
+    /// Reports whether a counter that must stay identical on every peer is really marked
+    /// <c>[SavedProperty]</c>.
+    ///
+    /// The attribute is read off the PROPERTY, not off the backing field, on purpose: the engine walks a
+    /// model's properties looking for it (that is how the vanilla relic counters end up in the protocol's
+    /// savedProperties map), so a field-only marker would look correct in the source and do nothing at
+    /// runtime. A missing or unmarked property prints a loud string rather than a quiet "ok".
+    /// </summary>
+    private static string DescribeSavedProperty(Type model, string propertyName)
+    {
+        try
+        {
+            var property = model.GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance);
+            if (property == null)
+            {
+                return $"{propertyName}=MISSING-PROPERTY";
+            }
+            return property.GetCustomAttribute<SavedPropertyAttribute>() != null
+                ? $"{propertyName}=SavedProperty"
+                : $"{propertyName}=NOT-MARKED(WILL-DESYNC)";
+        }
+        catch (Exception e)
+        {
+            return $"{propertyName}=error({e.GetType().Name})";
+        }
+    }
 
     /// <summary>
     /// Reports the resource path a shipped scene actually loads as, plus its root node type.

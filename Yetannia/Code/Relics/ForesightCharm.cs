@@ -5,6 +5,7 @@ using BaseLib.Hooks;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Saves.Runs;
 
 namespace Yetannia.YetanniaCode.Relics;
 
@@ -34,7 +35,28 @@ public sealed class ForesightCharm : YetanniaRelic, IAfterScryed
 
     public override bool ShowCounter => true;
 
-    public override int DisplayAmount => _scried % CardsPerEnergy;
+    public override int DisplayAmount => Scried % CardsPerEnergy;
+
+    /// <summary>
+    /// 已预见牌数。**<c>[SavedProperty]</c> 是必须的**，理由与
+    /// <see cref="AgatePotionBelt.PotionsUsed"/> 完全相同：这是决定「什么时候发能量」的计数器，而能量
+    /// 是校验和里的一项。普通私有字段不参与同步与序列化，两端一旦不同步，就先到阈值的那一端单独发能量
+    /// ——那是一次货真价实的状态分歧（energy 就在 checksum 里）。
+    ///
+    /// 原版 46 个遗物都是这么写的（见 <c>PaelsWing.RewardsSacrificed</c>），并且只有写成
+    /// <c>[SavedProperty]</c> 才会出现在分歧报告的 <c>savedProperties.netIdMap</c> 里。
+    /// </summary>
+    [SavedProperty]
+    public int Scried
+    {
+        get => _scried;
+        set
+        {
+            AssertMutable();
+            _scried = value;
+            InvokeDisplayAmountChanged();
+        }
+    }
 
     public async Task AfterScryed(
         MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext choiceContext,
@@ -49,11 +71,10 @@ public sealed class ForesightCharm : YetanniaRelic, IAfterScryed
         var gained = seen.Count;
         if (gained <= 0) return;
 
-        var before = _scried;
-        _scried += gained;
-        InvokeDisplayAmountChanged();
+        var before = Scried;
+        Scried += gained;
 
-        var energy = _scried / CardsPerEnergy - before / CardsPerEnergy;
+        var energy = Scried / CardsPerEnergy - before / CardsPerEnergy;
         if (energy > 0)
         {
             await PlayerCmd.GainEnergy(energy, player);

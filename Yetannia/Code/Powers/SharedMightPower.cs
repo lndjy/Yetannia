@@ -12,7 +12,7 @@ using Yetannia.YetanniaCode.Cards;
 namespace Yetannia.YetanniaCode.Powers;
 
 /// <summary>
-/// 未命名·共感 的能力，挂在**目标队友**身上：当来源（打出这张牌的玩家）获得力量/敏捷时，
+/// 回应愿景之心 的能力，挂在**目标队友**身上：当来源（打出这张牌的玩家）获得力量/敏捷时，
 /// 目标也获得等量。
 ///
 /// 「不因此牌」：反射时把 <c>cardSource</c> 换成共感牌本身，并在入口判断
@@ -56,12 +56,12 @@ public sealed class SharedMightPower : CustomPowerModel
     public override List<(string, string)> Localization => Loc.Pick(Chinese, English);
 
     private static readonly List<(string, string)> Chinese = new PowerLoc(
-        "未命名·共感",
+        "回应愿景之心",
         "本场战斗中，当你获得力量和敏捷时（不因此牌），该角色获得等量力量和敏捷。",
         "本场战斗中，当你获得力量和敏捷时（不因此牌），该角色获得等量力量和敏捷。");
 
     private static readonly List<(string, string)> English = new PowerLoc(
-        "Unnamed (Resonance)",
+        "Heart Answering a Vision",
         "This combat, whenever you gain Strength or Dexterity (not from this card), they gain the same amount.",
         "This combat, whenever you gain Strength or Dexterity (not from this card), they gain the same amount.");
 }

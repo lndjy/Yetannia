@@ -28,7 +28,7 @@ cfg = {
     # Public: the user asked for the workshop item to be published openly. (The earlier "don't make
     # it public" referred to the *voice assets* on GitHub, not to this item's visibility.)
     "visibility": "public",
-    "changeNote": "介绍更新：工坊说明改为中英双语，并改用 Steam 支持的富文本格式（加粗 / 标题 / 列表），不再显示成一堆星号和井号。\n\nMod 内容没有改动，仍是 v1.0.1：\n· 修复了施法语音一直无法触发的问题（现在打出技能/能力牌会说话）。\n· 联机里画笔和标记的颜色改成蓝色（原来的黑色看不出来）。\n· 重绘了联机石头剪刀布的手部立绘。\n· 联机时「预见」的卡死看门狗从 30 秒延长到 300 秒，不再把队友思考误报成卡死。\n· 作者名改为 lndjy。",
+    "changeNote": "v1.0.2：\n· 修好了联机状态分歧（desync）。「玛瑙的药水腰带」和「未命名·预见」的计数之前是普通私有字段，不参与同步。一局三人联机的分歧报告（RitsuLib checksum #797）显示：计数不同步时，先数到 3 瓶的那一端会单独抽共享的 CombatPotionGeneration 随机数、凭空多出一瓶迅捷药水，另一端完全看不到，于是校验和不一致。现在两个计数器都改成 [SavedProperty] 存档同步属性——原版 46 个遗物都是这么写的。\n· 八个能力 buff 的名称不再显示「未命名·xx」占位符，改成对应卡牌的名字：冰刃连斩 / 剑之所指 / 她眼中的世界 / 趁势而动 / 回应愿景之心 / 凯旋之路 / 临危不乱 / 幻想纯爱。\n· 自查新增两条断言：必须同步的计数器是否真的标了 [SavedProperty]，以及能力名不得还是占位符——以后再犯会直接在日志里报错。\n· 工坊说明已改为中英双语，并使用 Steam 支持的富文本格式。",
     "tags": [],
     # 3737335127 is BaseLib's Workshop item id -- not a guess: the uploader itself resolves the mod's
     # declared BaseLib dependency to exactly this id and prints "Removed dependency on 3737335127" when

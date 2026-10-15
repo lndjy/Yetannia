@@ -9,7 +9,7 @@ using MegaCrit.Sts2.Core.Models;
 
 namespace Yetannia.YetanniaCode.Powers;
 
-/// <summary>未命名·续行 的能力：当你消耗一张状态牌时，抽一张牌。</summary>
+/// <summary>凯旋之路 的能力：当你消耗一张状态牌时，抽一张牌。</summary>
 public sealed class StatusDrawPower : CustomPowerModel
 {
     public override PowerType Type => PowerType.Buff;
@@ -29,12 +29,12 @@ public sealed class StatusDrawPower : CustomPowerModel
     public override List<(string, string)> Localization => Loc.Pick(Chinese, English);
 
     private static readonly List<(string, string)> Chinese = new PowerLoc(
-        "未命名·续行",
+        "凯旋之路",
         "当你消耗一张状态牌时，抽一张牌。",
         "当你消耗一张状态牌时，抽一张牌。");
 
     private static readonly List<(string, string)> English = new PowerLoc(
-        "Unnamed (Continuance)",
+        "Road of Triumph",
         "Whenever you exhaust a Status card, draw 1 card.",
         "Whenever you exhaust a Status card, draw 1 card.");
 }

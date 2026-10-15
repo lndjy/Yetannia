@@ -14,7 +14,7 @@ using MegaCrit.Sts2.Core.Models.Powers;
 namespace Yetannia.YetanniaCode.Powers;
 
 /// <summary>
-/// 未命名·从容 的结算器：临时敏捷在打出时由 <see cref="TempAgilityPower"/> 提供（本回合结束时自动
+/// 临危不乱 的结算器：临时敏捷在打出时由 <see cref="TempAgilityPower"/> 提供（本回合结束时自动
 /// 收回），这个能力等到**敌人打完**（敌方回合结束）再检查「本回合是否受过伤害」——没受伤就把敏捷
 /// 永久化并给下回合能量，受伤就什么都不做。
 /// </summary>
@@ -135,12 +135,12 @@ public sealed class SteadyAgilityPower : CustomPowerModel
     public override List<(string, string)> Localization => Loc.Pick(Chinese, English);
 
     private static readonly List<(string, string)> Chinese = new PowerLoc(
-        "未命名·从容",
+        "临危不乱",
         "回合结束时，若本回合未受到过伤害，将临时敏捷变为永久，并在下回合额外获得" + Loc.EnergyIcons(2) + "。",
         "回合结束时，若本回合未受到过伤害，将临时敏捷变为永久，并在下回合额外获得" + Loc.EnergyIcons(2) + "。");
 
     private static readonly List<(string, string)> English = new PowerLoc(
-        "Unnamed (Steady Agility)",
+        "Unshaken",
         "At the end of the turn, if you took no damage this turn, your temporary Dexterity becomes permanent and you gain an extra " + Loc.EnergyIcons(2) + " next turn.",
         "At the end of the turn, if you took no damage this turn, your temporary Dexterity becomes permanent and you gain an extra " + Loc.EnergyIcons(2) + " next turn.");
 }
