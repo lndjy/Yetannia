@@ -28,7 +28,7 @@ cfg = {
     # Public: the user asked for the workshop item to be published openly. (The earlier "don't make
     # it public" referred to the *voice assets* on GitHub, not to this item's visibility.)
     "visibility": "public",
-    "changeNote": "v1.0.3：\n· 修好了联机时「预见」让卡牌卡在屏幕中间、整局动不了的问题。根因已由真实联机日志定位：战斗结束的那一瞬间，如果正好有一次预见在等玩家选牌，引擎会取消持有这次选择的那条操作，于是这次选择再也没人应答、等待永远不返回，牌就一直冻在屏幕上。现在战斗结束或即将结束时，这次预见会安全放弃，不再挂住整局。\n· 另有玩家反馈「预见时界面位置不对」，这一项本轮也已修好：引擎的卡牌网格居中时用的是「一行的容量」（这里 5 张）而不是实际显示的张数，所以只翻出 1 张时那张牌会被丢在 5 张宽框的最左边（1920 屏上 x≈375，右边一大片空）。现在按实际张数居中（实测 1 张时 x 从 375 移到 935）。只影响预见的选牌界面，其他网格不动。",
+    "changeNote": "v1.0.3：\n· 修好了联机时「预见」让卡牌卡在屏幕中间、整局动不了的问题。根因已由真实联机日志定位：战斗结束的那一瞬间，如果正好有一次预见在等玩家选牌，引擎会取消持有这次选择的那条操作，于是这次选择再也没人应答、等待永远不返回，牌就一直冻在屏幕上。现在战斗结束或即将结束时，这次预见会安全放弃，不再挂住整局。\n· 另有玩家反馈「预见时界面位置不对」，这一项本轮也已修好：引擎的卡牌网格居中时用的是「一行的容量」（这里 5 张）而不是实际显示的张数，所以只翻出 1 张时那张牌会被丢在 5 张宽框的最左边（1920 屏上 x≈375，右边一大片空）。现在按实际张数居中（实测 1 张时 x 从 375 移到 935；翻出多行时最后一行同样居中）。只影响预见的选牌界面，其他网格不动。",
     "tags": [],
     # 3737335127 is BaseLib's Workshop item id -- not a guess: the uploader itself resolves the mod's
     # declared BaseLib dependency to exactly this id and prints "Removed dependency on 3737335127" when

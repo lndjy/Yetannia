@@ -94,13 +94,13 @@ internal static class ConditionalHighlightPatch
     }
 
     /// <summary>
-    /// Centres the visible cards when a scry reveals fewer than a full row.
+    /// Centres the visible cards on a scry screen when its last row is not full.
     ///
     /// THE MEASURED DEFECT THIS FIXES. <c>NCardGrid.UpdateGridPositions</c> puts the first card at
     /// <c>(scrollContainer.Width - GetContainedCardsSize().Width) / 2 + cardSize.X / 2</c>, and
     /// <c>GetContainedCardsSize()</c> is computed from <c>Columns</c> -- the grid's <em>capacity</em> -- not
-    /// from how many cards are actually being shown. The origin therefore never moves, so a partial row is
-    /// left-aligned inside a full-width box.
+    /// from how many cards are actually being shown. The origin therefore never moves, so a row that is not
+    /// full is left-aligned inside a full-width box.
     ///
     /// Measured on a real scry: <c>cardSize=(240, 337.6)</c>, <c>columns=5</c>, <c>scrollW=1570</c>,
     /// <c>cardPadding=40</c> gives a box of 5*240+4*40 = 1360 and an origin of (1570-1360)/2 + 120 = 225 --
@@ -109,9 +109,16 @@ internal static class ConditionalHighlightPatch
     /// 1920-wide screen: hard against the left, with most of the screen empty. That is the reported
     /// 「预见时界面位置不对」, and it reproduces in single player too, so it was never a multiplayer fault.
     ///
-    /// SCOPE: only a grid hosted by the scry screen, and only while the row is partial -- so no other card
-    /// grid in the game (deck view, campfire, library, ...) changes its layout, and a full row is left
-    /// exactly as vanilla computed it.
+    /// A scry can also reveal MORE than one row (GrandProphecy is Scry 6, TEST_SKILL is Scry 10), and then
+    /// only the LAST row is partial -- which is why this centres the last row rather than bailing out as soon
+    /// as the holder count exceeds <c>Columns</c>.
+    ///
+    /// SCOPE: only a grid hosted by the scry screen, and only that last row -- so no other card grid in the
+    /// game (deck view, campfire, library, ...) changes its layout, and a full last row is left exactly as
+    /// vanilla computed it.
+    ///
+    /// The last row is found by Y rather than by index, so nothing is assumed about the order or the
+    /// filtering of <c>CurrentlyDisplayedCardHolders</c>.
     ///
     /// SAFE TO RUN EVERY FRAME: <c>InitGrid</c> recomputes every position from scratch on each call, so the
     /// shift is applied to freshly computed positions rather than accumulating frame over frame.
@@ -134,9 +141,9 @@ internal static class ConditionalHighlightPatch
             // AccessTools walks the base types, which plain reflection would not do for inherited
             // non-public members.
             var columns = (int)(AccessTools.Property(typeof(NCardGrid), "Columns")?.GetValue(grid) ?? 0);
-            if (columns <= 0 || holders.Count >= columns)
+            if (columns <= 0)
             {
-                return; // A full row fills the box the engine already centred.
+                return;
             }
 
             var cardSize = AccessTools.Field(typeof(NCardGrid), "_cardSize")?.GetValue(grid) is Vector2 size
@@ -146,13 +153,26 @@ internal static class ConditionalHighlightPatch
                 ? p
                 : 0f;
 
-            var shift = (columns - holders.Count) * (cardSize.X + padding) * 0.5f;
+            var pitch = cardSize.X + padding;
+            if (pitch <= 0f)
+            {
+                return;
+            }
+
+            var bottom = holders.Max(h => h.Position.Y);
+            var lastRow = holders.Where(h => Mathf.Abs(h.Position.Y - bottom) < 1f).ToList();
+            if (lastRow.Count >= columns)
+            {
+                return; // A full row already fills the box the engine centred.
+            }
+
+            var shift = (columns - lastRow.Count) * pitch * 0.5f;
             if (shift <= 0f)
             {
                 return;
             }
 
-            foreach (var holder in holders)
+            foreach (var holder in lastRow)
             {
                 holder.Position += new Vector2(shift, 0f);
             }

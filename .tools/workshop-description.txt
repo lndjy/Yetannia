@@ -44,7 +44,7 @@
 [b]v1.0.3[/b]
 [list]
 [*]修复[b]联机时「预见」会让卡牌卡在屏幕中间、整局动不了[/b]的问题。根因已经用真实联机日志定位：如果战斗结束的那一瞬间正好有一次预见在等玩家选牌，引擎会取消持有这次选择的那条操作，于是这次选择再也没人应答，等待就永远不返回——牌就一直冻在屏幕上。现在战斗只要结束或即将结束，这次预见会安全放弃，不再挂住整局。
-[*]另有玩家反馈「预见时界面位置不对」，这一项[b]本轮也已修好[/b]：原因是引擎卡牌网格居中时用的是「一行的容量」（这里是 5 张）而不是实际显示的张数，所以只翻出 1 张时那张牌会被丢在 5 张宽框的最左边——1920 宽的屏幕上落在 x≈375，右边一大片空。现在改按实际张数居中（同一位置实测：1 张时从 x=375 移到 x=935，4 张时整体右移 140）。[b]只影响预见的选牌界面，其他卡牌网格不动。[/b]
+[*]另有玩家反馈「预见时界面位置不对」，这一项[b]本轮也已修好[/b]：原因是引擎卡牌网格居中时用的是「一行的容量」（这里是 5 张）而不是实际显示的张数，所以只翻出 1 张时那张牌会被丢在 5 张宽框的最左边——1920 宽的屏幕上落在 x≈375，右边一大片空。现在改按实际张数居中（同一位置实测：1 张时从 x=375 移到 x=935，4 张时整体右移 140；翻出多行时，比如 8 张，最后一行同样居中）。[b]只影响预见的选牌界面，其他卡牌网格不动。[/b]
 [/list]
 
 [hr][/hr]
@@ -92,5 +92,5 @@ The game's settings gain a [b]Voice Language[/b] option: [b]Chinese / Japanese /
 [b]v1.0.3[/b]
 [list]
 [*]Fixed [b]a card freezing mid-screen and locking the whole run in multiplayer[/b]. The root cause was found in real multiplayer logs: if the combat ends at the exact moment a Scry is still waiting for its player choice, the engine cancels the action that owns that choice, so nothing ever answers it and the wait never returns — leaving the card frozen on screen forever. A Scry whose fight has ended (or is ending) is now abandoned safely instead of holding up the run.
-[*]The separate report of "the Scry screen is in the wrong place" is [b]also fixed in this build[/b]: the engine's card grid centres using the row's CAPACITY (5 here) instead of how many cards are actually shown, so a scry revealing a single card drew it at the far left of a five-wide box (x≈375 on a 1920-wide screen, with most of the screen empty). The row is now centred on the real card count (measured: 1 card moves from x=375 to x=935; four cards shift right by 140). [b]Only the Scry selection screen is affected — other card grids are untouched.[/b]
+[*]The separate report of "the Scry screen is in the wrong place" is [b]also fixed in this build[/b]: the engine's card grid centres using the row's CAPACITY (5 here) instead of how many cards are actually shown, so a scry revealing a single card drew it at the far left of a five-wide box (x≈375 on a 1920-wide screen, with most of the screen empty). The row is now centred on the real card count (measured: 1 card moves from x=375 to x=935; four cards shift right by 140; when a scry spans several rows, e.g. eight cards, the last row is centred as well). [b]Only the Scry selection screen is affected — other card grids are untouched.[/b]
 [/list]
