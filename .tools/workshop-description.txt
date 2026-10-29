@@ -69,64 +69,38 @@
 
 [h1]English[/h1]
 
-[b]BETA BRANCH ONLY[/b] — this mod is developed and tested on the [b]beta branch[/b] of Slay the Spire 2 only. On the public (non-beta) branch it is not guaranteed to load: the character may not appear, card art may be missing, or event dialogue may throw errors. Please switch the game to the beta branch in Steam first.
+[b]BETA BRANCH ONLY[/b] — this mod is developed and tested on the [b]beta branch[/b] of Slay the Spire 2 only. Please switch the game to the beta branch in Steam first.
 
-[h2]What this mod adds[/h2]
+[b]Yetannia[/b] is a new character with [b]82 cards[/b] built around Scry, her own relic, the [b]Prophet[/b] keyword, Chinese / Japanese voice lines, and dedicated dialogue for all nine Ancients.
 
-[b]New character: Yetannia[/b]
+[h2]Card numbers: Original / Tony Test Build[/h2]
 
-[list]
-[*][b]82 cards[/b], all built around Scry. Balance is modelled on the Slay the Spire 1 characters and runs stronger than the Slay the Spire 2 ones; the set completes the half-finished Scry framework the Watcher had in Slay the Spire 1, and every card was designed by hand.
-[*][b]The "Prophet" keyword[/b]: when the card moves from your draw pile to your discard pile, its Prophet effect triggers
-[*][b]Chinese and English card text[/b]: card, power, relic and keyword text follows the game's language setting (Chinese / English; other languages fall back to Chinese)
-[*][b]Starter relic "Prophet's Hair Ornament"[/b]; swapping your starter relic at Orobas upgrades it to [b]"Prophet's Crown"[/b]
-[*][b]11 voiced moments[/b]: attack, skill, taking fatal damage, character select, run start, combat start, card reward, campfire, shop, event, relic
-[*][b]Dedicated dialogue for all nine Ancients[/b] (Neow / Orobas / Pael / Vakuu / Tanx / Tezcatara / Nonupeipe / Darv / The Architect)
-[*][b]Animated[/b] figures in combat, at the campfire and in shops — not static portraits
-[*]Its own art for the character-select screen, the energy orb, the map marker, and the card and relic icons
-[/list]
-
-[h2]Voice language[/h2]
-
-The game's settings gain a [b]Voice Language[/b] option: [b]Chinese / Japanese / Off[/b].
-
-"Off" silences only her voice — [b]the game's own sound effects are unaffected[/b].
-
-[h2]Card numbers (Original / Tony's Test Build)[/h2]
-
-The settings also gain a [b]Card Numbers[/b] option: [b]Original / Tony's Test Build[/b]. [b]Original[/b] is the released balance. [b]Tony's Test Build[/b] applies a different set of numbers to 12 cards — Probe, Pincer Strike, Xiudun, Methodical, Seize the Initiative, Accumulate Might, Into the Trap, Last Stand, Cross Defense, Unshaken, Pincer Movement and Ice Blade Waltz — and leaves the other 70 cards identical in both modes.
-
-Card numbers and card text are built when the game loads, so [b]a restart is required[/b] for the switch to take effect.
+The settings screen gains a [b]Card Numbers[/b] switch. [b]Tony Test Build[/b] changes 12 cards — Probe, Pincer Strike, Xiudun, Methodical, Seize the Initiative, Accumulate Might, Into the Trap, Last Stand, Cross Defense, Unshaken, Pincer Movement, Ice Blade Waltz — and leaves the other 70 identical. Numbers and card text are built when the game loads, so [b]restart the game[/b] after switching.
 
 [h2]Installation[/h2]
 
-1. Subscribe to [b]BaseLib[/b] first (version ≥ 3.4.7). Without it this mod will not load, and there will be no [code][Yetannia][/code] lines in the log at all.
-2. In Steam, switch Slay the Spire 2 to the [b]beta branch[/b], then launch the game [b]from Steam[/b].
-3. Open the [b]Mods[/b] list from the main menu, make sure BaseLib and Yetannia are both [b]enabled[/b], then restart the game.
-4. Yetannia should now appear on the character-select screen (no unlocking needed).
+1. Subscribe to [b]BaseLib[/b] first (version ≥ 3.4.7).
+2. Switch Slay the Spire 2 to the [b]beta branch[/b], then launch the game [b]from Steam[/b].
+3. Enable BaseLib and Yetannia in the in-game [b]Mods[/b] list, then restart the game.
 
-If you are using the zip version instead: extract the [code]Yetannia[/code] folder into [code]...\Slay the Spire 2\mods\[/code] so that [code]Yetannia.dll[/code], [code]Yetannia.json[/code] and [code]Yetannia.pck[/code] sit side by side inside [code]mods\Yetannia\[/code], then follow steps 2–4 above.
+Zip version: extract the [code]Yetannia[/code] folder into [code]...\Slay the Spire 2\mods\[/code].
 
 [h2]Notes[/h2]
 
 [list]
-[*]Fan work based on Yetannia, a character from the Chinese mobile game 《千年之旅》.
-[*]The voice and artwork come from the original game; contact me if you would like them removed.
+[*]Fan work based on Yetannia, a character from the Chinese mobile game 《千年之旅》. Voice and artwork come from the original game; contact me if you would like them removed.
 [*]In English, all card / power / relic / keyword text, the settings rows and [b]all 246 lines of Ancient dialogue[/b] are localized. Voice acting is Chinese / Japanese only.
-[*]Questions and bug reports are welcome in the Workshop comments — attaching the log ([code]%APPDATA%\SlayTheSpire2\logs\godot.log[/code]) helps a lot.
+[*]Bug reports: attach the log ([code]%APPDATA%\SlayTheSpire2\logs\godot.log[/code]).
 [/list]
 
 [h2]Changelog[/h2]
 
 [b]v1.0.4[/b]
 [list]
-[*][b]New "Card Numbers" setting[/b]: switch between [b]Original[/b] and [b]Tony's Test Build[/b]. The test build applies a different set of numbers to 12 cards (Probe, Pincer Strike, Xiudun, Methodical, Seize the Initiative, Accumulate Might, Into the Trap, Last Stand, Cross Defense, Unshaken, Pincer Movement, Ice Blade Waltz); the other 70 cards are identical in both. A restart is required for the switch to take effect.
-[*]Fixed [b]out-of-combat payoff cards being created by in-combat card generation[/b]: Accumulate Might (permanent Max HP), Fatal Insight (permanent upgrade) and Shared Regen (Regen healing) can no longer be generated by in-combat random card generation (e.g. The View at Journey's End) or in-combat transformation — the same treatment the base game gives Feed. They still appear normally in card rewards and shops.
-[*]Text: [b]full proofread[/b] — fixed typos and Chinese/English mismatches, and renamed 8 in-combat powers so their names match their cards.
-[*][b]English support completed[/b]: all 246 lines of Ancient dialogue are now translated (English clients used to see Chinese there).
+[*]New [b]Card Numbers[/b] setting (Original / Tony Test Build) covering 12 cards; a restart is required.
+[*]Fixed out-of-combat payoff cards (Accumulate Might / Fatal Insight / Shared Regen) being created by in-combat card generation or transformation — the same treatment the base game gives Feed.
+[*]Full text proofread; 8 in-combat power names now match their cards.
+[*]All 246 lines of Ancient dialogue translated to English.
 [/list]
 
-[b]v1.0.3[/b]
-[list]
-[*]Fixed a card freezing mid-screen and locking the run in multiplayer when a Scry was still waiting for a choice as the combat ended; the Scry selection row is now also centred on the real card count (see the v1.0.3 entry in the repository README).
-[/list]
+[b]v1.0.3[/b]: fixed a Scry freezing the run at the end of a fight in multiplayer, and centred the Scry selection row.
