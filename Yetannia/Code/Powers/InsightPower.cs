@@ -63,11 +63,11 @@ public sealed class InsightPower : CustomPowerModel
 
     private static readonly List<(string, string)> Chinese = new PowerLoc(
         "她眼中的世界",
-        "每回合第一次打出攻击牌时获得" + Loc.EnergyIcon + "，第一次打出技能牌时抽1张牌，第一次打出能力牌时预见2。",
-        "每回合第一次打出攻击牌时获得" + Loc.EnergyIcon + "，第一次打出技能牌时抽1张牌，第一次打出能力牌时预见2。");
+        "每回合第一次打出攻击牌时，获得" + Loc.EnergyIcon + "；第一次打出技能牌时，抽1张牌；第一次打出能力牌时，预见2。",
+        "每回合第一次打出攻击牌时，获得" + Loc.EnergyIcon + "；第一次打出技能牌时，抽1张牌；第一次打出能力牌时，预见2。");
 
     private static readonly List<(string, string)> English = new PowerLoc(
         "The World in Her Eyes",
-        "The first Attack you play each turn grants " + Loc.EnergyIcon + "; the first Skill draws 1 card; the first Power Scries 2.",
-        "The first Attack you play each turn grants " + Loc.EnergyIcon + "; the first Skill draws 1 card; the first Power Scries 2.");
+        "Each turn, the first Attack you play grants " + Loc.EnergyIcon + "; the first Skill you play draws 1 card; the first Power you play Scries 2.",
+        "Each turn, the first Attack you play grants " + Loc.EnergyIcon + "; the first Skill you play draws 1 card; the first Power you play Scries 2.");
 }

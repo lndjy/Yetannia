@@ -10,7 +10,7 @@ namespace Yetannia.YetanniaCode.Cards;
 
 /// <summary>
 /// 众志成城 — 白卡（Common），4 费技能（敲后 3 费）：
-/// 获得 18 点[格挡]。你每抽到一次这张牌，它的耗能 -1。
+/// 获得 18 点[格挡]。每当你抽到这张牌时，它的耗能减少 1。
 ///
 /// Name is a placeholder (the request did not give one).
 ///
@@ -39,7 +39,7 @@ public sealed class PatientBulwark : YetanniaCard
         await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, cardPlay);
     }
 
-    /// <summary>你每抽到一次这张牌，它的耗能 -1。</summary>
+    /// <summary>每当你抽到这张牌时，它的耗能减少 1。</summary>
     public override Task AfterCardDrawn(PlayerChoiceContext choiceContext, CardModel card, bool fromHandDraw)
     {
         if (ReferenceEquals(card, this))
@@ -56,7 +56,7 @@ public sealed class PatientBulwark : YetanniaCard
 
     private static readonly List<(string, string)> Chinese = new CardLoc(
         "众志成城",
-        "获得{Block:diff()}点[gold]格挡[/gold]。\n你每抽到一次这张牌，这张牌的耗能-1。");
+        "获得{Block:diff()}点[gold]格挡[/gold]。\n每当你抽到这张牌时，这张牌的耗能减少1。");
 
     private static readonly List<(string, string)> English = new CardLoc(
         "United We Stand",

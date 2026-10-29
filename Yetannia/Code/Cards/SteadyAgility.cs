@@ -6,6 +6,7 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.Powers;
+using Yetannia.YetanniaCode.Config;
 using Yetannia.YetanniaCode.Powers;
 
 namespace Yetannia.YetanniaCode.Cards;
@@ -14,6 +15,9 @@ namespace Yetannia.YetanniaCode.Cards;
 /// 临危不乱 — 蓝卡（Uncommon），1 费技能：
 /// 获得 2（升级 3）点**临时**[敏捷]；如果本回合**没有受到过伤害**，
 /// 改为**永久**获得敏捷，并且下回合额外获得 2 点[能量]。
+/// 东尼测试版（<see cref="CardBalanceMode.TonyTest"/>）额外给它[消耗]：打出后进消耗堆，原版没有。
+/// (Original: 2 temporary Dexterity, upgraded 3, no Exhaust. Tony draft: the same numbers plus
+/// Exhaust, so the card leaves play after being played.)
 ///
 /// Name is a placeholder (the request did not give one). Mirrors <see cref="RisingMight"/>;
 /// "took no damage this turn" is read from combat history's damage entries.
@@ -28,6 +32,13 @@ public sealed class SteadyAgility : YetanniaCard
         : base(1, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
     {
     }
+
+    /// <summary>
+    /// 东尼测试版增加[gold]消耗[/gold]；原版没有这个关键词。关键词只在模型构造时取一次，所以和数值
+    /// 一样，切换模式后要重启才生效。
+    /// </summary>
+    public override IEnumerable<CardKeyword> CanonicalKeywords =>
+        CardBalance.IsTony ? [CardKeyword.Exhaust] : Array.Empty<CardKeyword>();
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
         [new PowerVar<DexterityPower>(BaseAmount)];

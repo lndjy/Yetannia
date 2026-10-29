@@ -10,7 +10,7 @@ using Yetannia.YetanniaCode.Diagnostics;
 namespace Yetannia.YetanniaCode.Powers;
 
 /// <summary>
-/// 先见之明 / Foresight (ported from Slay the Spire 1's Watcher card of the same name):
+/// 有条不紊 / Methodical (ported from Slay the Spire 1's Watcher card Foresight):
 /// at the start of your turn, Scry X.
 /// </summary>
 public sealed class ForesightPower : CustomPowerModel
@@ -38,12 +38,12 @@ public sealed class ForesightPower : CustomPowerModel
     public override List<(string, string)> Localization => Loc.Pick(Chinese, English);
 
     private static readonly List<(string, string)> Chinese = new PowerLoc(
-        "先见之明",
+        "有条不紊",
         "在你的回合开始时，预见 X。",
         "在你的回合开始时，预见 X。");
 
     private static readonly List<(string, string)> English = new PowerLoc(
-        "Foresight",
+        "Methodical",
         "At the start of your turn, Scry X.",
         "At the start of your turn, Scry X.");
 }

@@ -21,6 +21,15 @@ namespace Yetannia.YetanniaCode.Cards;
 /// </summary>
 public sealed class SharedRegen : YetanniaCard
 {
+    /// <summary>
+    /// Never offered by an in-combat card generation effect, same rule as the base game's <c>NotYet</c>
+    /// (a heal card) and <c>RegenPotion</c> (marked <c>CanBeGeneratedInCombat => false</c> in
+    /// <c>PotionFactory</c>): <c>RegenPower</c> heals real HP at every side turn end, and HP carries
+    /// from fight to fight, so printing this card in combat would be free run-level healing — exactly
+    /// the lasting gain the flag exists to keep out of random in-combat generation.
+    /// </summary>
+    public override bool CanBeGeneratedInCombat => false;
+
     private const int RegenBase = 2;
     private const int RegenUpgrade = 1; // 2 -> 3
 
@@ -59,5 +68,5 @@ public sealed class SharedRegen : YetanniaCard
 
     private static readonly List<(string, string)> English = new CardLoc(
         "Heaven's Grace",
-        "All players gain {Regen:diff()} [gold]Regeneration[/gold].");
+        "All players gain {Regen:diff()} [gold]Regen[/gold].");
 }

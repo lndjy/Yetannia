@@ -40,9 +40,11 @@ namespace Yetannia.YetanniaCode.Ancients;
 /// headings are the authority; where the code has no exact counterpart the choice is stated in the
 /// comment on the slot.
 ///
-/// ENGLISH: the user wrote Chinese only. <see cref="LocEntries"/> registers that same Chinese under
-/// every language, so no raw key can appear in any of the game's 16 languages; the English lines are
-/// the Chinese text pending English copy.
+/// ENGLISH: <see cref="LocEntries"/> has two columns. <c>DraftLine.Text</c> is the user's Chinese and
+/// is returned for every language except <c>eng</c>; <c>DraftLine.TextEn</c> is the English column
+/// (generated from <c>.tools/dialogue/translated-en.json</c>) and is returned only for <c>eng</c>.
+/// Keys are language-independent, so <c>LocManager.SetLanguage</c> can rebuild the table and swap the
+/// text without touching the attached dialogues.
 /// </summary>
 internal static class YetanniaAncientDialoguePlan
 {
@@ -156,9 +158,9 @@ internal static class YetanniaAncientDialoguePlan
     ///
     /// <c>architect-repeat</c> is the 2nd-win-and-later line. It is NOT in the draft: the user wrote it
     /// as a follow-up ("建筑师第二次以后改成建筑师：『回去吧，耶坦尼娅。』然后直接结束"), so it lives
-    /// here rather than in the generated data file, and it is not translated — the Chinese is the user's
-    /// text and is registered for every language exactly like the draft's lines (see
-    /// <see cref="LocEntries"/>). It is speaker <c>"ancient"</c>, which is the game's own speaker
+    /// here rather than in the generated data file, and its English is authored here for the same reason.
+    /// The Chinese is the user's text and is registered for every language except `eng`; the English
+    /// is registered for `eng`. It is speaker <c>"ancient"</c>, which is the game's own speaker
     /// mechanism for him: <c>TheArchitect.GetSpeaker</c> maps <c>AncientDialogueSpeaker.Ancient</c> to
     /// the Architect creature and the line is drawn as his speech bubble
     /// (<c>Core/Models/Events/TheArchitect.cs:508-521</c>) — the same speaker the 13-line conversation's
@@ -179,7 +181,7 @@ internal static class YetanniaAncientDialoguePlan
         new("architect-repeat", 1, visitIndex: 1, repeating: true,
             authored:
             [
-                new YetanniaAncientDialogueData.DraftLine("ancient", "回去吧，耶坦尼娅。"),
+                new YetanniaAncientDialogueData.DraftLine("ancient", "回去吧，耶坦尼娅。", "Go back, Yetannia."),
             ]),
     ];
 
@@ -348,18 +350,16 @@ internal static class YetanniaAncientDialoguePlan
         $"{KeyPrefix}.{ancientEntry}.{slot}.{lineIndex}.{speaker}";
 
     /// <summary>
-    /// Every loc entry this mod owns in the <c>ancients</c> table.
+    /// Every loc entry this mod owns in the <c>ancients</c> table, for one language.
     ///
-    /// The SAME text is returned for every language on purpose: the user's dialogue is Chinese only,
-    /// and registering it for `eng` (and every other language) is what keeps a raw key from being
-    /// rendered. When English copy arrives, this is the single place a per-language branch goes.
+    /// <paramref name="english"/> selects the column: <c>true</c> -> <c>DraftLine.TextEn</c> (the
+    /// English translation, registered only for <c>eng</c>), <c>false</c> -> <c>DraftLine.Text</c>
+    /// (the user's Chinese, registered for every other language so Chinese stays the fallback and no
+    /// raw key can render). The KEYS are language-independent; only the values differ, so the
+    /// attached dialogues never have to be rebuilt for a language switch.
     /// </summary>
     internal static Dictionary<string, string> LocEntries(bool english)
     {
-        // `english` is deliberately unused today -- kept so the call site already threads the
-        // language through and adding the English column is a one-line change here.
-        _ = english;
-
         var entries = new Dictionary<string, string>(StringComparer.Ordinal);
 
         foreach (var draft in YetanniaAncientDialogueData.Ancients)
@@ -371,7 +371,9 @@ internal static class YetanniaAncientDialoguePlan
 
                 for (var i = 0; i < lines.Length; i++)
                 {
-                    entries[LineKey(draft.Entry, slot.Id, i, lines[i].Speaker)] = lines[i].Text;
+                    var line = lines[i];
+                    entries[LineKey(draft.Entry, slot.Id, i, line.Speaker)] =
+                        english ? line.TextEn : line.Text;
                 }
             }
         }

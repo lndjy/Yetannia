@@ -42,7 +42,7 @@ internal static class KeywordLocPatch
     private static readonly IReadOnlyDictionary<string, string> ChineseEvents = new Dictionary<string, string>
     {
         [$"{SkipEventKey}.title"] = "跳过",
-        [$"{SkipEventKey}.description"] = "跳过这个事件，获得 50 金币。",
+        [$"{SkipEventKey}.description"] = "跳过该事件，获得 50 金币。",
     };
 
     private static readonly IReadOnlyDictionary<string, string> EnglishEvents = new Dictionary<string, string>

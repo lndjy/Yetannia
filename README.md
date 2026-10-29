@@ -1,13 +1,13 @@
 # 耶坦尼娅 Yetannia —《杀戮尖塔 2》角色 Mod
 
 为《杀戮尖塔 2》加入《千年之旅：ELF》的角色 **耶坦尼娅**：**82 张卡**、关键词**「先知」**、
-专属遗物、**中/日双语语音**（游戏内可切/可关），以及**逐帧动画**的战斗·营火·商人形象。
+专属遗物、**中英双语文案**、**中/日双语语音**（游戏内可切/可关），以及**逐帧动画**的战斗·营火·商人形象。
 
 - 创意工坊（订阅即装）：<https://steamcommunity.com/sharedfiles/filedetails/?id=3819506337>
 - 源码仓库：<https://github.com/lndjy/Yetannia>
 - 开发文档 / 项目历史：[`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md)
 - 发布流程（含发布前的安全与隐私检查）：[`docs/RELEASE-WORKFLOW.md`](docs/RELEASE-WORKFLOW.md)
-- 当前版本：**v1.0.1**（以 `Yetannia/Yetannia.json` 为准）
+- 当前版本：**v1.0.4**（以 `Yetannia/Yetannia.json` 为准）
 
 > ### ⚠️ 只支持 beta 分支 · BETA BRANCH ONLY
 >
@@ -16,18 +16,75 @@
 > **正式分支（非 beta）不保证能加载**——可能出现角色不出现、卡图丢失、事件对话报错等问题。
 > 请先在 Steam 里把游戏切到 beta 分支再使用。
 
-## English summary
+## English
 
-Yetannia is a fan-made character mod for *Slay the Spire 2* — **beta branch only**.
-Requirements: the game's **beta branch**, game **≥ 0.107.0**, and **BaseLib ≥ 3.4.7**
-(Steam Workshop). It adds the character Yetannia (70 HP), **82 cards**, the **Prophet**
-keyword (triggers when a card moves from your draw pile to your discard pile — *not* when
-discarded from hand), the starting relic **Prophet's Hair Ornament** (Scry 5) and its Orobas
-replacement **Prophet's Crown** (Scry 10), **11 voiced moments** with an in-game
-**Voice language = 中文 / 日本語 / Off** setting (Off silences only her lines and never touches
-the base game's audio), **per-Ancient dialogue for nine Ancients**, and animated (frame-by-frame)
-combat / campfire / merchant figures. The card list, install steps and build notes below are in
-Chinese; this project reports problems on the Workshop page.
+*The detailed documentation below is in Chinese. This section covers everything an English-speaking player needs.*
+
+**Yetannia** is a fan-made character mod for *Slay the Spire 2* — **beta branch only**. It does **not** work on the public (non-beta) branch.
+
+- Steam Workshop (subscribe and play): <https://steamcommunity.com/sharedfiles/filedetails/?id=3819506337>
+- Source code: <https://github.com/lndjy/Yetannia>
+
+### Requirements
+
+| | Requirement |
+|---|---|
+| Game | *Slay the Spire 2* **≥ 0.107.0**, on the **beta branch** |
+| Dependency | **BaseLib ≥ 3.4.7** (Steam Workshop) |
+| Launch | Start the game **through Steam** |
+| After installing | Enable both mods once in the in-game **Mods** list |
+
+### Installation (Workshop, recommended)
+
+1. Subscribe to **BaseLib** on the Workshop (author **Alchyr**; also on [GitHub releases](https://github.com/Alchyr/BaseLib-StS2/releases)). It must be **≥ 3.4.7** — this mod will not load without it.
+2. Subscribe to **[Yetannia](https://steamcommunity.com/sharedfiles/filedetails/?id=3819506337)**.
+3. In Steam, switch *Slay the Spire 2* to the **beta branch**, then launch the game from Steam.
+4. Open **Mods** from the main menu and make sure both BaseLib and Yetannia are enabled.
+5. Restart the game. Yetannia appears on the character-select screen; the character does not need to be unlocked.
+
+### Manual installation (zip)
+
+1. Subscribe to BaseLib as above.
+2. Extract the `Yetannia` folder into `<Steam>\steamapps\common\Slay the Spire 2\mods\`, so that `...\mods\Yetannia\Yetannia.dll`, `Yetannia.json` and `Yetannia.pck` sit side by side.
+3. Launch the game from Steam, enable Yetannia in the **Mods** list, then restart. **Do not skip the enable step**: a mod that was never enabled is loaded as disabled, which is the most common reason a mod "suddenly stops working".
+
+### What this mod adds
+
+- **New character**: Yetannia, 70 HP, with a 10-card starter deck (4× Strike, 4× Defend, Evade, Probe), a purple card frame, and custom energy orb / map icon / character-select portrait.
+- **82 cards**: 4 Basic, 2 Ancient, 18 Common, 32 Uncommon, 24 Rare, 2 Status; 26 Attacks, 37 Skills, 17 Powers, 2 Statuses. Six cards are multiplayer-only.
+- **The "Prophet" keyword**: when a card moves from your draw pile to your discard pile, its Prophet effect triggers. Being discarded from your hand does **not** trigger it.
+- **Relics**: the starter relic **Prophet's Hair Ornament** (Scry 5) and its Orobas replacement **Prophet's Crown** (Scry 10), plus Agate's Potion Belt, Prophet's Bracelet, and a currently placeholder-named foresight charm.
+- **Voice**: 11 voiced moments (attack, skill, fatal damage, character select, run start, combat start, card reward, campfire, shop, event, relic), with an in-game **Voice language = Chinese / Japanese / Off** setting (default Japanese). "Off" silences only her lines and never touches the base game's audio.
+- **Dedicated dialogue** for the nine Ancients: Neow / Orobas / Pael / Vakuu / Tanx / Tezcatara / Nonupeipe / Darv / The Architect.
+- **Animated figures** in combat, at the campfire and in shops — frame-by-frame animation, not static portraits.
+
+### Language support
+
+- **Card, power, relic, keyword and character text is available in both Chinese and English** and follows the game's language setting. Other game languages currently fall back to Chinese.
+- The nine Ancients' **dialogue lines are Chinese-only for now**, in English mode as well (translation is in progress).
+- Voice audio is Chinese and Japanese only — there is no English dub.
+
+### Known limitations
+
+- Multiplayer logic is written against the game's own API contract but has not been tested in a real two-player run yet.
+- In multiplayer, every player must use the same mod set and the same versions (the game compares mod lists and blocks mismatches).
+- "Scry" itself is not a hoverable keyword; currently only Guiding Light carries a Scry hover tip.
+- The full card table at the bottom of this README is auto-generated in Chinese; in game, card names and text are shown in your language.
+
+### Bug reports
+
+- Log file: `%APPDATA%\SlayTheSpire2\logs\godot.log`. Every line starting with `[Yetannia]` is useful, especially the `self-check` lines: they state whether the mod loaded, whether all 82 cards registered, and whether card art loaded.
+- Include the **card name and the situation** (how many enemies, what was in hand, how many Prophet triggers had happened).
+- For a Scry card that gets stuck (the card sits in the middle of the screen and never resolves), please also include the `[scry]` lines from the log.
+- Report on the Workshop page or open an issue at <https://github.com/lndjy/Yetannia/issues>.
+
+### Building from source (short version)
+
+Requires the **.NET 9 SDK**, **Godot 4.5.1** (only to export the art `.pck`), the **game itself on the beta branch** (for its assemblies), and the **BaseLib 3.4.7 NuGet package**. Run `dotnet build` in the repository root, passing `-p:Sts2Path="<path to Slay the Spire 2>"` if the game is not found automatically. The exact commands, scripts and caveats are in the Chinese section below; note that voice audio is deliberately not committed, so a build from source has no voice.
+
+### Credits
+
+Yetannia is a fan work. Character, art and voice assets come from the Chinese mobile game 《千年之旅：ELF》. Not affiliated with MegaCrit (the developer of *Slay the Spire 2*) or with the rights holders of 《千年之旅：ELF》; all assets remain the property of their respective owners. Takedown requests will be honoured. BaseLib is developed by [Alchyr](https://github.com/Alchyr/BaseLib-StS2).
 
 ## 环境要求
 
@@ -103,14 +160,14 @@ Chinese; this project reports problems on the Workshop page.
 > 当此牌**从抽牌堆进入弃牌堆**时，触发本牌的先知效果。
 > **从手牌被弃置不会触发**——这是词条本来的要求。
 
-- 带「重放」的牌被弃置触发时会触发同样次数；能力牌触发后和打出一样离开本场战斗
+- 带「重放」的牌被弃置时，先知效果会触发同样次数；能力牌触发后和打出一样离开本场战斗
   （即「等效打出」，不会出现「效果发动了、牌还在，能再抽回来打一次」）。
 - 先知效果里不询问玩家做选择（换堆不是玩家操作，没有真正的选择上下文）。
 
 ### 遗物
 
 - 初始遗物 **先知发饰**：战斗开始时，**预见 5**。
-- 欧洛巴斯（Orobas）路线的替换先古遗物 **先知头冠**：战斗开始时，**预见 10**。
+- 在欧洛巴斯（Orobas）处替换初始遗物时获得的先古遗物 **先知头冠**：战斗开始时，**预见 10**。
 - 其余遗物还有玛瑙的药水腰带、先知的手链，以及占位名的「未命名·预见」。
 
 ### 语音（11 处）+ 游戏内设置
@@ -136,6 +193,23 @@ Chinese; this project reports problems on the Workshop page.
 2. 选择 **中文** / **日语** / **关闭**。
 3. 「关闭」只影响耶坦尼娅的台词，**不影响原版音效**；随时可以再打开。
 
+## 更新记录
+
+### v1.0.4
+
+- **新增「卡牌数值」设置**：设置里可在 **原版** 与 **东尼测试版** 之间切换。测试版对 12 张卡
+  （试探、合击、修顿、有条不紊、制敌机先、积厚成势、请君入瓮、背水一战、交叉防御、临危不乱、夹击之势、冰刃轮舞）
+  采用另一套数值，**其余 70 张卡两档完全一致**。数值与卡面文字都在游戏加载时确定，**切换后需重启游戏**。
+- **修复**：局外收益牌（积厚成势 / 致命洞察 / 天之恩典）不再能被局内随机印牌或战斗内转化生成
+  （对齐原版狂宴 `CanBeGeneratedInCombat => false`）；它们仍正常出现在卡牌奖励与商店。
+- **文案**：全面校对，修正错别字与中英不一致（如「眩晕」→「晕眩」、「费用」→「耗能」），
+  8 个战斗内能力名统一成对应卡名。
+- **英文补全**：九位先古的专属对话共 246 行已全部译成英文。
+
+### v1.0.3
+
+- 修复联机时「预见」在战斗结束瞬间卡住整局的问题；修好预见选牌界面的居中位置。
+
 ## 反馈问题
 
 - 日志文件：`%APPDATA%\SlayTheSpire2\logs\godot.log`
@@ -148,12 +222,11 @@ Chinese; this project reports problems on the Workshop page.
 
 ## 当前完成度与已知问题（说实话）
 
-- **9 处名字还是占位名，但都不是卡名**：8 个能力名
-  （未命名·从容 / 未命名·倍增 / 未命名·共感 / 未命名·净化 / 未命名·焚灭 / 未命名·续行 /
-  未命名·观照 / 未命名·解放）和 1 个遗物名（未命名·预见）。
-  **82 张卡的名字全部是正式名，卡名占位 0 个。**
+- **1 处名字还是占位名**：遗物「未命名·预见」（效果见上）。
+  **82 张卡的名字全部是正式名，卡名占位 0 个；战斗里显示的能力名也都已换成正式名，没有占位名。**
 - 全部 82 张卡都有自己的卡面；遗物图标、费用图标、能量球、能量文字图标、地图头像均已自制。
-- 「预见」本身不是可悬停的关键词，只有「引领之光」挂了 `BaseLibTip.Scry` 的悬停提示。
+- 「预见」本身不是可悬停的关键词；目前只有「引领之光」带有预见的悬停提示。
+- 英文版里，卡牌 / 能力 / 遗物 / 关键词 / 角色文本[b]以及九位先古的专属对话（共 246 行）都已提供英文[/b]；语音只有中文 / 日语。
 - 联机（多人）逻辑是按原版实现与 API 契约写的，还没有真正跑过双人局实测。
 
 ## 从源码构建（开发者向）
@@ -199,9 +272,8 @@ Chinese; this project reports problems on the Workshop page.
   （这是设计好的降级路径，不报错、不会卡住游戏）。想要语音请用创意工坊版本或发行 zip。
 - 便携工具链也不入库：`.tools/dotnet/`（.NET 9 SDK）、`.tools/godot/`（Godot 4.5.1）、
   `.tools/src/` 都被忽略，需要自己装。
-- `Yetannia/nuget.config` 目前指向本项目构建环境里的本地 NuGet 代理
-  （`.tools/nuget-proxy.js` 起在 `127.0.0.1:8899`）。换环境构建时要么起这个代理，
-  要么把它改成 `https://api.nuget.org/v3/index.json`。
+- `Yetannia/nuget.config` 目前指向作者本机的本地 NuGet 代理，只适用于作者的开发环境。
+  在其他环境构建时，请把它改成 `https://api.nuget.org/v3/index.json`，或删掉这一项让 NuGet 走官方源。
 - `.tools/cards-xlsx.js` 会同时生成 `Yetannia-卡牌表.xlsx`（**该 xlsx 不入库**，按需本地生成）
   和 README 里那段卡表；`package-mod.ps1` 每次打包都会跑它，所以卡表不会掉队。
 
@@ -237,7 +309,7 @@ Chinese; this project reports problems on the Workshop page.
 | 打击 `YetanniaStrike` | 1 | 攻击 | 造成 6 点伤害。<br>敲后：伤害 6→9。 |
 | 防御 `YetanniaDefend` | 1 | 技能 | 获得 5 点格挡。<br>敲后：格挡 5→8。 |
 | 回避 `ForesightWard` | 0 | 技能 | 获得 3 点格挡。 先知：获得 4 点格挡。<br>敲后：格挡 3→4；先知格挡 4→6。 |
-| 试探 `OminousDecree` | 1 | 攻击 | 对所有敌人造成 6 点伤害，并给予所有敌人 1 层易伤和 1 层虚弱。 先知：没有额外描述，效果与打出相同。<br>敲后：费用 1→0；伤害与层数不变。 |
+| 试探 `OminousDecree` | 1 | 攻击 | 对所有敌人造成 6 点伤害，并给予所有敌人 1 层易伤和 1 层虚弱。 先知：效果与打出相同。<br>敲后：费用 1→0；伤害与层数不变。 |
 
 **先古（Ancient），2 张**
 
@@ -257,13 +329,13 @@ Chinese; this project reports problems on the Workshop page.
 | 先制 `CutThroughFate` | 1 | 攻击 | 造成 7 点伤害。预见 2。抽 1 张牌。<br>敲后：伤害 7→9，预见 2→3。 |
 | 修顿 `ThirdEye` | 1 | 技能 | 获得 7 点格挡。预见 3。<br>敲后：格挡 7→9，预见 3→5。 |
 | 预备 `RearrangedFate` | 0 | 技能 | 将任意数量的手牌放到抽牌堆顶。消耗、保留。<br>敲后：去掉消耗。 |
-| 奋不顾身 `RecklessCharge` | 0 | 攻击 | 造成 11 点伤害。将一张眩晕加入你的弃牌堆。<br>敲后：伤害 11→15。 |
+| 奋不顾身 `RecklessCharge` | 0 | 攻击 | 造成 11 点伤害。将一张晕眩加入你的弃牌堆。<br>敲后：伤害 11→15。 |
 | 伺机而动 `WaitForTheMoment` | 2 | 攻击 | 造成 12 点伤害。如果你在本回合内预见过牌，获得 2 点能量。<br>敲后：伤害 12→16。 |
 | 斩铁波 `IronWave` | 0 | 攻击 | 造成 4 点伤害，获得 3 点格挡。<br>敲后：伤害 4→5，格挡 3→5。 |
 | 交叉防御 `TwinBulwark` | 1 | 技能 | 获得 5 点格挡，2 次。<br>敲后：格挡 5→7。 |
 | 水色之舞 `CounterStrike` | 0 | 攻击 | 造成 11 点伤害。 只有当敌人的意图是攻击时才能打出。<br>敲后：伤害 11→15。 |
-| 众志成城 `PatientBulwark` | 4 | 技能 | 获得 18 点格挡。 你每抽到一次这张牌，这张牌的耗能-1。<br>敲后：费用 4→3。 |
-| 霜色华斩 `PatientStrike` | 4 | 攻击 | 造成 26 点伤害。 你每抽到一次这张牌，这张牌的耗能-1。<br>敲后：费用 4→3。 |
+| 众志成城 `PatientBulwark` | 4 | 技能 | 获得 18 点格挡。 每当你抽到这张牌时，这张牌的耗能减少1。<br>敲后：费用 4→3。 |
+| 霜色华斩 `PatientStrike` | 4 | 攻击 | 造成 26 点伤害。 每当你抽到这张牌时，这张牌的耗能减少1。<br>敲后：费用 4→3。 |
 | 风中笑颜 `ReinforceStatus` | 1 | 攻击 | 造成 11 点伤害，将一张幻想纯爱加入你的手牌。<br>敲后：伤害 11→15。 |
 | 火中白花 `SupplyStatus` | 1 | 技能 | 获得 10 点格挡，将一张纯爱幻想加入你的手牌。<br>敲后：格挡 10→13。 |
 | 常备不懈 `ShuffleStatus` | 0 | 攻击 | 造成 7 点伤害，随机将一张纯爱幻想或幻想纯爱放入你的抽牌堆。<br>敲后：伤害 7→10。 |
@@ -276,7 +348,7 @@ Chinese; this project reports problems on the Workshop page.
 | 先知打击 `BuildingMomentum` | 1 | 攻击 | 造成 6 点伤害。你每拥有 1 张先知牌，此牌额外造成 2 点伤害。 先知。<br>敲后：伤害 6→9，每张增量 2→3。 |
 | 白刃乱舞 `FlurryStrike` | 1 | 攻击 | 造成 3 点伤害 X 次。X 为本回合此前打出的牌数。<br>敲后：伤害 3→4。 |
 | 按部就班 `BalancedInsight` | 3 | 能力 | 获得 1 点力量与 1 点敏捷。 先知。<br>敲后：力量 1→2，敏捷 1→2。 |
-| 厚积薄发 `AccumulatedFate` | 1 | 攻击 | 对所有敌人造成 6 点伤害。本场战斗中每触发过一次先知效果，此牌伤害 +3。（卡面另显示本场已触发先知次数） 先知。<br>敲后：伤害 6→9，每次增量 +3→+4。 |
+| 厚积薄发 `AccumulatedFate` | 1 | 攻击 | 对所有敌人造成 6 点伤害。本场战斗中每触发一次先知效果，此牌伤害 +3。（卡面另显示本场已触发先知次数） 先知。<br>敲后：伤害 6→9，每次增量 +3→+4。 |
 | 引蛇出洞 `UnplayedOmen` | 0 | 技能 | 不能被打出。 先知：抽 2 张牌。<br>敲后：抽牌 2→3。 |
 | 蓄势待发 `LatentPower` | 0 | 技能 | 不能被打出。 先知：获得 1 点能量。<br>敲后：能量 1→2。 |
 | 抉择 `PurifyingVision` | 1 | 技能 | 预见 2。消耗因此被弃置的牌。抽 2 张牌。<br>敲后：抽牌 2→3。 |
@@ -292,19 +364,19 @@ Chinese; this project reports problems on the Workshop page.
 | 藏器待时 `ScryMight` | 1 | 能力 | 打出后每累计预见 6 张牌，获得 1 点力量。<br>敲后：阈值 6→4。 |
 | 后发先制 `ScryAgility` | 1 | 能力 | 打出后每累计预见 7 张牌，获得 1 点敏捷。<br>敲后：阈值 7→5。 |
 | 挺身而出 `UnnamedTechnique` | 2 | 技能 | 获得 16 点格挡。给予自己 1 层虚弱。下回合获得 1 点能量。<br>敲后：下回合能量 1→2（格挡与虚弱不变）。 |
-| 能量调和 `Equilibrium` | 1 | 技能 | 如果本回合你打出的先知牌数和非先知牌数相等，从抽牌堆检索先知牌和非先知牌各一张加入手牌。 （当前先知牌 a 张，非先知牌 b 张） 保留、消耗。<br>敲后：费用 1→0。 |
+| 能量调和 `Equilibrium` | 1 | 技能 | 如果本回合你打出的先知牌数和非先知牌数相等，从抽牌堆中选择一张先知牌和一张非先知牌加入手牌。 （本回合已打出先知牌 a 张，非先知牌 b 张） 保留、消耗。<br>敲后：费用 1→0。 |
 | 现场休整 `Reclaim` | 1 | 技能 | 将弃牌堆中至多 2 张牌放到抽牌堆顶。<br>敲后：获得保留。 |
 | 严阵以待 `ForecastBulwark` | X | 技能 | 获得 7X 点格挡。下个回合开始时预见 X。<br>敲后：格挡 7X→9X。 |
 | 命定的抗争 `GrowingStrike` | 2 | 攻击 | 造成 18 点伤害。虚无。 当这张牌被消耗时，本局游戏中它的伤害永久+2。<br>敲后：伤害 18→26。 |
 | 银铃响起之时 `RisingMight` | 1 | 技能 | 获得 3 点临时力量。如果本回合已经打出超过 2 张攻击牌，改为永久获得，并且下回合额外抽 2 张牌。<br>敲后：力量 3→4。 |
 | 临危不乱 `SteadyAgility` | 1 | 技能 | 获得 2 点临时敏捷。如果本回合未受到过伤害，改为永久获得，并且下回合额外获得 2 点能量。<br>敲后：敏捷 2→3。 |
-| 趁势而动 `PurifyStatus` | 1 | 能力 | 每回合你抽到状态牌的前 1 次，将它消耗。<br>敲后：前 2 次。 |
+| 趁势而动 `PurifyStatus` | 1 | 能力 | 每回合你抽到的前 1 张状态牌会被消耗。<br>敲后：前 2 张。 |
 | 破釜沉舟 `DetonateStatus` | 2 | 攻击 | 消耗你手中全部状态牌，造成 16 点伤害。<br>敲后：伤害 16→22。 |
 | 少女幻想之忆 `TransmuteStatus` | 1 | 技能 | 将你抽牌堆、手牌、弃牌堆的所有状态牌随机变为纯爱幻想或幻想纯爱。消耗。<br>敲后：去掉消耗。 |
 | 冰刃连斩 `ExhaustBlast` | 1 | 能力 | 每当你消耗一张牌，对所有敌人造成 3 点伤害。<br>敲后：伤害 3→4。 |
 | 身先士卒 `SharedFocus` | 1 | 能力 | 所有玩家获得 1 点敏捷。<br>敲后：费用 1→0。 ※ 联机专属。 |
 | 先知的援助 `GiftOfTime` | 3 | 技能 | 选择一名其他角色。该角色本回合结束时，获得一个额外回合。 结束你的回合。 消耗。<br>敲后：费用 3→2。 ※ 联机专属。 |
-| 回应愿景之心 `SharedMight` | 1 | 能力 | 选择一名队友。本场战斗中，当你获得力量和敏捷时（不因此牌），其获得等量力量和敏捷。<br>敲后：固有。 ※ 联机专属。 |
+| 回应愿景之心 `SharedMight` | 1 | 能力 | 选择一名队友。本场战斗中，当你获得力量或敏捷时（不因此牌），其获得等量的力量或敏捷。<br>敲后：固有。 ※ 联机专属。 |
 
 **金（Rare），24 张**
 
@@ -312,7 +384,7 @@ Chinese; this project reports problems on the Workshop page.
 |---|---|---|---|
 | 未雨绸缪 `PropheticStudy` | 2 | 能力 | 每当你预见时，抽 1 张牌。<br>敲后：费用 2→1。 |
 | 积厚成势 `FatedVitality` | 1 | 技能 | 打出时，获得卡面上显示的数字点生命上限（基础 2）。 先知：只把卡面数字抬高 2（不给血上限），本场最多累计到 8。 消耗。<br>敲后：基础 2→3；先知增量 +2→+3，上限 8→12。 |
-| 殚精竭虑 `CycleOfProphecy` | 0 | 能力 | 获得 2 点能量。预见 2。抽 2 张牌。 下个回合开始时，将一张眩晕加入你的弃牌堆。<br>敲后：能量 2→3，预见 2→3，抽牌 2→3。 |
+| 殚精竭虑 `CycleOfProphecy` | 0 | 能力 | 获得 2 点能量。预见 2。抽 2 张牌。 下个回合开始时，将一张晕眩加入你的弃牌堆。<br>敲后：能量 2→3，预见 2→3，抽牌 2→3。 |
 | 背水一战 `GrandProphecy` | 2 | 技能 | 预见 6。消耗因此被弃置的牌，并触发它们的先知效果。抽取剩下的牌。<br>敲后：预见 6→8。 |
 | 请君入瓮 `TestAttack` | 1 | 攻击 | 造成 12 点伤害。 先知：对随机目标打出此牌，然后此牌伤害翻倍。<br>敲后：伤害 12→16。 |
 | 重整旗鼓 `Regroup` | 1 | 技能 | 消耗你抽牌堆、弃牌堆和手牌中的所有状态牌。<br>敲后：费用 1→0。 |
@@ -322,7 +394,7 @@ Chinese; this project reports problems on the Workshop page.
 | 夹击之势 `EmpoweredVolley` | X | 攻击 | 重复 X 次：获得 1 点力量，对随机敌人造成 10 点伤害。<br>敲后：伤害 10→14。 |
 | 星光破晓之刻 `Judgement` | 1 | 能力 | 拥有易伤的敌人受到的伤害增加 25%。拥有虚弱的敌人造成的伤害减少 15%。<br>敲后：固有。 |
 | 纯爱药丸 `PureLovePill` | 1 | 技能 | 获得 10 点格挡，获得 1 层人工制品。消耗。<br>敲后：格挡 10→14。 |
-| 纯爱形态 `PureLoveForm` | 2 | 能力 | 本场战斗中，当你从抽牌堆弃置非先知牌时，使其费用变为 0，直到你下次打出它。<br>敲后：费用 2→1。 |
+| 纯爱形态 `PureLoveForm` | 2 | 能力 | 本场战斗中，当你从抽牌堆弃置非先知牌时，使其耗能变为 0，直到你下次打出它。<br>敲后：费用 2→1。 |
 | 长驱直入 `Settlement` | 1 | 攻击 | 对所有敌人造成 11 点伤害。敌人身上每有一种负面状态，伤害+4。<br>敲后：伤害 11→15，加成 4→5。 |
 | 她眼中的世界 `Insight` | 2 | 能力 | 每回合第一次打出攻击牌时，获得 1 点能量；第一次打出技能牌时，抽 1 张牌；第一次打出能力牌时，预见 2。 虚无。<br>敲后：去掉虚无。 |
 | 剑之所指 `FreeStatus` | 1 | 能力 | 你可以免费打出你的纯爱幻想和幻想纯爱。<br>敲后：固有。 |
@@ -332,7 +404,7 @@ Chinese; this project reports problems on the Workshop page.
 | 凯旋之路 `StatusDraw` | 2 | 能力 | 当你消耗一张状态牌时，抽一张牌。<br>敲后：费用 2→1。 |
 | 先知的指引 `GuidanceOfTheProphet` | 1 | 技能 | 从三张随机能力牌中选择一张加入手牌，本回合免费打出。 将此牌放入随机一名队友的弃牌堆。<br>敲后：那三张能力牌是已升级的。 ※ 联机专属。 |
 | 归途终尽之景 `EmberBoon` | 1 | 技能 | 选择一名队友。本场战斗中，该角色每消耗一张牌，随机生成一张牌加入其手牌。此效果不可叠加。 消耗。<br>敲后：生成的是已升级的牌。 ※ 联机专属。 |
-| 回溯 `Retrospect` | X | 技能 | 随机打出你弃牌堆的 X 张牌。<br>敲后：X → X+1。 ※ 写法对齐原版「倾泻」(Cascade)。 |
+| 回溯 `Retrospect` | X | 技能 | 随机打出你弃牌堆的 X 张牌。<br>敲后：X → X+1。 |
 | 星痕化 `StarscarForm` | 2 | 技能 | 下个回合，获得 1 层无实体。消耗。<br>敲后：费用 2→1。 |
 
 **状态（Status），2 张**

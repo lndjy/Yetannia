@@ -5,6 +5,7 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using Yetannia.YetanniaCode.Config;
 using Yetannia.YetanniaCode.Powers;
 
 namespace Yetannia.YetanniaCode.Cards;
@@ -12,11 +13,15 @@ namespace Yetannia.YetanniaCode.Cards;
 /// <summary>
 /// 先见之明 / Foresight — ported from Slay the Spire 1 (Watcher, Uncommon, 1 energy Power):
 /// "At the start of your turn, Scry 3." Upgraded: Scry 4.
+///
+/// 东尼测试版（<see cref="CardBalanceMode.TonyTest"/>）把两档都降 1：预见 2，敲后 3。
+/// (Original: Scry 3, upgraded 4. Tony draft: Scry 2, upgraded 3.)
 /// </summary>
 public sealed class Foresight : YetanniaCard
 {
-    private const int ScryBase = 3;
-    private const int ScryUpgrade = 1; // 3 -> 4
+    private const int OriginalScryBase = 3;
+    private const int ScryUpgrade = 1; // 3 -> 4 或 2 -> 3
+    private const int TonyScryBase = 2;
 
     public Foresight()
         : base(1, CardType.Power, CardRarity.Uncommon, TargetType.Self)
@@ -24,7 +29,7 @@ public sealed class Foresight : YetanniaCard
     }
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
-        [new PowerVar<ForesightPower>(ScryBase)];
+        [new PowerVar<ForesightPower>(CardBalance.IsTony ? TonyScryBase : OriginalScryBase)];
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
         [HoverTipFactory.FromPower<ForesightPower>()];

@@ -72,5 +72,5 @@ public sealed class Ambush : YetanniaCard
 
     private static readonly List<(string, string)> English = new CardLoc(
         "Ambush",
-        "Apply {VulnerablePower:diff()} [gold]Vulnerable[/gold] and gain {StrengthPower:diff()} [gold]Strength[/gold]. If the enemy does not intend to attack, the Strength gained is doubled.");
+        "Apply {VulnerablePower:diff()} [gold]Vulnerable[/gold] and gain {StrengthPower:diff()} [gold]Strength[/gold]. If the target enemy does not intend to attack, the Strength gained is doubled.");
 }

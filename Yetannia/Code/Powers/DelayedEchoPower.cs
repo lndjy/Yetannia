@@ -39,7 +39,7 @@ namespace Yetannia.YetanniaCode.Powers;
 ///
 /// So the queue stores only what is needed to rebuild the copy — the upgrade state and the combat it was
 /// played in — and the card is created fresh at the end of the turn through the same path 殚精竭虑 uses
-/// for 眩晕 (<c>CreateCard</c>, which leaves Owner unset and registers the card with the combat state).
+/// for 晕眩 (<c>CreateCard</c>, which leaves Owner unset and registers the card with the combat state).
 /// Anything queued in an earlier combat is dropped rather than resurrected.
 /// </summary>
 public sealed class DelayedEchoPower : CustomPowerModel
@@ -133,11 +133,11 @@ public sealed class DelayedEchoPower : CustomPowerModel
 
     private static readonly List<(string, string)> Chinese = new PowerLoc(
         "回响",
-        "回合结束时，将一张复制加入你的弃牌堆。",
-        "回合结束时，将一张复制加入你的弃牌堆。");
+        "回合结束时，将一张「水色睿智」的复制加入你的弃牌堆。",
+        "回合结束时，将一张「水色睿智」的复制加入你的弃牌堆。");
 
     private static readonly List<(string, string)> English = new PowerLoc(
         "Echo",
-        "At the end of your turn, add a copy to your discard pile.",
-        "At the end of your turn, add a copy to your discard pile.");
+        "At the end of your turn, add a copy of Azure Wisdom to your discard pile.",
+        "At the end of your turn, add a copy of Azure Wisdom to your discard pile.");
 }

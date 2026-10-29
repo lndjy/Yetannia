@@ -58,5 +58,5 @@ public sealed class ForecastBulwark : YetanniaCard
 
     private static readonly List<(string, string)> English = new CardLoc(
         "In Formation",
-        "Gain {BlockPerX:diff()}×X [gold]Block[/gold]. Scry X at the start of next turn.");
+        "Gain {BlockPerX:diff()}×X [gold]Block[/gold]. Scry X at the start of your next turn.");
 }

@@ -9,7 +9,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace Yetannia.YetanniaCode.Powers;
 
 /// <summary>
-/// 未命名·判词 — 拥有[易伤]的敌人受到的伤害 +25%；拥有[虚弱]的敌人造成的伤害 -15%。
+/// 星光破晓之刻 — 拥有[易伤]的敌人受到的伤害 +25%；拥有[虚弱]的敌人造成的伤害 -15%。
 ///
 /// This is a *second* layer on top of the base game's own Vulnerable (+50% taken) and Weak
 /// (-25% dealt); it does not replace them.
@@ -60,12 +60,12 @@ public sealed class JudgementPower : CustomPowerModel
     public override List<(string, string)> Localization => Loc.Pick(Chinese, English);
 
     private static readonly List<(string, string)> Chinese = new PowerLoc(
-        "判词",
+        "星光破晓之刻",
         "拥有[gold]易伤[/gold]的敌人受到的伤害增加25%。拥有[gold]虚弱[/gold]的敌人造成的伤害减少15%。",
         "拥有[gold]易伤[/gold]的敌人受到的伤害增加25%。拥有[gold]虚弱[/gold]的敌人造成的伤害减少15%。");
 
     private static readonly List<(string, string)> English = new PowerLoc(
-        "Judgement",
+        "Starlight at Dawn",
         "Enemies with [gold]Vulnerable[/gold] take 25% more damage. Enemies with [gold]Weak[/gold] deal 15% less damage.",
         "Enemies with [gold]Vulnerable[/gold] take 25% more damage. Enemies with [gold]Weak[/gold] deal 15% less damage.");
 }

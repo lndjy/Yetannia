@@ -12,7 +12,7 @@ using MegaCrit.Sts2.Core.Models;
 namespace Yetannia.YetanniaCode.Powers;
 
 /// <summary>
-/// 未命名·薪火 的持续效果 — 被指定的那名角色在本场战斗中每消耗一张牌，就随机生成一张牌加入其手牌。
+/// 归途终尽之景 的持续效果 — 被指定的那名角色在本场战斗中每消耗一张牌，就随机生成一张牌加入其手牌。
 ///
 /// 挂在**被指定的玩家**身上（<c>Owner</c> 是那名玩家的生物），所以判归属时用
 /// <c>card.Owner == Owner.Player</c>，而生成用的也是那名玩家自己的角色牌池与随机数——
@@ -94,12 +94,12 @@ public sealed class EmberBoonPower : CustomPowerModel
     public override List<(string, string)> Localization => Loc.Pick(Chinese, English);
 
     private static readonly List<(string, string)> Chinese = new PowerLoc(
-        "薪火",
-        "该角色本场战斗中每消耗一张牌，随机生成一张牌加入其手牌。",
-        "该角色本场战斗中每消耗一张牌，随机生成一张牌加入其手牌。");
+        "归途终尽之景",
+        "本场战斗中，该角色每消耗一张牌，随机生成一张牌加入其手牌。",
+        "本场战斗中，该角色每消耗一张牌，随机生成一张牌加入其手牌。");
 
     private static readonly List<(string, string)> English = new PowerLoc(
-        "Kindled Legacy",
-        "Whenever this character exhausts a card this combat, generate a random card into their hand.",
-        "Whenever this character exhausts a card this combat, generate a random card into their hand.");
+        "The View at Journey\u2019s End",
+        "This combat, whenever this character exhausts a card, generate a random card into their hand.",
+        "This combat, whenever this character exhausts a card, generate a random card into their hand.");
 }

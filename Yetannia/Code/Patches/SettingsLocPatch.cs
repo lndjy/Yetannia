@@ -2,16 +2,18 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Localization;
+using Yetannia.YetanniaCode.Config;
 
 namespace Yetannia.YetanniaCode.Patches;
 
 /// <summary>
-/// Injects the text for the 「语音 Voice」 setting into the game's <c>settings_ui</c> table.
+/// Injects the text for this mod's settings rows into the game's <c>settings_ui</c> table.
 ///
-/// Without this the setting is fully functional but reads badly to a player: BaseLib resolves every
-/// label from <c>settings_ui</c> and, finding nothing, falls back to raw identifiers — the row shows
-/// the bare property name <c>VoiceLanguage</c> and the three choices show the enum names
-/// <c>Chinese / Japanese / Off</c>. Verified by a QA run that walked the real UI-building path.
+/// Without this the settings are fully functional but read badly to a player: BaseLib resolves every
+/// label from <c>settings_ui</c> and, finding nothing, falls back to raw identifiers — the rows show
+/// the bare property names <c>VoiceLanguage</c> / <c>CardBalanceMode</c> and the choices show the
+/// enum names <c>Chinese / Japanese / Off</c> and <c>Original / TonyTest</c>. Verified by a QA run
+/// that walked the real UI-building path.
 ///
 /// The exact keys are not guessable from the attribute names, so they are recorded here, each with
 /// the BaseLib member that computes it:
@@ -21,8 +23,8 @@ namespace Yetannia.YetanniaCode.Patches;
 /// <item><c>NConfigOptionRow.AddHoverTip</c> — tooltip: <c>ModPrefix + slug + ".hover.title"</c> and
 /// <c>".hover.desc"</c>. These two are only read if a tooltip is requested at all, which requires
 /// <c>[ConfigHoverTip]</c> on the property (or <c>[ConfigHoverTipsByDefault]</c> on the class) — see
-/// <see cref="VoiceConfig"/>. Without that attribute <c>SimpleModConfig</c> builds the dropdown with
-/// <c>addHoverTip: false</c> and <c>AddHoverTipToOptionRowIfEnabled</c> never calls
+/// <see cref="YetanniaModConfig"/>. Without that attribute <c>SimpleModConfig</c> builds the dropdown
+/// with <c>addHoverTip: false</c> and <c>AddHoverTipToOptionRowIfEnabled</c> never calls
 /// <c>AddHoverTip()</c>, so these keys sit unread. (If <c>AddHoverTip()</c> does run and
 /// <c>".hover.desc"</c> is absent, BaseLib logs <c>"... skipping HoverTip."</c> and shows nothing —
 /// that is the failure mode, not the current state.)</item>
@@ -30,7 +32,8 @@ namespace Yetannia.YetanniaCode.Patches;
 /// <c>"YETANNIA" + ".mod_title"</c>. Missing, it warns and falls back to the root namespace.</item>
 /// </list>
 /// <c>Slugify</c> upper-cases and underscore-separates, which is why the property
-/// <c>VoiceLanguage</c> keys on <c>VOICE_LANGUAGE</c>.
+/// <c>VoiceLanguage</c> keys on <c>VOICE_LANGUAGE</c> and <c>CardBalanceMode</c> on
+/// <c>CARD_BALANCE_MODE</c>.
 ///
 /// Patching <see cref="LocManager.GetTable"/> rather than table loading keeps this order-independent
 /// and re-applies on every language switch (each switch produces a fresh
@@ -41,14 +44,17 @@ internal static class SettingsLocPatch
 {
     private const string SettingsTable = "settings_ui";
     private const string VoiceKey = "YETANNIA-VOICE_LANGUAGE";
+    private const string BalanceKey = "YETANNIA-CARD_BALANCE_MODE";
     /// <summary>
-    /// The section header. <c>[ConfigSection("语音 Voice")]</c> is passed through
+    /// The 「语音 Voice」 section header. <c>[ConfigSection("语音 Voice")]</c> is passed through
     /// <c>StringHelper.Slugify</c>, which keeps ASCII, upper-cases it and underscores the spaces, so
     /// the Chinese characters are dropped and the leading space becomes a leading underscore — hence
     /// the odd-looking key. If BaseLib's slugging ever changes this key simply stops matching and the
     /// header degrades to the raw section name, which is the current behaviour anyway.
     /// </summary>
-    private const string SectionKey = "YETANNIA-_VOICE";
+    private const string VoiceSectionKey = "YETANNIA-_VOICE";
+    /// <summary>Same derivation for <c>[ConfigSection("卡牌 Cards")]</c>.</summary>
+    private const string CardsSectionKey = "YETANNIA-_CARDS";
     private const string ModTitleKey = "YETANNIA.mod_title";
 
     private static readonly IReadOnlyDictionary<string, string> Chinese = new Dictionary<string, string>
@@ -59,7 +65,17 @@ internal static class SettingsLocPatch
         [$"{VoiceKey}.Chinese"] = "中文",
         [$"{VoiceKey}.Japanese"] = "日语",
         [$"{VoiceKey}.Off"] = "关闭",
-        [$"{SectionKey}.title"] = "语音",
+        [$"{VoiceSectionKey}.title"] = "语音",
+
+        [$"{BalanceKey}.title"] = "卡牌数值",
+        [$"{BalanceKey}.hover.title"] = "卡牌数值",
+        [$"{BalanceKey}.hover.desc"] =
+            "「原版」是正式发布的数值；「东尼测试版」有部分卡牌按测试草案调整（详见更新说明）。" +
+            "切换后需要重启游戏才会生效（卡面文字和数值都会跟着变）。",
+        [$"{BalanceKey}.Original"] = "原版",
+        [$"{BalanceKey}.TonyTest"] = "东尼测试版",
+        [$"{CardsSectionKey}.title"] = "卡牌",
+
         [ModTitleKey] = "耶坦尼娅",
     };
 
@@ -71,7 +87,17 @@ internal static class SettingsLocPatch
         [$"{VoiceKey}.Chinese"] = "Chinese",
         [$"{VoiceKey}.Japanese"] = "Japanese",
         [$"{VoiceKey}.Off"] = "Off",
-        [$"{SectionKey}.title"] = "Voice",
+        [$"{VoiceSectionKey}.title"] = "Voice",
+
+        [$"{BalanceKey}.title"] = "Card Numbers",
+        [$"{BalanceKey}.hover.title"] = "Card Numbers",
+        [$"{BalanceKey}.hover.desc"] =
+            "\"Original\" is the released balance. \"Tony's Test Build\" applies a draft that changes a handful of cards " +
+            "(see the changelog). A restart is required for the switch to take effect — both the card text and the numbers.",
+        [$"{BalanceKey}.Original"] = "Original",
+        [$"{BalanceKey}.TonyTest"] = "Tony's Test Build",
+        [$"{CardsSectionKey}.title"] = "Cards",
+
         [ModTitleKey] = "Yetannia",
     };
 

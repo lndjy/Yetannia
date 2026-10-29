@@ -46,8 +46,8 @@ public sealed class PureLoveFormPower : CustomPowerModel
 
     private static readonly List<(string, string)> Chinese = new PowerLoc(
         "纯爱形态",
-        "本场战斗中，当你从抽牌堆弃置非[gold]先知[/gold]牌时，使其费用变为0，直到你下次打出它。",
-        "本场战斗中，当你从抽牌堆弃置非[gold]先知[/gold]牌时，使其费用变为0，直到你下次打出它。");
+        "本场战斗中，当你从抽牌堆弃置非[gold]先知[/gold]牌时，使其耗能变为0，直到你下次打出它。",
+        "本场战斗中，当你从抽牌堆弃置非[gold]先知[/gold]牌时，使其耗能变为0，直到你下次打出它。");
 
     private static readonly List<(string, string)> English = new PowerLoc(
         "Pure Love Form",

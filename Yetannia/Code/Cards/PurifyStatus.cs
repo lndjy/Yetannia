@@ -8,7 +8,7 @@ using Yetannia.YetanniaCode.Powers;
 
 namespace Yetannia.YetanniaCode.Cards;
 
-/// <summary>趁势而动 — 蓝卡（Uncommon），1 费能力：每回合你抽到状态牌的前 1（升级 2）次，将它消耗。</summary>
+/// <summary>趁势而动 — 蓝卡（Uncommon），1 费能力：每回合你抽到的前 1（升级 2）张状态牌会被消耗。</summary>
 public sealed class PurifyStatus : YetanniaCard
 {
     public PurifyStatus()
@@ -30,8 +30,8 @@ public sealed class PurifyStatus : YetanniaCard
     public override List<(string, string)> Localization => Loc.Pick(Chinese, English);
 
     private static readonly List<(string, string)> Chinese = new CardLoc(
-        "趁势而动", "每回合你抽到状态牌的前{IfUpgraded:show:2|1}次，将它消耗。");
+        "趁势而动", "每回合你抽到的前{IfUpgraded:show:2|1}张状态牌会被消耗。");
 
     private static readonly List<(string, string)> English = new CardLoc(
-        "Seize the Moment", "The first {IfUpgraded:show:2|1} time(s) you draw a Status card each turn, exhaust it.");
+        "Seize the Moment", "The first {IfUpgraded:show:2|1} Status card(s) you draw each turn are exhausted.");
 }

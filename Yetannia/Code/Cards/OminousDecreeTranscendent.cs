@@ -8,23 +8,28 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
+using Yetannia.YetanniaCode.Config;
 using Yetannia.YetanniaCode.Keywords;
 
 namespace Yetannia.YetanniaCode.Cards;
 
 /// <summary>
-/// 厄运宣告·超越 — 欧罗巴斯（Orobas）的「替换初始卡」版本，由 <c>ArchaicTooth</c> 通过
+/// 合击 / Pincer Strike — 欧罗巴斯（Orobas）的「替换初始卡」版本，由 <c>ArchaicTooth</c> 通过
 /// <see cref="ITranscendenceCard"/> 替换掉 <see cref="OminousDecree"/>。
 ///
-/// 给予所有敌人 2 层[易伤]和[虚弱]，并造成 15 点伤害。
-/// 敲后不增加易伤/虚弱层数，而是把费用降到 0（伤害仍然 15 -> 20）。
-/// 稀有度是「先古」而不是基础卡。
+/// 两档都是 1 费、稀有度「先古」：给予所有敌人 2 层[易伤]和[虚弱]，并造成 15 点伤害。
+/// 原版（<see cref="CardBalanceMode.Original"/>）敲后：费用 1 → 0，且伤害 15 → 20。
+/// 东尼测试版（<see cref="CardBalanceMode.TonyTest"/>）敲后：**只减费**（1 → 0），伤害仍是 15。
+///
+/// (Both drafts: 1 energy, 2 Vulnerable + 2 Weak to ALL enemies, then 15 damage. Upgraded in the
+/// original it costs 0 and deals 20; in the Tony draft the upgrade only makes it cost 0 and the
+/// damage stays at 15.)
 /// </summary>
 public sealed class OminousDecreeTranscendent : YetanniaCard
 {
     private const int DebuffBase = 2;
     private const int DamageBase = 15;
-    private const int DamageUpgrade = 5; // 15 -> 20
+    private const int DamageUpgrade = 5; // 15 -> 20，仅原版
     private const int CostReductionOnUpgrade = -1; // 1 -> 0
 
     public OminousDecreeTranscendent()
@@ -71,9 +76,12 @@ public sealed class OminousDecreeTranscendent : YetanniaCard
 
     protected override void OnUpgrade()
     {
-        // 敲后不增加易伤/虚弱层数，而是把费用降到 0（伤害仍然 15 -> 20）。
+        // 两档都减费；只有原版才同时加伤害（15 -> 20），东尼测试版敲后伤害仍是 15。
         EnergyCost.UpgradeBy(CostReductionOnUpgrade);
-        DynamicVars.Damage.UpgradeValueBy(DamageUpgrade);
+        if (!CardBalance.IsTony)
+        {
+            DynamicVars.Damage.UpgradeValueBy(DamageUpgrade);
+        }
     }
 
     public override List<(string, string)> Localization => Loc.Pick(Chinese, English);

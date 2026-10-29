@@ -6,19 +6,25 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
+using Yetannia.YetanniaCode.Config;
 
 namespace Yetannia.YetanniaCode.Cards;
 
 /// <summary>
-/// 第三只眼 / Third Eye — ported from Slay the Spire 1 (Watcher, Common, 1 energy Skill):
+/// 修顿 / Xiudun（形式来源：第三只眼 / Third Eye）— ported from Slay the Spire 1 (Watcher, Common, 1 energy Skill):
 /// "Gain 7 Block. Scry 3." Upgraded: 9 Block, Scry 5.
+///
+/// 两档的格挡都是 7 / 9。预见两档不同：<see cref="CardBalanceMode.Original"/> 是 3 / 5，
+/// <see cref="CardBalanceMode.TonyTest"/> 是 3 / 4（敲后少 1 点预见）。
+/// (Block is 7 / 9 in both drafts. Original Scry is 3 / 5; the Tony draft's upgraded Scry is 4.)
 /// </summary>
 public sealed class ThirdEye : YetanniaCard
 {
     private const int BlockBase = 7;
     private const int BlockUpgrade = 2; // 7 -> 9
     private const int ScryBase = 3;
-    private const int ScryUpgrade = 2; // 3 -> 5
+    private const int ScryUpgrade = 2; // 3 -> 5（原版）
+    private const int TonyScryUpgrade = 1; // 3 -> 4（东尼测试版）
 
     public ThirdEye()
         : base(1, CardType.Skill, CardRarity.Common, TargetType.Self)
@@ -40,7 +46,7 @@ public sealed class ThirdEye : YetanniaCard
     protected override void OnUpgrade()
     {
         DynamicVars.Block.UpgradeValueBy(BlockUpgrade);
-        DynamicVars["Scry"].UpgradeValueBy(ScryUpgrade);
+        DynamicVars["Scry"].UpgradeValueBy(CardBalance.IsTony ? TonyScryUpgrade : ScryUpgrade);
     }
 
     public override List<(string, string)> Localization => Loc.Pick(Chinese, English);

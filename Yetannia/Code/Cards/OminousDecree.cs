@@ -7,6 +7,7 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
+using Yetannia.YetanniaCode.Config;
 using Yetannia.YetanniaCode.Keywords;
 
 namespace Yetannia.YetanniaCode.Cards;
@@ -14,8 +15,15 @@ namespace Yetannia.YetanniaCode.Cards;
 /// <summary>
 /// 试探 / Probe — Yetannia's starter card.
 ///
-/// 1 energy: 对所有敌人造成 6 点伤害，并给予所有敌人 1 层[gold]易伤[/gold]和 1 层[gold]虚弱[/gold]。
-/// 敲后：费用 1 → 0（层数与伤害不变）。
+/// 原版（<see cref="CardBalanceMode.Original"/>）：1 费，对所有敌人造成 6 点伤害，并给予所有敌人
+/// 1 层[gold]易伤[/gold]和 1 层[gold]虚弱[/gold]。敲后：费用 1 → 0（层数与伤害不变）。
+/// 东尼测试版（<see cref="CardBalanceMode.TonyTest"/>）：伤害 6 → 3，敲后伤害 3 → 6；
+/// 敲后**不再减费**，费用始终为 1（易伤/虚弱层数两档都不变）。
+///
+/// (Original: 1 energy, deal 6 damage and apply 1 Vulnerable + 1 Weak to ALL enemies; upgraded, the
+/// cost drops 1 -> 0 and the damage is unchanged. Tony draft: deal 3 damage, upgraded 6 damage, and
+/// the upgrade no longer reduces the cost.)
+///
 /// [gold]先知[/gold] — with no further text, which by this mod's convention means the Prophet
 /// effect is the same as playing the card, so damage and debuffs are applied again.
 ///
@@ -25,7 +33,9 @@ namespace Yetannia.YetanniaCode.Cards;
 public sealed class OminousDecree : YetanniaCard, ITranscendenceCard
 {
     private const int BaseDebuff = 1;
-    private const int BaseDamage = 6;
+    private const int OriginalDamage = 6;
+    private const int TonyDamage = 3;
+    private const int TonyDamageUpgrade = 3; // 3 -> 6
     private const int CostReductionOnUpgrade = -1; // 1 -> 0
 
     public OminousDecree()
@@ -43,7 +53,7 @@ public sealed class OminousDecree : YetanniaCard, ITranscendenceCard
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(BaseDamage, ValueProp.Move),
+        new DamageVar(CardBalance.IsTony ? TonyDamage : OriginalDamage, ValueProp.Move),
         new PowerVar<VulnerablePower>(BaseDebuff),
         new PowerVar<WeakPower>(BaseDebuff)
     ];
@@ -78,8 +88,15 @@ public sealed class OminousDecree : YetanniaCard, ITranscendenceCard
 
     protected override void OnUpgrade()
     {
-        // 敲后不增加伤害/易伤/虚弱，而是把费用降到 0。
-        EnergyCost.UpgradeBy(CostReductionOnUpgrade);
+        // 原版：敲后不增加伤害/易伤/虚弱，而是把费用降到 0。
+        if (!CardBalance.IsTony)
+        {
+            EnergyCost.UpgradeBy(CostReductionOnUpgrade);
+            return;
+        }
+
+        // 东尼测试版：敲后不再减费（费用仍是 1），改为把伤害 3 抬到 6。
+        DynamicVars.Damage.UpgradeValueBy(TonyDamageUpgrade);
     }
 
     public override List<(string, string)> Localization => Loc.Pick(Chinese, English);

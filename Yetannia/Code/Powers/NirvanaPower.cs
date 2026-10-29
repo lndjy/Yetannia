@@ -10,7 +10,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace Yetannia.YetanniaCode.Powers;
 
 /// <summary>
-/// 涅槃 / Nirvana (ported from Slay the Spire 1's Watcher card of the same name):
+/// 步步为营 / Cautious Advance (ported from Slay the Spire 1's Watcher card Nirvana):
 /// whenever you Scry, gain X Block.
 ///
 /// Scry notifications come from BaseLib's <see cref="IAfterScryed"/> hook, which is dispatched by
@@ -38,12 +38,12 @@ public sealed class NirvanaPower : CustomPowerModel, IAfterScryed
     public override List<(string, string)> Localization => Loc.Pick(Chinese, English);
 
     private static readonly List<(string, string)> Chinese = new PowerLoc(
-        "涅槃",
+        "步步为营",
         "每当你预见时，获得 X 点格挡。",
         "每当你预见时，获得 X 点格挡。");
 
     private static readonly List<(string, string)> English = new PowerLoc(
-        "Nirvana",
+        "Cautious Advance",
         "Whenever you Scry, gain X Block.",
         "Whenever you Scry, gain X Block.");
 }

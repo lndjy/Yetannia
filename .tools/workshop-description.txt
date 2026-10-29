@@ -10,9 +10,10 @@
 [b]新角色：耶坦尼娅 Yetannia[/b]
 
 [list]
-[*][b]82 张卡牌[/b]，围绕「预见」，强度参考塔1角色，强于塔2角色。补全了塔1观者关于预见的半成品体系，卡牌为塔一二加起来上千小时的作者纯人工设计
+[*][b]82 张卡牌[/b]，全部围绕「预见」设计，强度参考《杀戮尖塔 1》的角色、高于《杀戮尖塔 2》的角色；补全了《杀戮尖塔 1》观者那套尚未完成的预见体系，全部由作者手工设计
 [*][b]关键词「先知」[/b]：当此牌从抽牌堆进入弃牌堆时，触发它的先知效果
-[*][b]初始遗物「先知发饰」[/b]，其升级形态「先知头冠」（由欧洛巴斯的升级替换获得）
+[*][b]中英双语文案[/b]：卡牌、能力、遗物与关键词文本随游戏语言在中文 / 英文之间切换（其他语言回退中文）
+[*][b]初始遗物「先知发饰」[/b]；在欧洛巴斯处替换初始遗物时，会升级为「先知头冠」
 [*][b]11 处语音[/b]：攻击、技能、受到致命伤、选人、开局、战斗开始、卡牌奖励、营火、商店、事件、遗物
 [*][b]九位先古之民的专属对话[/b]（涅奥 / 欧洛巴斯 / 佩尔 / 瓦库 / 坦克斯 / 特兹卡塔拉 / 诺奴佩普 / 达弗 / 建筑师）
 [*]战斗、营火、商人三处都用[b]会动的角色[/b]，不是静态立绘
@@ -25,26 +26,43 @@
 
 「关闭」只关掉她的语音，[b]不会影响游戏原版音效[/b]。
 
+[h2]卡牌数值（原版 / 东尼测试版）[/h2]
+
+设置里还会多一项 [b]卡牌数值[/b]，可选 [b]原版 / 东尼测试版[/b]。[b]原版[/b]是正式发布的数值；[b]东尼测试版[/b]对 12 张卡（试探、合击、修顿、有条不紊、制敌机先、积厚成势、请君入瓮、背水一战、交叉防御、临危不乱、夹击之势、冰刃轮舞）采用另一套数值草案，[b]其余 70 张卡两档完全一致[/b]。
+
+卡牌数值和卡面文字都是游戏加载时生成的，所以[b]切换后需要重启游戏才会生效[/b]。
+
 [h2]安装[/h2]
 
 1. 先订阅 [b]BaseLib[/b]（版本 ≥ 3.4.7）。没有它本 Mod 不会加载，日志里也不会有任何 [code][Yetannia][/code] 字样。
-2. 把本 Mod 解压到 [code]...\Slay the Spire 2\mods\[/code]，使结果是 [code]mods\Yetannia\Yetannia.dll[/code] 这样的结构。
-3. 启动游戏，选人界面应能看到耶坦尼娅。
+2. 在 Steam 里把《杀戮尖塔 2》切到 [b]beta 分支[/b]，然后[b]从 Steam 启动[/b]游戏。
+3. 在游戏主菜单打开 [b]Mod 列表[/b]，确认 BaseLib 和 Yetannia 都已[b]启用[/b]，然后重启游戏。
+4. 选人界面应能看到耶坦尼娅（角色不需要解锁）。
+
+如果你用的是压缩包版本：把 [code]Yetannia[/code] 文件夹解压到 [code]...\Slay the Spire 2\mods\[/code]，得到 [code]mods\Yetannia\Yetannia.dll[/code]、[code]Yetannia.json[/code]、[code]Yetannia.pck[/code] 并列的结构，再按上面的第 2–4 步操作。
 
 [h2]说明[/h2]
 
 [list]
 [*]内容基于《千年之旅》的角色耶坦尼娅创作，属同人作品。
 [*]语音与立绘素材来源于原游戏；如有异议请联系我下架。
+[*]英文版里，卡牌 / 能力 / 遗物 / 关键词 / 设置界面[b]以及九位先古的专属对话（共 246 行）都已英文化[/b]；语音仍只有中文 / 日语。
 [*]遇到问题欢迎在创意工坊留言，附上日志（[code]%APPDATA%\SlayTheSpire2\logs\godot.log[/code]）会快很多。
 [/list]
 
 [h2]更新记录[/h2]
 
+[b]v1.0.4[/b]
+[list]
+[*][b]新增「卡牌数值」设置[/b]：可在 [b]原版[/b] 与 [b]东尼测试版[/b] 之间切换。测试版对 12 张卡采用另一套数值（试探、合击、修顿、有条不紊、制敌机先、积厚成势、请君入瓮、背水一战、交叉防御、临危不乱、夹击之势、冰刃轮舞），其余 70 张两档完全一致。切换后需要重启游戏生效。
+[*]修复 [b]局外收益牌会被局内印牌生成[/b]：积厚成势（永久生命上限）、致命洞察（永久升级上一张牌）、天之恩典（再生回血）不会再被「归途终尽之景」这类局内随机印牌或战斗内转化产生——和原版狂宴一样。它们仍然正常出现在卡牌奖励与商店里。
+[*]文案：[b]全面校对[/b]，修正错别字与中英不一致（例如「眩晕」→「晕眩」、「费用」→「耗能」），并把 8 个战斗内能力名统一成对应卡名。
+[*][b]英文支持补全[/b]：九位先古的专属对话共 246 行已全部译成英文（此前英文客户端会看到中文）。
+[/list]
+
 [b]v1.0.3[/b]
 [list]
-[*]修复[b]联机时「预见」会让卡牌卡在屏幕中间、整局动不了[/b]的问题。根因已经用真实联机日志定位：如果战斗结束的那一瞬间正好有一次预见在等玩家选牌，引擎会取消持有这次选择的那条操作，于是这次选择再也没人应答，等待就永远不返回——牌就一直冻在屏幕上。现在战斗只要结束或即将结束，这次预见会安全放弃，不再挂住整局。
-[*]另有玩家反馈「预见时界面位置不对」，这一项[b]本轮也已修好[/b]：原因是引擎卡牌网格居中时用的是「一行的容量」（这里是 5 张）而不是实际显示的张数，所以只翻出 1 张时那张牌会被丢在 5 张宽框的最左边——1920 宽的屏幕上落在 x≈375，右边一大片空。现在改按实际张数居中（同一位置实测：1 张时从 x=375 移到 x=935，4 张时整体右移 140；翻出多行时，比如 8 张，最后一行同样居中）。[b]只影响预见的选牌界面，其他卡牌网格不动。[/b]
+[*]修复联机时「预见」在战斗结束的瞬间卡住整局的问题；并修好预见选牌界面按实际张数居中的位置问题（详见仓库 README 的 v1.0.3 记录）。
 [/list]
 
 [hr][/hr]
@@ -58,9 +76,10 @@
 [b]New character: Yetannia[/b]
 
 [list]
-[*][b]82 cards[/b] built around Scry, benchmarked against Slay the Spire 1 characters and stronger than Slay the Spire 2 ones. They complete the half-finished Scry framework the Watcher had in Slay the Spire 1, and every card was hand-designed by an author with over a thousand hours combined in Slay the Spire 1 and 2.
+[*][b]82 cards[/b], all built around Scry. Balance is modelled on the Slay the Spire 1 characters and runs stronger than the Slay the Spire 2 ones; the set completes the half-finished Scry framework the Watcher had in Slay the Spire 1, and every card was designed by hand.
 [*][b]The "Prophet" keyword[/b]: when the card moves from your draw pile to your discard pile, its Prophet effect triggers
-[*][b]Starter relic "Prophet's Hair Ornament"[/b], and its upgraded form [b]"Prophet's Crown"[/b] (obtained through Orobas's upgrade replacement)
+[*][b]Chinese and English card text[/b]: card, power, relic and keyword text follows the game's language setting (Chinese / English; other languages fall back to Chinese)
+[*][b]Starter relic "Prophet's Hair Ornament"[/b]; swapping your starter relic at Orobas upgrades it to [b]"Prophet's Crown"[/b]
 [*][b]11 voiced moments[/b]: attack, skill, taking fatal damage, character select, run start, combat start, card reward, campfire, shop, event, relic
 [*][b]Dedicated dialogue for all nine Ancients[/b] (Neow / Orobas / Pael / Vakuu / Tanx / Tezcatara / Nonupeipe / Darv / The Architect)
 [*][b]Animated[/b] figures in combat, at the campfire and in shops — not static portraits
@@ -73,24 +92,41 @@ The game's settings gain a [b]Voice Language[/b] option: [b]Chinese / Japanese /
 
 "Off" silences only her voice — [b]the game's own sound effects are unaffected[/b].
 
+[h2]Card numbers (Original / Tony's Test Build)[/h2]
+
+The settings also gain a [b]Card Numbers[/b] option: [b]Original / Tony's Test Build[/b]. [b]Original[/b] is the released balance. [b]Tony's Test Build[/b] applies a different set of numbers to 12 cards — Probe, Pincer Strike, Xiudun, Methodical, Seize the Initiative, Accumulate Might, Into the Trap, Last Stand, Cross Defense, Unshaken, Pincer Movement and Ice Blade Waltz — and leaves the other 70 cards identical in both modes.
+
+Card numbers and card text are built when the game loads, so [b]a restart is required[/b] for the switch to take effect.
+
 [h2]Installation[/h2]
 
 1. Subscribe to [b]BaseLib[/b] first (version ≥ 3.4.7). Without it this mod will not load, and there will be no [code][Yetannia][/code] lines in the log at all.
-2. Extract this mod into [code]...\Slay the Spire 2\mods\[/code], so that you end up with [code]mods\Yetannia\Yetannia.dll[/code].
-3. Launch the game — Yetannia should appear on the character-select screen.
+2. In Steam, switch Slay the Spire 2 to the [b]beta branch[/b], then launch the game [b]from Steam[/b].
+3. Open the [b]Mods[/b] list from the main menu, make sure BaseLib and Yetannia are both [b]enabled[/b], then restart the game.
+4. Yetannia should now appear on the character-select screen (no unlocking needed).
+
+If you are using the zip version instead: extract the [code]Yetannia[/code] folder into [code]...\Slay the Spire 2\mods\[/code] so that [code]Yetannia.dll[/code], [code]Yetannia.json[/code] and [code]Yetannia.pck[/code] sit side by side inside [code]mods\Yetannia\[/code], then follow steps 2–4 above.
 
 [h2]Notes[/h2]
 
 [list]
 [*]Fan work based on Yetannia, a character from the Chinese mobile game 《千年之旅》.
 [*]The voice and artwork come from the original game; contact me if you would like them removed.
+[*]In English, all card / power / relic / keyword text, the settings rows and [b]all 246 lines of Ancient dialogue[/b] are localized. Voice acting is Chinese / Japanese only.
 [*]Questions and bug reports are welcome in the Workshop comments — attaching the log ([code]%APPDATA%\SlayTheSpire2\logs\godot.log[/code]) helps a lot.
 [/list]
 
 [h2]Changelog[/h2]
 
+[b]v1.0.4[/b]
+[list]
+[*][b]New "Card Numbers" setting[/b]: switch between [b]Original[/b] and [b]Tony's Test Build[/b]. The test build applies a different set of numbers to 12 cards (Probe, Pincer Strike, Xiudun, Methodical, Seize the Initiative, Accumulate Might, Into the Trap, Last Stand, Cross Defense, Unshaken, Pincer Movement, Ice Blade Waltz); the other 70 cards are identical in both. A restart is required for the switch to take effect.
+[*]Fixed [b]out-of-combat payoff cards being created by in-combat card generation[/b]: Accumulate Might (permanent Max HP), Fatal Insight (permanent upgrade) and Shared Regen (Regen healing) can no longer be generated by in-combat random card generation (e.g. The View at Journey's End) or in-combat transformation — the same treatment the base game gives Feed. They still appear normally in card rewards and shops.
+[*]Text: [b]full proofread[/b] — fixed typos and Chinese/English mismatches, and renamed 8 in-combat powers so their names match their cards.
+[*][b]English support completed[/b]: all 246 lines of Ancient dialogue are now translated (English clients used to see Chinese there).
+[/list]
+
 [b]v1.0.3[/b]
 [list]
-[*]Fixed [b]a card freezing mid-screen and locking the whole run in multiplayer[/b]. The root cause was found in real multiplayer logs: if the combat ends at the exact moment a Scry is still waiting for its player choice, the engine cancels the action that owns that choice, so nothing ever answers it and the wait never returns — leaving the card frozen on screen forever. A Scry whose fight has ended (or is ending) is now abandoned safely instead of holding up the run.
-[*]The separate report of "the Scry screen is in the wrong place" is [b]also fixed in this build[/b]: the engine's card grid centres using the row's CAPACITY (5 here) instead of how many cards are actually shown, so a scry revealing a single card drew it at the far left of a five-wide box (x≈375 on a 1920-wide screen, with most of the screen empty). The row is now centred on the real card count (measured: 1 card moves from x=375 to x=935; four cards shift right by 140; when a scry spans several rows, e.g. eight cards, the last row is centred as well). [b]Only the Scry selection screen is affected — other card grids are untouched.[/b]
+[*]Fixed a card freezing mid-screen and locking the run in multiplayer when a Scry was still waiting for a choice as the combat ended; the Scry selection row is now also centred on the real card count (see the v1.0.3 entry in the repository README).
 [/list]

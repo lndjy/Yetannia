@@ -58,5 +58,5 @@ public sealed class ScryAgility : YetanniaCard
 
     private static readonly List<(string, string)> English = new CardLoc(
         "Strike Second, Strike First",
-        "After you play this, every {Threshold:diff()} cards you scry, gain 1 [gold]Dexterity[/gold].");
+        "After you play this, gain 1 [gold]Dexterity[/gold] for every {Threshold:diff()} cards you Scry.");
 }

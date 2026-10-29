@@ -10,7 +10,7 @@ namespace Yetannia.YetanniaCode.Cards;
 
 /// <summary>
 /// 奋不顾身 — 白卡（Common），0 费攻击：
-/// 造成 11（升级 15）点伤害，然后将一张[眩晕]加入你的弃牌堆。
+/// 造成 11（升级 15）点伤害，然后将一张[晕眩]加入你的弃牌堆。
 ///
 /// The Dazed is created the same way 殚精竭虑 does it: <c>CreateCard</c> on the combat state plus
 /// <c>AddGeneratedCardToCombat</c>, so generated-card hooks stay consistent.
@@ -51,7 +51,7 @@ public sealed class RecklessCharge : YetanniaCard
 
     private static readonly List<(string, string)> Chinese = new CardLoc(
         "奋不顾身",
-        "造成{Damage:diff()}点伤害。将一张[gold]眩晕[/gold]加入你的弃牌堆。");
+        "造成{Damage:diff()}点伤害。将一张[gold]晕眩[/gold]加入你的弃牌堆。");
 
     private static readonly List<(string, string)> English = new CardLoc(
         "Reckless Charge",

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 
 namespace Yetannia.YetanniaCode.Cards;
@@ -44,6 +45,42 @@ internal static class ProphetQueue
     internal static int PendingCount => _pending.Count;
 
     internal static void Enqueue(YetanniaCard card) => _pending.Add(card);
+
+    /// <summary>
+    /// The player whose 先知 discards must currently stay silent, if any. See
+    /// <see cref="SuppressFor"/>.
+    /// </summary>
+    private static Player _suppressedOwner;
+
+    /// <summary>
+    /// Whether a discard by <paramref name="owner"/> right now must not fire its 先知 effect.
+    ///
+    /// The scry's own discards fire 先知 through the pile-change hook
+    /// (<see cref="YetanniaCard.AfterCardChangedPiles"/>), which is the normal, common path — a card
+    /// cannot opt out of it by merely skipping its own fallback call. 背水一战's 东尼测试版 unupgraded
+    /// copy has to exhaust the cards it discards *without* triggering them, so it wraps its scry in
+    /// <see cref="SuppressFor"/> and the hook consults this before queueing or resolving.
+    ///
+    /// Scoped to one player rather than a plain on/off switch because the scry awaits a human choice:
+    /// in multiplayer a teammate can discard while it is open, and their 先知 triggers must keep
+    /// working. The game runs these hooks on the main thread, so no locking is needed.
+    /// </summary>
+    internal static bool IsSuppressedFor(Player owner) =>
+        owner != null && ReferenceEquals(_suppressedOwner, owner);
+
+    /// <summary>
+    /// Starts silencing <paramref name="owner"/>'s 先知 discards and returns whatever was suppressed
+    /// before, so a nested caller can restore it with <see cref="RestoreSuppression"/>.
+    /// </summary>
+    internal static Player SuppressFor(Player owner)
+    {
+        var previous = _suppressedOwner;
+        _suppressedOwner = owner;
+        return previous;
+    }
+
+    /// <summary>Restores the suppression state <see cref="SuppressFor"/> returned.</summary>
+    internal static void RestoreSuppression(Player previous) => _suppressedOwner = previous;
 
     private static bool OverOrEnding()
     {

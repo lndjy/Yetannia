@@ -110,8 +110,13 @@ public abstract class YetanniaCard : CustomCardModel
         if (Pile?.Type != PileType.Discard) return;
         if (!Keywords.Contains(YetanniaKeywords.Prophet)) return;
 
+        // 背水一战's 东尼测试版 scries without triggering the discarded cards: its scry silences this
+        // player's triggers for the duration, and the discard hook is what would otherwise fire them
+        // regardless of what the card itself does. Checked before the queue so nothing is even deferred.
+        if (ProphetQueue.IsSuppressedFor(Owner)) return;
+
         // Stamped BEFORE resolving, so anyone who snapshotted the token before discarding this card can
-        // tell that the automatic trigger did fire. 破釜沉舟 uses this to top up only the discards this
+        // tell that the automatic trigger did fire. 背水一战 uses this to top up only the discards this
         // hook missed instead of re-triggering every one of them (which double-fired the effect).
         LastProphetToken = Interlocked.Increment(ref _prophetToken);
 
@@ -162,7 +167,7 @@ public abstract class YetanniaCard : CustomCardModel
     /// Runs this card's Prophet effect the way a real play would: once per play, where a card with
     /// Replay N is played N+1 times. Also keeps the per-combat Prophet counter up to date.
     ///
-    /// Shared with effects that fire a *different* card's Prophet trigger (破釜沉舟 exhausting the
+    /// Shared with effects that fire a *different* card's Prophet trigger (背水一战 exhausting the
     /// cards it discarded). Callers that are discarding this card also handle the Power-card Limbo
     /// move; callers that are exhausting it do not need to, because exhausting already takes the card
     /// out of the play.
@@ -284,7 +289,7 @@ public abstract class YetanniaCard : CustomCardModel
 
     /// <summary>
     /// Runs the shared 预见 (Scry) mechanic via BaseLib's <see cref="ScryCmd"/>. Everything that
-    /// scries must go through here so scry listeners (涅槃, 先知研习, 编织) can react.
+    /// scries must go through here so scry listeners (步步为营, 未雨绸缪, 回马枪) can react.
     /// </summary>
     protected Task<ScryResult> Scry(PlayerChoiceContext choiceContext, decimal amount) =>
         ScryTrace.Run(GetType().Name, choiceContext, Owner, (int)amount);

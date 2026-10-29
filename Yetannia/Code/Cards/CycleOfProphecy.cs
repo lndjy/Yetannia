@@ -12,7 +12,7 @@ namespace Yetannia.YetanniaCode.Cards;
 /// <summary>
 /// 先知轮回 — 金卡（Rare），0 费能力：
 /// 获得 2（升级 3）点能量，预见 2（升级 3），抽 2（升级 3）张牌，
-/// 并在下个回合开始时将一张[眩晕]加入弃牌堆（一次性，不是每回合）。
+/// 并在下个回合开始时将一张[晕眩]加入弃牌堆（一次性，不是每回合）。
 /// </summary>
 public sealed class CycleOfProphecy : YetanniaCard
 {
@@ -50,7 +50,7 @@ public sealed class CycleOfProphecy : YetanniaCard
 
     private static readonly List<(string, string)> Chinese = new CardLoc(
         "殚精竭虑",
-        "获得{Energy:energyIcons()}。\n预见{Scry:diff()}。\n抽{Cards:diff()}张牌。\n下个回合开始时，将一张[gold]眩晕[/gold]加入你的弃牌堆。");
+        "获得{Energy:energyIcons()}。\n预见{Scry:diff()}。\n抽{Cards:diff()}张牌。\n下个回合开始时，将一张[gold]晕眩[/gold]加入你的弃牌堆。");
 
     private static readonly List<(string, string)> English = new CardLoc(
         "Exhaustive Planning",

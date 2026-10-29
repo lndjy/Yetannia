@@ -32,6 +32,16 @@ namespace Yetannia.YetanniaCode.Cards;
 /// </summary>
 public sealed class FatalInsight : YetanniaCard
 {
+    /// <summary>
+    /// Never offered by an in-combat card generation effect — the base game's rule for <c>Feed</c> /
+    /// <c>Transfigure</c>. Its second half upgrades a card in the persistent deck, so a random
+    /// "generate a card" effect could otherwise hand out a free Smith upgrade that lasts for the rest
+    /// of the run (and writes itself into the map history), which is a lasting gain the player did not
+    /// pay a rest site for. The damage half alone would be harmless to generate; this flag is about
+    /// the permanent half.
+    /// </summary>
+    public override bool CanBeGeneratedInCombat => false;
+
     private const int BaseDamage = 13;
     private const int DamageUpgrade = 3; // 13 -> 16
 

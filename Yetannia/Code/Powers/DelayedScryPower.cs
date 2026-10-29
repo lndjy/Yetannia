@@ -48,11 +48,11 @@ public sealed class DelayedScryPower : CustomPowerModel
 
     private static readonly List<(string, string)> Chinese = new PowerLoc(
         "预知",
-        "下个回合开始时预见 X。",
-        "下个回合开始时预见 X。");
+        "下个回合开始时，预见 X。",
+        "下个回合开始时，预见 X。");
 
     private static readonly List<(string, string)> English = new PowerLoc(
         "Foreknowledge",
-        "Scry X at the start of next turn.",
-        "Scry X at the start of next turn.");
+        "Scry X at the start of your next turn.",
+        "Scry X at the start of your next turn.");
 }

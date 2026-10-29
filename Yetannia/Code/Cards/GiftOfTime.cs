@@ -55,5 +55,5 @@ public sealed class GiftOfTime : YetanniaCard
 
     private static readonly List<(string, string)> English = new CardLoc(
         "The Prophet\u2019s Aid",
-        "Choose another character. At the end of their turn, they take an extra turn.\nEnd your turn.");
+        "Choose another character. At the end of this turn, they take an extra turn.\nEnd your turn.");
 }

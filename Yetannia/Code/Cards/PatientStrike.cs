@@ -10,7 +10,7 @@ namespace Yetannia.YetanniaCode.Cards;
 
 /// <summary>
 /// 霜色华斩 — 白卡（Common），4 费攻击（敲后 3 费）：
-/// 造成 26 点伤害。你每抽到一次这张牌，它的耗能 -1。
+/// 造成 26 点伤害。每当你抽到这张牌时，它的耗能减少 1。
 ///
 /// Name is a placeholder (the request did not give one). Same per-draw discount as
 /// <see cref="PatientBulwark"/>; no damage upgrade was specified, so the upgrade is the cost only.
@@ -40,7 +40,7 @@ public sealed class PatientStrike : YetanniaCard
             .Execute(choiceContext);
     }
 
-    /// <summary>你每抽到一次这张牌，它的耗能 -1。</summary>
+    /// <summary>每当你抽到这张牌时，它的耗能减少 1。</summary>
     public override Task AfterCardDrawn(PlayerChoiceContext choiceContext, CardModel card, bool fromHandDraw)
     {
         if (ReferenceEquals(card, this))
@@ -57,7 +57,7 @@ public sealed class PatientStrike : YetanniaCard
 
     private static readonly List<(string, string)> Chinese = new CardLoc(
         "霜色华斩",
-        "造成{Damage:diff()}点伤害。\n你每抽到一次这张牌，这张牌的耗能-1。");
+        "造成{Damage:diff()}点伤害。\n每当你抽到这张牌时，这张牌的耗能减少1。");
 
     private static readonly List<(string, string)> English = new CardLoc(
         "Frostbound Slash",

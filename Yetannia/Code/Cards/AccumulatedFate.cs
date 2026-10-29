@@ -15,7 +15,7 @@ namespace Yetannia.YetanniaCode.Cards;
 /// <summary>
 /// 宿命累积 — 蓝卡（Uncommon），1 费攻击，目标为所有敌人：
 /// 对所有敌人造成 6（升级 9）点伤害。
-/// 本场战斗中每触发过一次先知效果，此牌伤害 +3（升级 +4）。
+/// 本场战斗中每触发一次先知效果，此牌伤害 +3（升级 +4）。
 ///
 /// The running count comes from <c>ProphetTallyPower</c>, which
 /// <see cref="YetanniaCard"/> keeps up to date on every Prophet trigger (including this card's own
@@ -88,11 +88,11 @@ public sealed class AccumulatedFate : YetanniaCard
 
     private static readonly List<(string, string)> Chinese = new CardLoc(
         "厚积薄发",
-        "对所有敌人造成{CalculatedDamage:diff()}点伤害。\n本场战斗中每触发过一次[gold]先知[/gold]效果，此牌伤害+{ExtraDamage:diff()}。\n（本场已触发先知 {Tally} 次）\n[gold]先知[/gold]。");
+        "对所有敌人造成{CalculatedDamage:diff()}点伤害。\n本场战斗中每触发一次[gold]先知[/gold]效果，此牌伤害+{ExtraDamage:diff()}。\n（本场已触发先知效果 {Tally} 次）\n[gold]先知[/gold]。");
 
     private static readonly List<(string, string)> English = new CardLoc(
         "Building Momentum",
-        "Deal {CalculatedDamage:diff()} damage to ALL enemies.\nDeals {ExtraDamage:diff()} additional damage for each [gold]Prophet[/gold] effect triggered this combat.\n({Tally} triggered so far this combat)\n[gold]Prophet[/gold].");
+        "Deal {CalculatedDamage:diff()} damage to ALL enemies.\nDeals {ExtraDamage:diff()} additional damage for each [gold]Prophet[/gold] effect triggered this combat.\n(Prophet effects triggered this combat: {Tally})\n[gold]Prophet[/gold].");
 
     /// <summary>
     /// Surfaces the 先知 tally on this card's face.

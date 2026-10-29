@@ -13,7 +13,7 @@ namespace Yetannia.YetanniaCode.Cards;
 /// 回应愿景之心 — 蓝卡（Uncommon），1 费能力，多人专属，指定一名队友（敲后[固有]）：
 /// 当你获得力量和敏捷时，该队友获得等量力量和敏捷。
 ///
-/// Name is a placeholder (the request did not give one). Mirrors 薪火's target-a-teammate pattern.
+/// Name is a placeholder (the request did not give one). Mirrors 归途终尽之景's target-a-teammate pattern.
 /// </summary>
 public sealed class SharedMight : YetanniaCard
 {
@@ -43,9 +43,9 @@ public sealed class SharedMight : YetanniaCard
 
     private static readonly List<(string, string)> Chinese = new CardLoc(
         "回应愿景之心",
-        "选择一名队友。本场战斗中，当你获得[gold]力量[/gold]和[gold]敏捷[/gold]时（不因此牌），其获得等量[gold]力量[/gold]和[gold]敏捷[/gold]。");
+        "选择一名队友。本场战斗中，当你获得[gold]力量[/gold]或[gold]敏捷[/gold]时（不因此牌），其获得等量的[gold]力量[/gold]或[gold]敏捷[/gold]。");
 
     private static readonly List<(string, string)> English = new CardLoc(
         "Heart Answering a Vision",
-        "Choose a teammate. This combat, whenever you gain [gold]Strength[/gold] or [gold]Dexterity[/gold] (not from this card), they gain the same amount.");
+        "Choose a teammate. This combat, whenever you gain [gold]Strength[/gold] or [gold]Dexterity[/gold] from another source, they gain the same amount of it.");
 }

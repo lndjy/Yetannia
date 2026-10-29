@@ -12,7 +12,7 @@ using MegaCrit.Sts2.Core.Models;
 namespace Yetannia.YetanniaCode.Powers;
 
 /// <summary>
-/// 趁势而动 的能力：每回合你抽到状态牌的前 1（升级 2）次，将其消耗。
+/// 趁势而动 的能力：每回合你抽到的前 1（升级 2）张状态牌会被消耗。
 ///
 /// The per-turn counter resets in <see cref="AbstractModel.BeforeHandDraw"/>, not in
 /// <c>AfterPlayerTurnStart</c>. CombatManager draws the opening hand *before* dispatching
@@ -70,8 +70,8 @@ public sealed class PurifyStatusPower : CustomPowerModel
 
     private static readonly List<(string, string)> Chinese = new PowerLoc(
         "趁势而动",
-        "每回合你抽到状态牌的前 X 次，将它消耗。",
-        "每回合你抽到状态牌的前 X 次，将它消耗。");
+        "每回合你抽到的前 X 张状态牌会被消耗。",
+        "每回合你抽到的前 X 张状态牌会被消耗。");
 
     private static readonly List<(string, string)> English = new PowerLoc(
         "Seize the Moment",

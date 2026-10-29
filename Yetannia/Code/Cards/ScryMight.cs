@@ -58,5 +58,5 @@ public sealed class ScryMight : YetanniaCard
 
     private static readonly List<(string, string)> English = new CardLoc(
         "Bide One\u2019s Time",
-        "After you play this, every {Threshold:diff()} cards you scry, gain 1 [gold]Strength[/gold].");
+        "After you play this, gain 1 [gold]Strength[/gold] for every {Threshold:diff()} cards you Scry.");
 }

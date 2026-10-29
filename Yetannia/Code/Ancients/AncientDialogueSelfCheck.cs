@@ -34,12 +34,67 @@ internal static class AncientDialogueSelfCheck
         {
             var log = MainFile.Logger;
 
-            var keys = YetanniaAncientDialoguePlan.LocEntries(false);
-            var unresolved = keys.Keys.Where(k => !LocString.Exists(YetanniaAncientDialoguePlan.Table, k)).ToList();
-            log.Info($"self-check talk keys  : defined={keys.Count} resolved={keys.Count - unresolved.Count}/{keys.Count} language={LocManager.Instance?.Language}");
+            var chinese = YetanniaAncientDialoguePlan.LocEntries(false);
+            var english = YetanniaAncientDialoguePlan.LocEntries(true);
+            var active = Loc.IsEnglish ? english : chinese;
+            var unresolved = active.Keys.Where(k => !LocString.Exists(YetanniaAncientDialoguePlan.Table, k)).ToList();
+            log.Info($"self-check talk keys  : defined={active.Count} chinese={chinese.Count} english={english.Count} " +
+                     $"resolved={active.Count - unresolved.Count}/{active.Count} language={LocManager.Instance?.Language}");
             if (unresolved.Count > 0)
             {
                 log.Error($"self-check MISSING talk keys ({unresolved.Count}): {string.Join(", ", unresolved.Take(8))}");
+            }
+
+            // The English column is generated data, not authored in C#, so a bad merge (missing line,
+            // Chinese left in the English slot, the columns swapped) compiles fine and only shows up as
+            // Chinese text on an English client. Prove the columns line up in both directions and that
+            // the English one is really English. Lines whose Chinese is punctuation only ("......")
+            // legitimately translate to the same string, so the identity test is gated on the Chinese
+            // actually containing a Han character.
+            var missingEnglish = chinese.Keys.Where(k => !english.ContainsKey(k)).ToList();
+            var extraEnglish = english.Keys.Where(k => !chinese.ContainsKey(k)).ToList();
+            if (missingEnglish.Count > 0)
+            {
+                log.Error($"self-check talk EN    : {missingEnglish.Count} key(s) have no English column: {string.Join(", ", missingEnglish.Take(8))}");
+            }
+            if (extraEnglish.Count > 0)
+            {
+                log.Error($"self-check talk EN    : {extraEnglish.Count} English-only key(s): {string.Join(", ", extraEnglish.Take(8))}");
+            }
+
+            var badEnglish = english.Where(kv =>
+                {
+                    if (string.IsNullOrWhiteSpace(kv.Value) || HasCjk(kv.Value)) return true;
+                    var zh = chinese.TryGetValue(kv.Key, out var value) ? value : string.Empty;
+                    return HasCjk(zh) && string.Equals(kv.Value, zh, StringComparison.Ordinal);
+                })
+                .Select(kv => kv.Key).ToList();
+            if (badEnglish.Count > 0)
+            {
+                log.Error($"self-check talk EN    : {badEnglish.Count} English line(s) empty, still Chinese, or identical " +
+                          $"to the Chinese: {string.Join(", ", badEnglish.Take(8))}");
+            }
+
+            // End-to-end: the live table must hold the ACTIVE language's column verbatim. This is what
+            // proves LocEntries(true/false) is what actually got injected, and that a mid-session
+            // language switch re-filled the table instead of leaving stale text behind.
+            var wrongLanguage = new List<string>();
+            foreach (var pair in active)
+            {
+                var loc = new LocString(YetanniaAncientDialoguePlan.Table, pair.Key);
+                try
+                {
+                    if (loc.Exists() && loc.GetFormattedText() != pair.Value) wrongLanguage.Add(pair.Key);
+                }
+                catch (Exception e)
+                {
+                    wrongLanguage.Add($"{pair.Key} <{e.GetType().Name}>");
+                }
+            }
+            if (wrongLanguage.Count > 0)
+            {
+                log.Error($"self-check talk lang  : {wrongLanguage.Count} live row(s) do not match the " +
+                          $"{(Loc.IsEnglish ? "English" : "Chinese")} column: {string.Join(", ", wrongLanguage.Take(8))}");
             }
 
             var characterEntry = YetanniaAncientDialoguePlan.CharacterEntry;
@@ -200,4 +255,22 @@ internal static class AncientDialogueSelfCheck
     private static bool AncientBlacklistContains(object ancient, CharacterModel character) =>
         ancient is AncientEventModel ancientModel &&
         ancientModel.AnyCharacterDialogueBlacklist.Contains(character);
+
+    /// <summary>
+    /// True when <paramref name="text"/> still contains a Han character or CJK punctuation. Used to
+    /// prove the English column is really translated: a blank, copied-over or half-translated line
+    /// would otherwise render Chinese text on an English client without a single error.
+    /// </summary>
+    private static bool HasCjk(string text)
+    {
+        foreach (var ch in text)
+        {
+            if (ch >= '\u3000' && ch <= '\u303F') return true; // CJK symbols and punctuation
+            if (ch >= '\u3400' && ch <= '\u4DBF') return true; // CJK unified ideographs extension A
+            if (ch >= '\u4E00' && ch <= '\u9FFF') return true; // CJK unified ideographs
+            if (ch >= '\uF900' && ch <= '\uFAFF') return true; // CJK compatibility ideographs
+            if (ch >= '\uFF00' && ch <= '\uFFEF') return true; // halfwidth and fullwidth forms
+        }
+        return false;
+    }
 }

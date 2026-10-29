@@ -28,7 +28,7 @@ cfg = {
     # Public: the user asked for the workshop item to be published openly. (The earlier "don't make
     # it public" referred to the *voice assets* on GitHub, not to this item's visibility.)
     "visibility": "public",
-    "changeNote": "v1.0.3：\n· 修好了联机时「预见」让卡牌卡在屏幕中间、整局动不了的问题。根因已由真实联机日志定位：战斗结束的那一瞬间，如果正好有一次预见在等玩家选牌，引擎会取消持有这次选择的那条操作，于是这次选择再也没人应答、等待永远不返回，牌就一直冻在屏幕上。现在战斗结束或即将结束时，这次预见会安全放弃，不再挂住整局。\n· 另有玩家反馈「预见时界面位置不对」，这一项本轮也已修好：引擎的卡牌网格居中时用的是「一行的容量」（这里 5 张）而不是实际显示的张数，所以只翻出 1 张时那张牌会被丢在 5 张宽框的最左边（1920 屏上 x≈375，右边一大片空）。现在按实际张数居中（实测 1 张时 x 从 375 移到 935；翻出多行时最后一行同样居中）。只影响预见的选牌界面，其他网格不动。",
+    "changeNote": "v1.0.4：\n· 新增「卡牌数值」设置：可在「原版」与「东尼测试版」之间切换。测试版对 12 张卡采用另一套数值，其余 70 张两档一致；切换后需重启游戏生效。\n· 修复：积厚成势 / 致命洞察 / 天之恩典 这类局外收益牌，不再能被局内随机印牌或战斗内转化生成（对齐原版狂宴）。\n· 文案全面校对：修正错别字与中英不一致，8 个战斗内能力名统一为对应卡名。\n· 英文补全：九位先古的 246 行专属对话已全部译成英文。\nv1.0.4:\n· New \"Card Numbers\" setting: switch between Original and Tony Test Build. The test build changes 12 cards; the other 70 are identical in both. A restart is required.\n· Fixed out-of-combat payoff cards (Accumulate Might / Fatal Insight / Shared Regen) being created by in-combat card generation or transformation.\n· Full text proofread; 8 in-combat power names now match their cards.\n· All 246 lines of Ancient dialogue are now in English.",
     "tags": [],
     # 3737335127 is BaseLib's Workshop item id -- not a guess: the uploader itself resolves the mod's
     # declared BaseLib dependency to exactly this id and prints "Removed dependency on 3737335127" when

@@ -10,7 +10,7 @@ using MegaCrit.Sts2.Core.Models.Cards;
 namespace Yetannia.YetanniaCode.Powers;
 
 /// <summary>
-/// 殚精竭虑 — at the start of your **next** turn, add one 眩晕 (Dazed) to your discard pile, then
+/// 殚精竭虑 — at the start of your **next** turn, add one 晕眩 (Dazed) to your discard pile, then
 /// remove this power.
 ///
 /// It used to fire every turn for the rest of the combat; the request narrowed the drawback to a
@@ -43,8 +43,8 @@ public sealed class CycleOfProphecyPower : CustomPowerModel
 
     private static readonly List<(string, string)> Chinese = new PowerLoc(
         "殚精竭虑",
-        "下个回合开始时，将一张[gold]眩晕[/gold]加入你的弃牌堆。",
-        "下个回合开始时，将一张[gold]眩晕[/gold]加入你的弃牌堆。");
+        "下个回合开始时，将一张[gold]晕眩[/gold]加入你的弃牌堆。",
+        "下个回合开始时，将一张[gold]晕眩[/gold]加入你的弃牌堆。");
 
     private static readonly List<(string, string)> English = new PowerLoc(
         "Exhaustive Planning",

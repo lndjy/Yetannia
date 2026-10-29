@@ -33,12 +33,12 @@ public sealed class DoubleStatusPower : CustomPowerModel
     public override List<(string, string)> Localization => Loc.Pick(Chinese, English);
 
     private static readonly List<(string, string)> Chinese = new PowerLoc(
-        "幻想纯爱",
+        "心之所向",
         "你的纯爱幻想和幻想纯爱造成的伤害、获得的格挡翻倍。",
         "你的纯爱幻想和幻想纯爱造成的伤害、获得的格挡翻倍。");
 
     private static readonly List<(string, string)> English = new PowerLoc(
-        "Fantasy of Pure Love",
+        "Where the Heart Leads",
         "Your Pure Love Fantasies and Fantasies of Pure Love deal double damage and gain double Block.",
         "Your Pure Love Fantasies and Fantasies of Pure Love deal double damage and gain double Block.");
 }

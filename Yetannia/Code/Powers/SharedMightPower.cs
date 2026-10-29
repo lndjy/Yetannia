@@ -57,11 +57,11 @@ public sealed class SharedMightPower : CustomPowerModel
 
     private static readonly List<(string, string)> Chinese = new PowerLoc(
         "回应愿景之心",
-        "本场战斗中，当你获得力量和敏捷时（不因此牌），该角色获得等量力量和敏捷。",
-        "本场战斗中，当你获得力量和敏捷时（不因此牌），该角色获得等量力量和敏捷。");
+        "本场战斗中，当你获得[gold]力量[/gold]或[gold]敏捷[/gold]时（不因此牌），该角色获得等量的[gold]力量[/gold]或[gold]敏捷[/gold]。",
+        "本场战斗中，当你获得[gold]力量[/gold]或[gold]敏捷[/gold]时（不因此牌），该角色获得等量的[gold]力量[/gold]或[gold]敏捷[/gold]。");
 
     private static readonly List<(string, string)> English = new PowerLoc(
         "Heart Answering a Vision",
-        "This combat, whenever you gain Strength or Dexterity (not from this card), they gain the same amount.",
-        "This combat, whenever you gain Strength or Dexterity (not from this card), they gain the same amount.");
+        "This combat, whenever you gain [gold]Strength[/gold] or [gold]Dexterity[/gold] from another source, they gain the same amount of it.",
+        "This combat, whenever you gain [gold]Strength[/gold] or [gold]Dexterity[/gold] from another source, they gain the same amount of it.");
 }

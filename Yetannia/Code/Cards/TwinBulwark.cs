@@ -4,11 +4,15 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
+using Yetannia.YetanniaCode.Config;
 
 namespace Yetannia.YetanniaCode.Cards;
 
 /// <summary>
-/// 交叉防御 — 白卡（Common），1 费技能：获得 5（升级 7）点[格挡]，2 次。
+/// 交叉防御 — 白卡（Common），1 费技能：获得两次[格挡]。
+/// 原版（<see cref="CardBalanceMode.Original"/>）：每次 5，敲后 7。
+/// 东尼测试版（<see cref="CardBalanceMode.TonyTest"/>）：每次 4，敲后 6。
+/// (Original: 5 Block per grant, upgraded 7. Tony draft: 4 per grant, upgraded 6.)
 ///
 /// Name is a placeholder (the request did not give one). The two grants are separate
 /// <c>GainBlock</c> calls rather than one doubled amount, so anything that reacts to a single
@@ -16,8 +20,9 @@ namespace Yetannia.YetanniaCode.Cards;
 /// </summary>
 public sealed class TwinBulwark : YetanniaCard
 {
-    private const int BaseBlock = 5;
-    private const int BlockUpgrade = 2; // 5 -> 7
+    private const int OriginalBaseBlock = 5;
+    private const int BlockUpgrade = 2; // 5 -> 7 或 4 -> 6
+    private const int TonyBaseBlock = 4;
     private const int Times = 2;
 
     public TwinBulwark()
@@ -28,7 +33,7 @@ public sealed class TwinBulwark : YetanniaCard
     public override bool GainsBlock => true;
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
-        [new BlockVar(BaseBlock, ValueProp.Move)];
+        [new BlockVar(CardBalance.IsTony ? TonyBaseBlock : OriginalBaseBlock, ValueProp.Move)];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
@@ -44,9 +49,9 @@ public sealed class TwinBulwark : YetanniaCard
 
     private static readonly List<(string, string)> Chinese = new CardLoc(
         "交叉防御",
-        "获得{Block:diff()}点[gold]格挡[/gold]，2次。");
+        "获得{Block:diff()}点[gold]格挡[/gold]，触发2次。");
 
     private static readonly List<(string, string)> English = new CardLoc(
         "Cross Defense",
-        "Gain {Block:diff()} [gold]Block[/gold], 2 times.");
+        "Gain {Block:diff()} [gold]Block[/gold], twice.");
 }

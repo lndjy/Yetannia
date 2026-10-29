@@ -33,7 +33,7 @@ public sealed class ProphetsBracelet : YetanniaRelic
 
     private static readonly List<(string, string)> Chinese = new RelicLoc(
         "先知的手链",
-        $"在所有问号事件中新增选项：跳过该事件并获得{GoldReward}金币。",
+        $"在所有问号事件中新增选项：跳过该事件，获得{GoldReward}金币。",
         "有些未来不值得看，有些价钱值得收。");
 
     private static readonly List<(string, string)> English = new RelicLoc(

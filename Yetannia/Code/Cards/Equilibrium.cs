@@ -91,13 +91,13 @@ public sealed class Equilibrium : YetanniaCard
 
     private static readonly List<(string, string)> Chinese = new CardLoc(
         "能量调和",
-        "如果本回合你打出的先知牌数和非先知牌数相等，从抽牌堆检索先知牌和非先知牌各一张加入手牌。\n（当前先知牌{ProphetPlayed}张，非先知牌{NonProphetPlayed}张）",
+        "如果本回合你打出的先知牌数和非先知牌数相等，从抽牌堆中选择一张先知牌和一张非先知牌加入手牌。\n（本回合已打出先知牌{ProphetPlayed}张，非先知牌{NonProphetPlayed}张）",
         ("prophetSelectionPrompt", "选择一张先知牌。"),
         ("nonProphetSelectionPrompt", "选择一张非先知牌。"));
 
     private static readonly List<(string, string)> English = new CardLoc(
         "Energy Harmony",
-        "If you have played the same number of Prophet and non-Prophet cards this turn, retrieve a Prophet card and a non-Prophet card from your draw pile and add them to your hand.\n(Prophet cards played this turn: {ProphetPlayed}; non-Prophet cards played this turn: {NonProphetPlayed})",
+        "If you have played the same number of Prophet and non-Prophet cards this turn, choose a Prophet card and a non-Prophet card from your draw pile and add them to your hand.\n(Prophet cards played this turn: {ProphetPlayed}; non-Prophet cards played this turn: {NonProphetPlayed})",
         ("prophetSelectionPrompt", "Choose a Prophet card."),
         ("nonProphetSelectionPrompt", "Choose a non-Prophet card."));
 }

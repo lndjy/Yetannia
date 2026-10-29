@@ -12,7 +12,7 @@ using MegaCrit.Sts2.Core.Models;
 namespace Yetannia.YetanniaCode.Powers;
 
 /// <summary>
-/// Shared body for 未命名·预见之力 / 未命名·预见之敏: every <see cref="Threshold"/> cards scried
+/// Shared body for 藏器待时 / 后发先制: every <see cref="Threshold"/> cards scried
 /// this combat, grant one point of the relevant stat.
 ///
 /// <c>Amount</c> is the running count of cards scried while this power has been up. The number of

@@ -5,12 +5,17 @@ using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
+using Yetannia.YetanniaCode.Config;
 
 namespace Yetannia.YetanniaCode.Cards;
 
 /// <summary>
-/// 冰刃轮舞 — 金卡（Rare），2 费攻击：
-/// 对所有敌人造成 5 点伤害，4（升级 5）次。
+/// 冰刃轮舞 — 金卡（Rare）攻击：对所有敌人造成 4（升级 5）次伤害。
+/// 原版（<see cref="CardBalanceMode.Original"/>）：2 费，每次 5 点伤害。
+/// 东尼测试版（<see cref="CardBalanceMode.TonyTest"/>）：3 费，每次 6 点伤害。
+/// (Original: 2 energy, 5 damage per hit. Tony draft: 3 energy, 6 damage per hit.)
+/// 两档的命中次数与重放成长相同。
+///
 /// 本场战斗中你每洗牌一次，这张牌获得重放 1。
 ///
 /// Name is a placeholder (the request did not give one).
@@ -24,18 +29,21 @@ namespace Yetannia.YetanniaCode.Cards;
 /// </summary>
 public sealed class ShuffleReplay : YetanniaCard
 {
-    private const int BaseDamage = 5;
+    private const int OriginalCost = 2;
+    private const int TonyCost = 3;
+    private const int OriginalBaseDamage = 5;
+    private const int TonyBaseDamage = 6;
     private const int BaseHits = 4;
     private const int HitsUpgrade = 1; // 4 -> 5
 
     public ShuffleReplay()
-        : base(2, CardType.Attack, CardRarity.Rare, TargetType.AllEnemies)
+        : base(CardBalance.IsTony ? TonyCost : OriginalCost, CardType.Attack, CardRarity.Rare, TargetType.AllEnemies)
     {
     }
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(BaseDamage, ValueProp.Move),
+        new DamageVar(CardBalance.IsTony ? TonyBaseDamage : OriginalBaseDamage, ValueProp.Move),
         new RepeatVar(BaseHits)
     ];
 
@@ -64,9 +72,9 @@ public sealed class ShuffleReplay : YetanniaCard
 
     private static readonly List<(string, string)> Chinese = new CardLoc(
         "冰刃轮舞",
-        "对所有敌人造成{Damage:diff()}点伤害，{Repeat:diff()}次。\n本场战斗中你每洗牌一次，这张牌获得重放1。");
+        "对所有敌人造成{Damage:diff()}点伤害，{Repeat:diff()}次。\n本场战斗中你每洗牌一次，这张牌获得重放 1。");
 
     private static readonly List<(string, string)> English = new CardLoc(
         "Ice Blade Waltz",
-        "Deal {Damage:diff()} damage to ALL enemies {Repeat:diff()} times.\nWhenever you shuffle this combat, this card gains Replay 1.");
+        "Deal {Damage:diff()} damage to ALL enemies {Repeat:diff()} times.\nWhenever you shuffle your draw pile this combat, this card gains Replay 1.");
 }

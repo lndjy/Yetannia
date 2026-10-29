@@ -46,6 +46,6 @@ public sealed class UnplayedOmen : YetanniaCard
         "[gold]先知[/gold]：抽{Cards:diff()}张牌。");
 
     private static readonly List<(string, string)> English = new CardLoc(
-        "Lure Out",
+        "Lure the Snake Out",
         "[gold]Prophet[/gold]: Draw {Cards:diff()} cards.");
 }

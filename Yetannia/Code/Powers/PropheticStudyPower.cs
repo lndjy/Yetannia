@@ -10,7 +10,7 @@ using MegaCrit.Sts2.Core.Models;
 namespace Yetannia.YetanniaCode.Powers;
 
 /// <summary>
-/// 先知研习 — whenever you Scry, draw X card(s).
+/// 未雨绸缪 — whenever you Scry, draw X card(s).
 /// </summary>
 public sealed class PropheticStudyPower : CustomPowerModel, IAfterScryed
 {
@@ -59,12 +59,12 @@ public sealed class PropheticStudyPower : CustomPowerModel, IAfterScryed
     public override List<(string, string)> Localization => Loc.Pick(Chinese, English);
 
     private static readonly List<(string, string)> Chinese = new PowerLoc(
-        "先知研习",
+        "未雨绸缪",
         "每当你预见时，抽 X 张牌。",
         "每当你预见时，抽 X 张牌。");
 
     private static readonly List<(string, string)> English = new PowerLoc(
-        "Prophetic Study",
+        "Forewarned",
         "Whenever you Scry, draw X card(s).",
         "Whenever you Scry, draw X card(s).");
 }
