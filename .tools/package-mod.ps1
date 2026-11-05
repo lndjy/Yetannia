@@ -76,6 +76,16 @@ foreach ($f in @($dll, $json, $pck)) {
     if (-not (Test-Path $f)) { throw "missing build artifact: $f" }
 }
 
+# BLOCKING: the campfire (rest site) and shop (merchant) scenes are generated from the combat scene.
+# If the atlas was re-rendered without regenerating them, they keep stale frame rects and the character
+# breaks in those two rooms while combat still looks perfect -- that shipped once in v1.0.6. The check
+# compares their AtlasTexture regions and sprite scale against the combat scene.
+Write-Host "verifying campfire / shop scene slicing..."
+python (Join-Path $PSScriptRoot "verify-scene-slicing.py")
+if ($LASTEXITCODE -ne 0) {
+    throw "scene slicing check failed -- run .tools/build-alt-scenes.py, re-export the pck, then retry"
+}
+
 if (Test-Path $stage) { Remove-Item $stage -Recurse -Force }
 $modStage = Join-Path $stage $modName
 New-Item -ItemType Directory -Path $modStage -Force | Out-Null

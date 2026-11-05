@@ -99,6 +99,15 @@ AtlasTexture regions and now read its sprite placement instead of hard-coded con
 `.tools/apply-creature-anim.ps1` runs that generator automatically, so the order cannot be forgotten —
 but if you apply the atlas by hand, run it yourself before `export-pck.ps1`.
 
+Two gates now catch this class of bug without relying on memory:
+
+```powershell
+python .tools/verify-scene-slicing.py   # campfire/shop slice the SAME frames at the SAME scale as combat
+```
+
+`package-mod.ps1` runs it and refuses to build the archive when it fails. It is structural, so it also
+catches a stale scene that no one happens to open in game.
+
 Why it is mandatory: v1.0.6 re-rendered the atlas from a 378x359 frame canvas to 570x580, and the
 campfire/shop scenes kept the old frame rects. In combat she looked fine; at a campfire or a shop the
 model was a sliced, mispositioned mess. The in-game QA of that release only covered combat, so it
