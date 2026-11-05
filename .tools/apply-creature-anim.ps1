@@ -42,9 +42,21 @@ Copy-Item $icon $dstI -Force
 # whenever the icon changes -- otherwise it is still the dilation of the previous artwork.
 python (Join-Path $tools 'icon-outline.py') make $dstI $dstO
 
+# MANDATORY: the rest-site (campfire) and merchant (shop) scenes are generated FROM this creature
+# scene -- they reuse its AtlasTexture regions and its sprite placement. When the atlas is re-rendered
+# at a different size, those two scenes keep the old frame rects and draw a broken figure. That is
+# exactly what shipped in v1.0.6 (combat looked fine, campfire/shop models were sliced garbage).
+# Regenerating them here makes the ordering impossible to get wrong.
+Write-Host "regenerating dependent rest-site / merchant scenes ..."
+python (Join-Path $tools 'build-alt-scenes.py')
+if ($LASTEXITCODE -ne 0) { Write-Host "build-alt-scenes.py FAILED"; exit 1 }
+
 Write-Host "applied:"
 foreach ($f in @($dstS, (Join-Path $dstD 'yetannia_atlas_0.png'),
-                 (Join-Path $dstD 'yetannia_atlas_0.png.import'), $dstI, $dstO)) {
+                 (Join-Path $dstD 'yetannia_atlas_0.png.import'), $dstI, $dstO,
+                 (Join-Path $proj 'scenes\rest_site\yetannia_rest_site.tscn'),
+                 (Join-Path $proj 'scenes\merchant\yetannia_merchant.tscn'))) {
     Write-Host ("  {0}  ({1:N0} bytes)" -f $f, (Get-Item $f).Length)
 }
 Write-Host "next: .tools/export-pck.ps1   (mandatory - package-mod.ps1 does NOT re-export)"
+

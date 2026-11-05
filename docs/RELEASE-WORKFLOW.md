@@ -92,6 +92,19 @@ It imports through a script-free Godot project and writes `Yetannia/build/Yetann
 the `.pck` timestamp and size changed, and the entry count is what you expect. A silently-empty or
 unchanged `.pck` is the failure mode this step guards against.
 
+**If the creature atlas was re-rendered, the two dependent scenes must be rebuilt in the same breath.**
+`.tools/build-alt-scenes.py` generates `scenes/rest_site/yetannia_rest_site.tscn` and
+`scenes/merchant/yetannia_merchant.tscn` *from* `scenes/creature_visuals/yetannia.tscn`: they reuse its
+AtlasTexture regions and now read its sprite placement instead of hard-coded constants.
+`.tools/apply-creature-anim.ps1` runs that generator automatically, so the order cannot be forgotten —
+but if you apply the atlas by hand, run it yourself before `export-pck.ps1`.
+
+Why it is mandatory: v1.0.6 re-rendered the atlas from a 378x359 frame canvas to 570x580, and the
+campfire/shop scenes kept the old frame rects. In combat she looked fine; at a campfire or a shop the
+model was a sliced, mispositioned mess. The in-game QA of that release only covered combat, so it
+shipped. **When a change touches how art is sliced, the regression sweep must visit every scene that
+draws the character — combat, campfire, shop, and the character-select figure — not just combat.**
+
 ---
 
 ## 5. Version bump

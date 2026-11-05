@@ -7,6 +7,11 @@
 
 [h2]更新记录[/h2]
 
+[b]v1.0.7[/b]
+[list]
+[*][b]修复营火 / 商店角色模型错位[/b]：v1.0.6 把战斗立绘重渲染到 1.5 倍后，这两个场景的帧区域还是旧图集的坐标，模型会破碎/错位；现已按新图集重建，尺寸与站位和战斗立绘一致。
+[/list]
+
 [b]v1.0.6[/b]
 [list]
 [*][b]战斗立绘重渲染[/b]：3D 模型按 1.5 倍分辨率重新渲染（人物源像素 179×216 → 253×305），屏幕显示尺寸不变（约 277px 高）；头发、金边、裙摆的细节现在是缩小显示而不是放大显示，实机明显更清晰。包体因此变大（pck 约 40MB → 57MB）。
@@ -15,16 +20,12 @@
 
 [b]v1.0.5[/b]
 [list]
-[*][b]纯爱幻想 / 幻想纯爱[/b]（状态牌）：被消耗时[b]额外抽 1 张牌[/b]（6 点随机伤害 / 4 点格挡不变）。
-[*][b]凯旋之路[/b]（消耗状态牌时抽 1 张）：稀有度 [b]金卡 → 蓝卡[/b]。
-[*][b]运筹帷幄[/b]（手牌控顶、预见 8）：[b]增加「保留」、升为金卡[/b]（「消耗」原本就有）。
-[*]以上三条对[b]原版与东尼测试版都生效[/b]；「东尼」= 安东尼，英文用 Anthony。
+[*]状态牌（纯爱幻想 / 幻想纯爱）被消耗时[b]额外抽 1 张[/b]；[b]凯旋之路[/b]改为蓝卡；[b]运筹帷幄[/b]增加「保留」并升金。两档数值都生效。
 [/list]
 
 [b]v1.0.4[/b]
 [list]
-[*]新增 [b]「卡牌数值」设置[/b]：原版 / 东尼测试版两档，覆盖 12 张卡，切换后需重启。
-[*]修复局外收益牌被局内印牌生成；文案全面校对；九位先古的 246 行对话补齐英文。
+[*]新增「卡牌数值」设置（原版 / 东尼测试版，12 张卡，需重启）；修复局外收益牌被局内印牌生成；文案校对；先古对话补齐英文。
 [/list]
 
 [hr][/hr]
@@ -84,6 +85,11 @@
 
 [h2]Changelog[/h2]
 
+[b]v1.0.7[/b]
+[list]
+[*][b]Fixed the campfire (rest site) and merchant (shop) character models[/b]: after v1.0.6 re-rendered the combat sprite at 1.5x, those two scenes still used the old atlas frame rects and drew a broken figure. Both are rebuilt and now match the in-combat figure in size and placement.
+[/list]
+
 [b]v1.0.6[/b]
 [list]
 [*][b]Re-rendered combat sprite[/b]: the 3D model is re-rendered at 1.5x resolution (the figure is 253x305 source pixels now instead of 179x216) while the on-screen height stays ~277 px, so detail is downscaled rather than upscaled and reads noticeably sharper. The .pck grows from ~40 MB to ~57 MB as a result.
@@ -92,16 +98,12 @@
 
 [b]v1.0.5[/b]
 [list]
-[*][b]Pure Love Fantasy / Fantasy of Pure Love[/b] (Status): now [b]draw 1 card when exhausted[/b] (6 damage / 4 Block unchanged).
-[*][b]Road of Triumph[/b]: rarity [b]Rare → Uncommon[/b].
-[*][b]Strategize[/b]: gains [b]Retain[/b] and moves up to [b]Rare[/b].
-[*]All three apply to [b]both[/b] drafts. English label is now [b]Anthony Test Build[/b].
+[*]Status cards draw 1 when exhausted; Road of Triumph is now Uncommon; Strategize gains Retain and moves up to Rare. All apply to both drafts.
 [/list]
 
 [b]v1.0.4[/b]
 [list]
-[*]New [b]Card Numbers[/b] setting (Original / Anthony Test Build) covering 12 cards; restart required.
-[*]Out-of-combat payoff cards can no longer be generated in combat; full text proofread; 246 Ancient dialogue lines translated.
+[*]Card Numbers setting (Original / Anthony Test Build, 12 cards, restart required); out-of-combat payoff cards can no longer be generated in combat; full proofread; 246 Ancient dialogue lines translated.
 [/list]
 
 [hr][/hr]

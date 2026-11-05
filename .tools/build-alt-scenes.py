@@ -93,6 +93,38 @@ def parse_creature(path):
     return regions, anims, (atlas_res.group(1), atlas_res.group(2)) if atlas_res else (ATLAS, "tex0")
 
 
+def _node_block(src, name):
+    """Raw text of one [node ...] block, up to the next [node / [sub_resource / EOF."""
+    m = re.search(r'\[node name="%s"[^\]]*\]\n(.*?)(?=\n\[|\Z)' % re.escape(name), src, re.S)
+    return m.group(1) if m else ""
+
+
+def parse_placement(path):
+    """Sprite placement and silhouette box, READ FROM the creature scene.
+
+    These used to be hard-coded constants copied from a QA measurement. That is exactly what broke
+    the campfire and merchant figures in v1.0.6: the creature atlas was re-rendered at 1.5x (frame
+    canvas 378x359 -> 570x580, sprite scale 1.2534 -> 0.842) and the constants below did not move with
+    it, so the regenerated alt scenes drew the old frame rects at the old scale. Read them instead.
+    """
+    src = io.open(path, encoding="utf-8").read()
+    sprite = _node_block(src, "Sprite2D")
+    pos = re.search(r'position = Vector2\(([^)]*)\)', sprite)
+    scl = re.search(r'scale = Vector2\(([^)]*)\)', sprite)
+    bounds = _node_block(src, "Bounds")
+    offs = {}
+    for side in ("left", "top", "right", "bottom"):
+        m = re.search(r'offset_%s = ([-0-9.]+)' % side, bounds)
+        offs[side] = float(m.group(1)) if m else None
+    position = tuple(float(v) for v in pos.group(1).split(",")) if pos else SPRITE_POS
+    scale = float(scl.group(1).split(",")[0]) if scl else SPRITE_SCALE
+    if all(offs[s] is not None for s in ("left", "top", "right", "bottom")):
+        box = (offs["left"], offs["top"], offs["right"], offs["bottom"])
+    else:
+        box = BOUNDS
+    return position, scale, box
+
+
 PROSE = '''[gd_scene load_steps={steps} format=3]
 
 ; {title}
@@ -259,6 +291,11 @@ def main():
     args = ap.parse_args()
 
     regions, anims, (atlas, _tid) = parse_creature(CREATURE)
+    global SPRITE_POS, SPRITE_SCALE, BOUNDS, SIL_W, SIL_H
+    SPRITE_POS, SPRITE_SCALE, BOUNDS = parse_placement(CREATURE)
+    SIL_W, SIL_H = BOUNDS[2] - BOUNDS[0], BOUNDS[3] - BOUNDS[1]
+    print("[geo] sprite pos=%s scale=%s bounds=%s  (read from the creature scene)"
+          % (SPRITE_POS, SPRITE_SCALE, BOUNDS))
     print("[src] %s\n      %d atlas regions, animations: %s"
           % (os.path.relpath(CREATURE), len(regions), sorted(anims)))
     for need in ("idle", "die"):

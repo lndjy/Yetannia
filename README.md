@@ -7,7 +7,7 @@
 - 源码仓库：<https://github.com/lndjy/Yetannia>
 - 开发文档 / 项目历史：[`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md)
 - 发布流程（含发布前的安全与隐私检查）：[`docs/RELEASE-WORKFLOW.md`](docs/RELEASE-WORKFLOW.md)
-- 当前版本：**v1.0.6**（以 `Yetannia/Yetannia.json` 为准）
+- 当前版本：**v1.0.7**（以 `Yetannia/Yetannia.json` 为准）
 
 > ### ⚠️ 只支持 beta 分支 · BETA BRANCH ONLY
 >
@@ -194,6 +194,13 @@ Yetannia is a fan work. Character, art and voice assets come from the Chinese mo
 3. 「关闭」只影响耶坦尼娅的台词，**不影响原版音效**；随时可以再打开。
 
 ## 更新记录
+
+### v1.0.7
+
+- **修复**：v1.0.6 把战斗立绘按 1.5 倍重渲染后，**营火（火堆）和商店（商人）的角色模型错位 / 破碎**。
+  原因是这两个场景的帧区域还是旧图集的坐标，没有跟着新图集重建。现已重新生成，两处的模型与战斗立绘
+  尺寸、站位一致。
+- 立绘清晰度提升本身是 v1.0.6 的内容，本版只修好它带出来的这两处场景。
 
 ### v1.0.6
 
