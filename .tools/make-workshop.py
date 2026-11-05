@@ -22,6 +22,20 @@ BG = os.path.join(HERE, "pckproject", "Yetannia", "images", "charui", "char_sele
 with open(DESC, encoding="utf-8") as fh:
     description = fh.read()
 
+# BLOCKING CHECK -- the v1.0.6 incident: the Chinese half's 更新记录 sat at the very end of the Chinese
+# section, so the Chinese description looked like it had no update notes while the English half clearly
+# had a Changelog. BOTH languages must lead with their changelog, and the whole text must stay under
+# Steam's ~8 KB limit. See .tools/verify-workshop-desc.py (also usable with --live after an upload).
+import importlib.util  # noqa: E402
+
+_spec = importlib.util.spec_from_file_location(
+    "wsdesc", os.path.join(HERE, "verify-workshop-desc.py"))
+_wsdesc = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_wsdesc)
+_problems = _wsdesc.check(description, "workshop-description.txt")
+if _problems:
+    raise SystemExit("*** workshop description check failed ***\n  " + "\n  ".join(_problems))
+
 cfg = {
     "title": "耶坦尼娅 Yetannia",
     "description": description,

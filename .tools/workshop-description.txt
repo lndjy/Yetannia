@@ -5,6 +5,30 @@
 
 [hr][/hr]
 
+[h2]更新记录[/h2]
+
+[b]v1.0.6[/b]
+[list]
+[*][b]战斗立绘重渲染[/b]：3D 模型按 1.5 倍分辨率重新渲染（人物源像素 179×216 → 253×305），屏幕显示尺寸不变（约 277px 高）；头发、金边、裙摆的细节现在是缩小显示而不是放大显示，实机明显更清晰。包体因此变大（pck 约 40MB → 57MB）。
+[*][b]联机手部图标重做[/b]：多人时显示在队友/选遗物处的那只手，改为与原版同款构图（手更大、小臂更短、袖口带褶、底部渐隐），手指也比之前长了一截；配色为她的淡肤色 + 海军蓝袖子 + 金色星点。
+[/list]
+
+[b]v1.0.5[/b]
+[list]
+[*][b]纯爱幻想 / 幻想纯爱[/b]（状态牌）：被消耗时[b]额外抽 1 张牌[/b]（6 点随机伤害 / 4 点格挡不变）。
+[*][b]凯旋之路[/b]（消耗状态牌时抽 1 张）：稀有度 [b]金卡 → 蓝卡[/b]。
+[*][b]运筹帷幄[/b]（手牌控顶、预见 8）：[b]增加「保留」、升为金卡[/b]（「消耗」原本就有）。
+[*]以上三条对[b]原版与东尼测试版都生效[/b]；「东尼」= 安东尼，英文用 Anthony。
+[/list]
+
+[b]v1.0.4[/b]
+[list]
+[*]新增 [b]「卡牌数值」设置[/b]：原版 / 东尼测试版两档，覆盖 12 张卡，切换后需重启。
+[*]修复局外收益牌被局内印牌生成；文案全面校对；九位先古的 246 行对话补齐英文。
+[/list]
+
+[hr][/hr]
+
 [h2]这个 Mod 加了什么[/h2]
 
 [b]新角色：耶坦尼娅 Yetannia[/b]
@@ -50,52 +74,13 @@
 [*]遇到问题欢迎在创意工坊留言，附上日志（[code]%APPDATA%\SlayTheSpire2\logs\godot.log[/code]）会快很多。
 [/list]
 
-[h2]更新记录[/h2]
-
-[b]v1.0.6[/b]
-[list]
-[*][b]战斗立绘重渲染[/b]：3D 模型按 1.5 倍分辨率重新渲染（人物源像素 179×216 → 253×305），屏幕显示尺寸不变（约 277px 高）；头发、金边、裙摆的细节现在是缩小显示而不是放大显示，实机明显更清晰。包体因此变大（pck 约 40MB → 57MB）。
-[*][b]联机手部图标重做[/b]：多人时显示在队友/选遗物处的那只手，改为与原版同款构图（手更大、小臂更短、袖口带褶、底部渐隐），手指也比之前长了一截；配色为她的淡肤色 + 海军蓝袖子 + 金色星点。
-[/list]
-
-[b]v1.0.5[/b]
-[list]
-[*][b]纯爱幻想 / 幻想纯爱[/b]（状态牌）：被消耗时[b]额外抽 1 张牌[/b]（6 点随机伤害 / 4 点格挡不变）。
-[*][b]凯旋之路[/b]（消耗状态牌时抽 1 张）：稀有度 [b]金卡 → 蓝卡[/b]。
-[*][b]运筹帷幄[/b]（手牌控顶、预见 8）：[b]增加「保留」、升为金卡[/b]（「消耗」原本就有）。
-[*]以上三条对[b]原版与东尼测试版都生效[/b]；「东尼」= 安东尼，英文用 Anthony。
-[/list]
-
-[b]v1.0.4[/b]
-[list]
-[*]新增 [b]「卡牌数值」设置[/b]：原版 / 东尼测试版两档，覆盖 12 张卡，切换后需重启。
-[*]修复局外收益牌被局内印牌生成；文案全面校对；九位先古的 246 行对话补齐英文。
-[/list]
-
 [hr][/hr]
-
 
 [h1]English[/h1]
 
 [b]BETA BRANCH ONLY[/b] — this mod is developed and tested on the [b]beta branch[/b] of Slay the Spire 2 only. Please switch the game to the beta branch in Steam first.
 
-[b]Yetannia[/b] is a new character with [b]82 cards[/b] built around Scry, her own relic, the [b]Prophet[/b] keyword, Chinese / Japanese voice lines, and dedicated dialogue for all nine Ancients.
-
-[h2]Installation[/h2]
-
-1. Subscribe to [b]BaseLib[/b] first (version ≥ 3.4.7).
-2. Switch Slay the Spire 2 to the [b]beta branch[/b], then launch the game [b]from Steam[/b].
-3. Enable BaseLib and Yetannia in the in-game [b]Mods[/b] list, then restart the game.
-
-Zip version: extract the [code]Yetannia[/code] folder into [code]...\Slay the Spire 2\mods\[/code].
-
-[h2]Notes[/h2]
-
-[list]
-[*]Fan work based on Yetannia, a character from the Chinese mobile game 《千年之旅》. Voice and artwork come from the original game; contact me if you would like them removed.
-[*]In English, all card / power / relic / keyword text, the settings rows and [b]all 246 lines of Ancient dialogue[/b] are localized. Voice acting is Chinese / Japanese only.
-[*]Bug reports: attach the log ([code]%APPDATA%\SlayTheSpire2\logs\godot.log[/code]).
-[/list]
+[hr][/hr]
 
 [h2]Changelog[/h2]
 
@@ -117,4 +102,24 @@ Zip version: extract the [code]Yetannia[/code] folder into [code]...\Slay the Sp
 [list]
 [*]New [b]Card Numbers[/b] setting (Original / Anthony Test Build) covering 12 cards; restart required.
 [*]Out-of-combat payoff cards can no longer be generated in combat; full text proofread; 246 Ancient dialogue lines translated.
+[/list]
+
+[hr][/hr]
+
+[b]Yetannia[/b] is a new character with [b]82 cards[/b] built around Scry, her own relic, the [b]Prophet[/b] keyword, Chinese / Japanese voice lines, and dedicated dialogue for all nine Ancients.
+
+[h2]Installation[/h2]
+
+1. Subscribe to [b]BaseLib[/b] first (version ≥ 3.4.7).
+2. Switch Slay the Spire 2 to the [b]beta branch[/b], then launch the game [b]from Steam[/b].
+3. Enable BaseLib and Yetannia in the in-game [b]Mods[/b] list, then restart the game.
+
+Zip version: extract the [code]Yetannia[/code] folder into [code]...\Slay the Spire 2\mods\[/code].
+
+[h2]Notes[/h2]
+
+[list]
+[*]Fan work based on Yetannia, a character from the Chinese mobile game 《千年之旅》. Voice and artwork come from the original game; contact me if you would like them removed.
+[*]In English, all card / power / relic / keyword text, the settings rows and [b]all 246 lines of Ancient dialogue[/b] are localized. Voice acting is Chinese / Japanese only.
+[*]Bug reports: attach the log ([code]%APPDATA%\SlayTheSpire2\logs\godot.log[/code]).
 [/list]

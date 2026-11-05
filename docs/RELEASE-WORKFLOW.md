@@ -322,6 +322,23 @@ The intended Workshop visibility and the branch restriction live in `.tools/make
 (`visibility`, `minBranch`/`maxBranch`) and the description in `.tools/workshop-description.txt`, whose
 first line must keep the beta-only notice.
 
+**Both languages must lead with their changelog.** `.tools/workshop-description.txt` is one field holding
+a Chinese half and an English half (`[h1]English[/h1]` splits them); each half must open with its own
+changelog — `[h2]更新记录[/h2]` in the Chinese half, `[h2]Changelog[/h2]` in the English half — right after
+the beta-branch warning, and each newest version must be listed first. `.tools/make-workshop.py` enforces
+this and refuses to build the upload config otherwise:
+
+```powershell
+python .tools/verify-workshop-desc.py           # local file
+python .tools/verify-workshop-desc.py --live    # also what Steam actually stored, after §9.1
+```
+
+Why it is a hard gate and not a style preference: in v1.0.6 the Chinese 更新记录 was placed at the *end*
+of the Chinese section (below the installation and notes blocks). Readers opening the item page in Chinese
+never saw it and reported that "the Chinese description has no update notes, only the English one does",
+which is exactly the kind of thing that misleads new subscribers. The same check also keeps the whole
+description under Steam's ~8 KB limit, above which the upload fails with `k_EResultInvalidParam`.
+
 Known failures and what they mean:
 
 * `k_ESteamAPIInitResult_NoSteamClient` — Steam is not running, or is running as a different user.
