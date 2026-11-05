@@ -22,7 +22,7 @@ namespace Yetannia.YetanniaCode.Cards;
 /// 东尼测试版（<see cref="CardBalanceMode.TonyTest"/>）敲后：**只减费**（1 → 0），伤害仍是 15。
 ///
 /// (Both drafts: 1 energy, 2 Vulnerable + 2 Weak to ALL enemies, then 15 damage. Upgraded in the
-/// original it costs 0 and deals 20; in the Tony draft the upgrade only makes it cost 0 and the
+/// original it costs 0 and deals 20; in the Anthony draft the upgrade only makes it cost 0 and the
 /// damage stays at 15.)
 /// </summary>
 public sealed class OminousDecreeTranscendent : YetanniaCard

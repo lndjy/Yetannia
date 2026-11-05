@@ -14,8 +14,13 @@ internal enum CardBalanceMode
     Original,
 
     /// <summary>
-    /// 东尼测试版 — 东尼's balance draft. Only the cards listed in the v1.0.4 changelog differ; every
-    /// other card behaves exactly as in <see cref="Original"/>.
+    /// 东尼测试版 — 东尼是「安东尼」的简称（英文 Anthony）的平衡草案。只有 v1.0.4 更新说明里列出的那
+    /// 12 张卡与 <see cref="Original"/> 不同，其余卡两档完全一致。
+    ///
+    /// English display text says "Anthony"; the member name stays <c>TonyTest</c> on purpose. BaseLib
+    /// persists the member name into <c>mod_configs\Yetannia.cfg</c>, so renaming it would parse as an
+    /// unknown value and silently reset every player who had already selected the draft back to
+    /// <see cref="Original"/>.
     /// </summary>
     TonyTest,
 }

@@ -28,7 +28,7 @@ cfg = {
     # Public: the user asked for the workshop item to be published openly. (The earlier "don't make
     # it public" referred to the *voice assets* on GitHub, not to this item's visibility.)
     "visibility": "public",
-    "changeNote": "v1.0.4：\n· 新增「卡牌数值」设置：可在「原版」与「东尼测试版」之间切换。测试版对 12 张卡采用另一套数值，其余 70 张两档一致；切换后需重启游戏生效。\n· 修复：积厚成势 / 致命洞察 / 天之恩典 这类局外收益牌，不再能被局内随机印牌或战斗内转化生成（对齐原版狂宴）。\n· 文案全面校对：修正错别字与中英不一致，8 个战斗内能力名统一为对应卡名。\n· 英文补全：九位先古的 246 行专属对话已全部译成英文。\nv1.0.4:\n· New \"Card Numbers\" setting: switch between Original and Tony Test Build. The test build changes 12 cards; the other 70 are identical in both. A restart is required.\n· Fixed out-of-combat payoff cards (Accumulate Might / Fatal Insight / Shared Regen) being created by in-combat card generation or transformation.\n· Full text proofread; 8 in-combat power names now match their cards.\n· All 246 lines of Ancient dialogue are now in English.",
+    "changeNote": "v1.0.5：\n· 纯爱幻想 / 幻想纯爱（状态牌）：被消耗时额外抽 1 张牌（6 点随机伤害 / 4 点格挡不变）。\n· 凯旋之路（消耗状态牌时抽 1 张）：稀有度 金卡 → 蓝卡。\n· 运筹帷幄（手牌控顶、预见 8）：增加「保留」、升为金卡（「消耗」原本就有）。\n· 以上三条对原版与东尼测试版都生效。\n· 英文措辞修正：东尼是安东尼的简称，选项英文改为 Anthony Test Build。\nv1.0.5:\n· Pure Love Fantasy / Fantasy of Pure Love (Status cards): now draw 1 card when exhausted.\n· Road of Triumph: rarity Rare -> Uncommon.\n· Strategize: gains Retain and moves up to Rare (Exhaust was already there).\n· All three apply to both the Original and Anthony Test Build drafts.\n· English wording fix: the option is now \"Anthony Test Build\".",
     "tags": [],
     # 3737335127 is BaseLib's Workshop item id -- not a guess: the uploader itself resolves the mod's
     # declared BaseLib dependency to exactly this id and prints "Removed dependency on 3737335127" when

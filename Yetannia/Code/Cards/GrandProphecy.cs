@@ -19,7 +19,7 @@ namespace Yetannia.YetanniaCode.Cards;
 /// - 东尼测试版（<see cref="CardBalanceMode.TonyTest"/>）：两档统一预见 7，**未升级不触发**被弃置牌的
 ///   先知效果，升级后才触发。
 /// (Original: Scry 6, upgraded 8, and the discarded cards' Prophet effects trigger at both upgrade
-/// levels. Tony draft: Scry 7 at both upgrade levels, and only the upgraded copy triggers them.)
+/// levels. Anthony draft: Scry 7 at both upgrade levels, and only the upgraded copy triggers them.)
 ///
 /// 「剩下的牌」= 本次预见看到的牌里没有被弃置的那些。预见前先记下会看到几张
 /// （受抽牌堆实际张数限制），预见到之后用 看到张数 - 弃置张数 得出要抽几张。

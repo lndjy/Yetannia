@@ -16,7 +16,7 @@ namespace Yetannia.YetanniaCode.Cards;
 ///
 /// 两档的格挡都是 7 / 9。预见两档不同：<see cref="CardBalanceMode.Original"/> 是 3 / 5，
 /// <see cref="CardBalanceMode.TonyTest"/> 是 3 / 4（敲后少 1 点预见）。
-/// (Block is 7 / 9 in both drafts. Original Scry is 3 / 5; the Tony draft's upgraded Scry is 4.)
+/// (Block is 7 / 9 in both drafts. Original Scry is 3 / 5; the Anthony draft's upgraded Scry is 4.)
 /// </summary>
 public sealed class ThirdEye : YetanniaCard
 {

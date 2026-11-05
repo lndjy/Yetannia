@@ -13,7 +13,7 @@ namespace Yetannia.YetanniaCode.Cards;
 /// 冰刃轮舞 — 金卡（Rare）攻击：对所有敌人造成 4（升级 5）次伤害。
 /// 原版（<see cref="CardBalanceMode.Original"/>）：2 费，每次 5 点伤害。
 /// 东尼测试版（<see cref="CardBalanceMode.TonyTest"/>）：3 费，每次 6 点伤害。
-/// (Original: 2 energy, 5 damage per hit. Tony draft: 3 energy, 6 damage per hit.)
+/// (Original: 2 energy, 5 damage per hit. Anthony draft: 3 energy, 6 damage per hit.)
 /// 两档的命中次数与重放成长相同。
 ///
 /// 本场战斗中你每洗牌一次，这张牌获得重放 1。

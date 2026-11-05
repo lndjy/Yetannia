@@ -92,10 +92,10 @@ internal static class SettingsLocPatch
         [$"{BalanceKey}.title"] = "Card Numbers",
         [$"{BalanceKey}.hover.title"] = "Card Numbers",
         [$"{BalanceKey}.hover.desc"] =
-            "\"Original\" is the released balance. \"Tony's Test Build\" applies a draft that changes a handful of cards " +
+            "\"Original\" is the released balance. \"Anthony Test Build\" applies a draft that changes a handful of cards " +
             "(see the changelog). A restart is required for the switch to take effect — both the card text and the numbers.",
         [$"{BalanceKey}.Original"] = "Original",
-        [$"{BalanceKey}.TonyTest"] = "Tony's Test Build",
+        [$"{BalanceKey}.TonyTest"] = "Anthony Test Build",
         [$"{CardsSectionKey}.title"] = "Cards",
 
         [ModTitleKey] = "Yetannia",

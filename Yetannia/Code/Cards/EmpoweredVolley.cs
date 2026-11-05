@@ -16,13 +16,13 @@ namespace Yetannia.YetanniaCode.Cards;
 /// - 原版（<see cref="CardBalanceMode.Original"/>）：获得 1 点（永久）[力量]，造成 10（升级 14）点伤害。
 /// - 东尼测试版（<see cref="CardBalanceMode.TonyTest"/>）：获得 2（升级 3）点**临时**[力量]，
 ///   造成 7（升级 9）点伤害。
-/// (Original: gain 1 permanent Strength, then deal 10 / 14 damage. Tony draft: gain 2 / 3 temporary
+/// (Original: gain 1 permanent Strength, then deal 10 / 14 damage. Anthony draft: gain 2 / 3 temporary
 /// Strength, then deal 7 / 9 damage.)
 ///
 /// Name is a placeholder (the request did not give one).
 ///
 /// The Strength is granted *before* each hit, so the volley escalates: the first hit is unmodified,
-/// the second is +1 (original) or +2 (Tony draft), the third +2 / +4, and so on. Each hit picks its
+/// the second is +1 (original) or +2 (Anthony draft), the third +2 / +4, and so on. Each hit picks its
 /// own random target, matching the "随机" wording.
 /// </summary>
 public sealed class EmpoweredVolley : YetanniaCard

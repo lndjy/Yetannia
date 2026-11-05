@@ -8,11 +8,12 @@ using Yetannia.YetanniaCode.Powers;
 
 namespace Yetannia.YetanniaCode.Cards;
 
-/// <summary>凯旋之路 — 金卡（Rare），2 费（敲后 1 费）能力：当你消耗一张状态牌时，抽一张牌。</summary>
+/// <summary>凯旋之路 — 蓝卡（Uncommon），2 费（敲后 1 费）能力：当你消耗一张状态牌时，抽一张牌。
+/// v1.0.5：稀有度 金卡 → 蓝卡；两档（原版 / 东尼测试版）都生效。</summary>
 public sealed class StatusDraw : YetanniaCard
 {
     public StatusDraw()
-        : base(2, CardType.Power, CardRarity.Rare, TargetType.Self)
+        : base(2, CardType.Power, CardRarity.Uncommon, TargetType.Self)
     {
     }
 

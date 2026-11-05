@@ -9,7 +9,7 @@ using Yetannia.YetanniaCode.Powers;
 
 namespace Yetannia.YetanniaCode.Cards;
 
-/// <summary>幻想纯爱 — 状态牌，1 费：当此牌被消耗时，获得 4 点格挡。[消耗]</summary>
+/// <summary>幻想纯爱 — 状态牌，1 费：当此牌被消耗时，获得 4 点格挡，然后抽 1 张牌。[消耗]</summary>
 public sealed class DefendDefend : YetanniaCard
 {
     public override int MaxUpgradeLevel => 0;
@@ -31,13 +31,16 @@ public sealed class DefendDefend : YetanniaCard
         var block = DynamicVars.Block.BaseValue;
         if (Owner.Creature.GetPower<DoubleStatusPower>() != null) block *= 2;
         await CreatureCmd.GainBlock(Owner.Creature, block, DynamicVars.Block.Props, null);
+
+        // 被消耗时补一张牌（v1.0.5），与纯爱幻想 一致；走 CardPileCmd.Draw 让所有抽牌钩子都能看到。
+        await CardPileCmd.Draw(choiceContext, 1, Owner);
     }
 
     public override List<(string, string)> Localization => Loc.Pick(Chinese, English);
 
     private static readonly List<(string, string)> Chinese = new CardLoc(
-        "幻想纯爱", "当此牌被消耗时，获得4点格挡。");
+        "幻想纯爱", "当此牌被消耗时，获得4点格挡，然后抽1张牌。");
 
     private static readonly List<(string, string)> English = new CardLoc(
-        "Fantasy of Pure Love", "When this card is exhausted, gain 4 Block.");
+        "Fantasy of Pure Love", "When this card is exhausted, gain 4 Block, then draw 1 card.");
 }

@@ -52,6 +52,15 @@
 
 [h2]更新记录[/h2]
 
+[b]v1.0.5[/b]
+[list]
+[*][b]纯爱幻想 / 幻想纯爱[/b]（状态牌）：被消耗时[b]额外抽 1 张牌[/b]（6 点随机伤害 / 4 点格挡不变）。
+[*][b]凯旋之路[/b]（消耗状态牌时抽 1 张）：稀有度 [b]金卡 → 蓝卡[/b]。
+[*][b]运筹帷幄[/b]（手牌控顶、预见 8）：[b]增加「保留」、升为金卡[/b]（「消耗」原本就有）。
+[*]以上三条对[b]原版与东尼测试版都生效[/b]。
+[*]英文措辞修正：「东尼」是「安东尼」的简称，英文由 Tony 改为 [b]Anthony[/b]。
+[/list]
+
 [b]v1.0.4[/b]
 [list]
 [*][b]新增「卡牌数值」设置[/b]：可在 [b]原版[/b] 与 [b]东尼测试版[/b] 之间切换。测试版对 12 张卡采用另一套数值（试探、合击、修顿、有条不紊、制敌机先、积厚成势、请君入瓮、背水一战、交叉防御、临危不乱、夹击之势、冰刃轮舞），其余 70 张两档完全一致。切换后需要重启游戏生效。
@@ -73,10 +82,6 @@
 
 [b]Yetannia[/b] is a new character with [b]82 cards[/b] built around Scry, her own relic, the [b]Prophet[/b] keyword, Chinese / Japanese voice lines, and dedicated dialogue for all nine Ancients.
 
-[h2]Card numbers: Original / Tony Test Build[/h2]
-
-The settings screen gains a [b]Card Numbers[/b] switch. [b]Tony Test Build[/b] changes 12 cards — Probe, Pincer Strike, Xiudun, Methodical, Seize the Initiative, Accumulate Might, Into the Trap, Last Stand, Cross Defense, Unshaken, Pincer Movement, Ice Blade Waltz — and leaves the other 70 identical. Numbers and card text are built when the game loads, so [b]restart the game[/b] after switching.
-
 [h2]Installation[/h2]
 
 1. Subscribe to [b]BaseLib[/b] first (version ≥ 3.4.7).
@@ -95,12 +100,19 @@ Zip version: extract the [code]Yetannia[/code] folder into [code]...\Slay the Sp
 
 [h2]Changelog[/h2]
 
+[b]v1.0.5[/b]
+[list]
+[*][b]Pure Love Fantasy / Fantasy of Pure Love[/b] (Status cards): now [b]draw 1 card when exhausted[/b] (the 6 damage / 4 Block effects are unchanged).
+[*][b]Road of Triumph[/b] (draw when you exhaust a Status card): rarity [b]Rare → Uncommon[/b].
+[*][b]Strategize[/b] (hand on top of the draw pile, Scry 8): gains [b]Retain[/b] and moves up to [b]Rare[/b] (it already had Exhaust).
+[*]All three apply to [b]both[/b] the Original and Anthony Test Build drafts.
+[*]English wording fix: the option is now [b]Anthony Test Build[/b] (the old label used a wrong transliteration of the character's short name).
+[/list]
+
 [b]v1.0.4[/b]
 [list]
-[*]New [b]Card Numbers[/b] setting (Original / Tony Test Build) covering 12 cards; a restart is required.
+[*]New [b]Card Numbers[/b] setting (Original / Anthony Test Build) covering 12 cards; a restart is required.
 [*]Fixed out-of-combat payoff cards (Accumulate Might / Fatal Insight / Shared Regen) being created by in-combat card generation or transformation — the same treatment the base game gives Feed.
 [*]Full text proofread; 8 in-combat power names now match their cards.
 [*]All 246 lines of Ancient dialogue translated to English.
 [/list]
-
-[b]v1.0.3[/b]: fixed a Scry freezing the run at the end of a fight in multiplayer, and centred the Scry selection row.

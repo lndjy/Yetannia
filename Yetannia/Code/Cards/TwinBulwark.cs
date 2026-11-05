@@ -12,7 +12,7 @@ namespace Yetannia.YetanniaCode.Cards;
 /// 交叉防御 — 白卡（Common），1 费技能：获得两次[格挡]。
 /// 原版（<see cref="CardBalanceMode.Original"/>）：每次 5，敲后 7。
 /// 东尼测试版（<see cref="CardBalanceMode.TonyTest"/>）：每次 4，敲后 6。
-/// (Original: 5 Block per grant, upgraded 7. Tony draft: 4 per grant, upgraded 6.)
+/// (Original: 5 Block per grant, upgraded 7. Anthony draft: 4 per grant, upgraded 6.)
 ///
 /// Name is a placeholder (the request did not give one). The two grants are separate
 /// <c>GainBlock</c> calls rather than one doubled amount, so anything that reacts to a single

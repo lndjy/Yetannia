@@ -15,7 +15,7 @@ namespace Yetannia.YetanniaCode.Cards;
 /// 造成 9（升级 12）点伤害；如果目标敌人的意图是攻击，再给予[虚弱]。
 /// 原版（<see cref="CardBalanceMode.Original"/>）：无论是否升级都给予 2 层。
 /// 东尼测试版（<see cref="CardBalanceMode.TonyTest"/>）：未升级只给 1 层，敲后 2 层。
-/// (Original: 2 Weak whether upgraded or not. Tony draft: 1 Weak unupgraded, 2 when upgraded.)
+/// (Original: 2 Weak whether upgraded or not. Anthony draft: 1 Weak unupgraded, 2 when upgraded.)
 ///
 /// "Intends to attack" is <c>MonsterModel.IntendsToAttack</c>, which the base game defines as the
 /// next move containing an Attack or DeathBlow intent — the same check the game uses for its own

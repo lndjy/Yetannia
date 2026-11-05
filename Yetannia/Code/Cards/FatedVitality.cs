@@ -16,7 +16,7 @@ namespace Yetannia.YetanniaCode.Cards;
 /// [先知]：把卡面上这个数字抬高 2（升级 3），本场战斗最多累计到上限。
 /// 上限两档不同：原版（<see cref="CardBalanceMode.Original"/>）8（升级 12）；
 /// 东尼测试版（<see cref="CardBalanceMode.TonyTest"/>）6（升级 9）。基础值与每次抬高的步长两档相同。
-/// (Cap is 8 / 12 in the original; the Tony draft lowers it to 6 / 9. The starting number and the
+/// (Cap is 8 / 12 in the original; the Anthony draft lowers it to 6 / 9. The starting number and the
 /// per-Prophet step are the same in both drafts.)
 ///
 /// The request's wording is precise here: the Prophet trigger must **not** grant Max HP by itself —

@@ -15,7 +15,7 @@ namespace Yetannia.YetanniaCode.Cards;
 /// "At the start of your turn, Scry 3." Upgraded: Scry 4.
 ///
 /// 东尼测试版（<see cref="CardBalanceMode.TonyTest"/>）把两档都降 1：预见 2，敲后 3。
-/// (Original: Scry 3, upgraded 4. Tony draft: Scry 2, upgraded 3.)
+/// (Original: Scry 3, upgraded 4. Anthony draft: Scry 2, upgraded 3.)
 /// </summary>
 public sealed class Foresight : YetanniaCard
 {

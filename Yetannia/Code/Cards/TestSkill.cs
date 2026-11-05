@@ -10,8 +10,10 @@ using MegaCrit.Sts2.Core.Models;
 namespace Yetannia.YetanniaCode.Cards;
 
 /// <summary>
-/// 运筹帷幄 — 蓝卡（Uncommon），0 费技能，消耗：
+/// 运筹帷幄 — 金卡（Rare），0 费技能，[保留][消耗]：
 /// 将你的所有手牌置于抽牌堆顶，预见 8（升级 10），然后抽取等量的牌。
+///
+/// v1.0.5：稀有度 蓝卡 → 金卡，并加上[保留]。两档（原版 / 东尼测试版）都生效。
 ///
 /// "That many" is the number of cards that were put back, so your hand size is preserved while
 /// Scry lets you filter the top of the pile.
@@ -22,11 +24,13 @@ public sealed class TestSkill : YetanniaCard
     private const int ScryUpgrade = 2; // 8 -> 10
 
     public TestSkill()
-        : base(0, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
+        : base(0, CardType.Skill, CardRarity.Rare, TargetType.Self)
     {
     }
 
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
+    // [消耗] 是原本就有的；v1.0.5 又加了[保留]——没打出去时回合结束会留在手里，
+    // 打出去时仍然按 Exhaust 进消耗堆，两者并不冲突。
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust, CardKeyword.Retain];
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
         [new ScryVar(ScryAmount)];

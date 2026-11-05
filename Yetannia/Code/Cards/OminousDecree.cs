@@ -21,7 +21,7 @@ namespace Yetannia.YetanniaCode.Cards;
 /// 敲后**不再减费**，费用始终为 1（易伤/虚弱层数两档都不变）。
 ///
 /// (Original: 1 energy, deal 6 damage and apply 1 Vulnerable + 1 Weak to ALL enemies; upgraded, the
-/// cost drops 1 -> 0 and the damage is unchanged. Tony draft: deal 3 damage, upgraded 6 damage, and
+/// cost drops 1 -> 0 and the damage is unchanged. Anthony draft: deal 3 damage, upgraded 6 damage, and
 /// the upgrade no longer reduces the cost.)
 ///
 /// [gold]先知[/gold] — with no further text, which by this mod's convention means the Prophet

@@ -16,7 +16,7 @@ namespace Yetannia.YetanniaCode.Cards;
 /// 原版（<see cref="CardBalanceMode.Original"/>）[gold]先知[/gold]：对随机目标打出此牌，然后此牌伤害翻倍。
 /// 东尼测试版（<see cref="CardBalanceMode.TonyTest"/>）[gold]先知[/gold]：**不再对随机目标打出**，
 /// 只保留伤害翻倍。
-/// (Original Prophet: play this card against a random target, then double its damage. Tony draft
+/// (Original Prophet: play this card against a random target, then double its damage. Anthony draft
 /// Prophet: only double its damage — the random-target play is gone. Damage 12 / 16 is the same in
 /// both drafts.)
 ///
