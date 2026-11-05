@@ -7,7 +7,7 @@
 - 源码仓库：<https://github.com/lndjy/Yetannia>
 - 开发文档 / 项目历史：[`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md)
 - 发布流程（含发布前的安全与隐私检查）：[`docs/RELEASE-WORKFLOW.md`](docs/RELEASE-WORKFLOW.md)
-- 当前版本：**v1.0.4**（以 `Yetannia/Yetannia.json` 为准）
+- 当前版本：**v1.0.6**（以 `Yetannia/Yetannia.json` 为准）
 
 > ### ⚠️ 只支持 beta 分支 · BETA BRANCH ONLY
 >
@@ -194,6 +194,15 @@ Yetannia is a fan work. Character, art and voice assets come from the Chinese mo
 3. 「关闭」只影响耶坦尼娅的台词，**不影响原版音效**；随时可以再打开。
 
 ## 更新记录
+
+### v1.0.6
+
+- **战斗立绘重渲染**：把 3D 模型按 1.5 倍分辨率重新渲染成翻页动画（人物源像素 179×216 → 253×305），
+  但屏幕上的显示尺寸不变（仍是约 277px 高）。头发丝、金边、裙摆这些细节现在是「缩小显示」而不是
+  「放大显示」，实机明显更清晰。代价是包体变大（pck 约 40MB → 57MB）。
+- **联机手部图标重做**：多人游戏里显示在队友/选遗物处的那只手，原本是细长手臂 + 小拳头，现改为
+  与原版同款的构图——手更大、小臂更短、袖子带褶皱并在底部渐隐；手指长度也比之前长了一截
+  （食指 197px）。配色改为她的淡肤色 + 海军蓝袖子 + 金色星点。
 
 ### v1.0.5
 

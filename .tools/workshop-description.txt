@@ -52,29 +52,28 @@
 
 [h2]更新记录[/h2]
 
+[b]v1.0.6[/b]
+[list]
+[*][b]战斗立绘重渲染[/b]：3D 模型按 1.5 倍分辨率重新渲染（人物源像素 179×216 → 253×305），屏幕显示尺寸不变（约 277px 高）；头发、金边、裙摆的细节现在是缩小显示而不是放大显示，实机明显更清晰。包体因此变大（pck 约 40MB → 57MB）。
+[*][b]联机手部图标重做[/b]：多人时显示在队友/选遗物处的那只手，改为与原版同款构图（手更大、小臂更短、袖口带褶、底部渐隐），手指也比之前长了一截；配色为她的淡肤色 + 海军蓝袖子 + 金色星点。
+[/list]
+
 [b]v1.0.5[/b]
 [list]
 [*][b]纯爱幻想 / 幻想纯爱[/b]（状态牌）：被消耗时[b]额外抽 1 张牌[/b]（6 点随机伤害 / 4 点格挡不变）。
 [*][b]凯旋之路[/b]（消耗状态牌时抽 1 张）：稀有度 [b]金卡 → 蓝卡[/b]。
 [*][b]运筹帷幄[/b]（手牌控顶、预见 8）：[b]增加「保留」、升为金卡[/b]（「消耗」原本就有）。
-[*]以上三条对[b]原版与东尼测试版都生效[/b]。
-[*]英文措辞修正：「东尼」是「安东尼」的简称，英文由 Tony 改为 [b]Anthony[/b]。
+[*]以上三条对[b]原版与东尼测试版都生效[/b]；「东尼」= 安东尼，英文用 Anthony。
 [/list]
 
 [b]v1.0.4[/b]
 [list]
-[*][b]新增「卡牌数值」设置[/b]：可在 [b]原版[/b] 与 [b]东尼测试版[/b] 之间切换。测试版对 12 张卡采用另一套数值（试探、合击、修顿、有条不紊、制敌机先、积厚成势、请君入瓮、背水一战、交叉防御、临危不乱、夹击之势、冰刃轮舞），其余 70 张两档完全一致。切换后需要重启游戏生效。
-[*]修复 [b]局外收益牌会被局内印牌生成[/b]：积厚成势（永久生命上限）、致命洞察（永久升级上一张牌）、天之恩典（再生回血）不会再被「归途终尽之景」这类局内随机印牌或战斗内转化产生——和原版狂宴一样。它们仍然正常出现在卡牌奖励与商店里。
-[*]文案：[b]全面校对[/b]，修正错别字与中英不一致（例如「眩晕」→「晕眩」、「费用」→「耗能」），并把 8 个战斗内能力名统一成对应卡名。
-[*][b]英文支持补全[/b]：九位先古的专属对话共 246 行已全部译成英文（此前英文客户端会看到中文）。
-[/list]
-
-[b]v1.0.3[/b]
-[list]
-[*]修复联机时「预见」在战斗结束的瞬间卡住整局的问题；并修好预见选牌界面按实际张数居中的位置问题（详见仓库 README 的 v1.0.3 记录）。
+[*]新增 [b]「卡牌数值」设置[/b]：原版 / 东尼测试版两档，覆盖 12 张卡，切换后需重启。
+[*]修复局外收益牌被局内印牌生成；文案全面校对；九位先古的 246 行对话补齐英文。
 [/list]
 
 [hr][/hr]
+
 
 [h1]English[/h1]
 
@@ -100,19 +99,22 @@ Zip version: extract the [code]Yetannia[/code] folder into [code]...\Slay the Sp
 
 [h2]Changelog[/h2]
 
+[b]v1.0.6[/b]
+[list]
+[*][b]Re-rendered combat sprite[/b]: the 3D model is re-rendered at 1.5x resolution (the figure is 253x305 source pixels now instead of 179x216) while the on-screen height stays ~277 px, so detail is downscaled rather than upscaled and reads noticeably sharper. The .pck grows from ~40 MB to ~57 MB as a result.
+[*][b]Redone multiplayer hand icons[/b]: the hand shown next to teammates and during relic picks now follows the base game's composition (larger hand, shorter forearm, folded sleeve, soft bottom fade) with longer fingers, in her pale skin / navy sleeve / gold speck palette.
+[/list]
+
 [b]v1.0.5[/b]
 [list]
-[*][b]Pure Love Fantasy / Fantasy of Pure Love[/b] (Status cards): now [b]draw 1 card when exhausted[/b] (the 6 damage / 4 Block effects are unchanged).
-[*][b]Road of Triumph[/b] (draw when you exhaust a Status card): rarity [b]Rare → Uncommon[/b].
-[*][b]Strategize[/b] (hand on top of the draw pile, Scry 8): gains [b]Retain[/b] and moves up to [b]Rare[/b] (it already had Exhaust).
-[*]All three apply to [b]both[/b] the Original and Anthony Test Build drafts.
-[*]English wording fix: the option is now [b]Anthony Test Build[/b] (the old label used a wrong transliteration of the character's short name).
+[*][b]Pure Love Fantasy / Fantasy of Pure Love[/b] (Status): now [b]draw 1 card when exhausted[/b] (6 damage / 4 Block unchanged).
+[*][b]Road of Triumph[/b]: rarity [b]Rare → Uncommon[/b].
+[*][b]Strategize[/b]: gains [b]Retain[/b] and moves up to [b]Rare[/b].
+[*]All three apply to [b]both[/b] drafts. English label is now [b]Anthony Test Build[/b].
 [/list]
 
 [b]v1.0.4[/b]
 [list]
-[*]New [b]Card Numbers[/b] setting (Original / Anthony Test Build) covering 12 cards; a restart is required.
-[*]Fixed out-of-combat payoff cards (Accumulate Might / Fatal Insight / Shared Regen) being created by in-combat card generation or transformation — the same treatment the base game gives Feed.
-[*]Full text proofread; 8 in-combat power names now match their cards.
-[*]All 246 lines of Ancient dialogue translated to English.
+[*]New [b]Card Numbers[/b] setting (Original / Anthony Test Build) covering 12 cards; restart required.
+[*]Out-of-combat payoff cards can no longer be generated in combat; full text proofread; 246 Ancient dialogue lines translated.
 [/list]
