@@ -5,14 +5,20 @@
 // "stored" (no compression) so a plain CRC32 + local/central headers is enough. Node's zlib is
 // deliberately not used, which keeps the writer trivial.
 //
-// Sheet 1 (卡牌总表) mirrors what the code currently ships, so it can be diffed against the design
-// table (卡牌表1.0.xlsx). Sheet 2 maps each card to its source file and lists the keyword glossary.
+// Sheet 1 (卡牌总表) shows both balance drafts side by side: 「效果（原版）」 and 「效果（东尼测试版）」.
+// A card whose numbers do not branch on CardBalance.IsTony has no effectTony field and renders
+// 「同原版」 in the Tony column. Optional costTony/rarityTony override the base cost/rarity when those
+// differ too (currently only 冰刃轮舞: 2 energy in the original, 3 in the Tony draft). Before writing
+// anything the generator scans Yetannia/Code/Cards/*.cs
+// and refuses to run if a file branches on CardBalance.IsTony without a matching effectTony row — that
+// gate is what keeps this table from drifting one draft behind the code. Sheet 2 maps each card to its
+// source file and lists the keyword glossary.
 //
 // The data below is hand-maintained: card text in the source lives in Localization templates full
 // of {Placeholder:diff()} tokens, which is unreadable in a spreadsheet, so the table stores the
 // rendered wording instead. Re-run this after changing cards.
 //
-// Usage: node .tools/cards-xlsx.js [outputPath]
+// Usage: node .tools/cards-xlsx.js [outputPath] [--no-readme]
 
 const fs = require('fs');
 const path = require('path');
@@ -218,6 +224,8 @@ const cards = [
     rarity: '基础（Basic）',
     effect:
       '对所有敌人造成 6 点伤害，并给予所有敌人 1 层易伤和 1 层虚弱。\n先知：效果与打出相同。\n\n敲后：费用 1→0；伤害与层数不变。',
+    effectTony:
+      '对所有敌人造成 3 点伤害，并给予所有敌人 1 层易伤和 1 层虚弱。\n先知：效果与打出相同。\n\n敲后：伤害 3→6；费用不变（1）。',
   },
 
   // ---- 先古（Ancient）----------------------------------------------------
@@ -229,6 +237,8 @@ const cards = [
     rarity: '先古（Ancient）',
     effect:
       '给予所有敌人 2 层易伤和 2 层虚弱，并造成 15 点伤害。\n先知：效果与打出相同。\n\n敲后：费用 1→0，伤害 15→20。\n（走「古老之牙」路线时替换初始卡「试探」）',
+    effectTony:
+      '给予所有敌人 2 层易伤和 2 层虚弱，并造成 15 点伤害。\n先知：效果与打出相同。\n\n敲后：费用 1→0，伤害不变（15）。\n（走「古老之牙」路线时替换初始卡「试探」）',
   },
   {
     name: '引领之光',
@@ -295,6 +305,7 @@ const cards = [
     cost: '1',
     rarity: '白（Common）',
     effect: '获得 7 点格挡。预见 3。\n\n敲后：格挡 7→9，预见 3→5。',
+    effectTony: '获得 7 点格挡。预见 3。\n\n敲后：格挡 7→9，预见 3→4。',
   },
   {
     name: '预备',
@@ -387,6 +398,7 @@ const cards = [
     cost: '1',
     rarity: '蓝（Uncommon）',
     effect: '在你的回合开始时（抽 5 张之前），预见 3。\n\n敲后：预见 3→4。',
+    effectTony: '在你的回合开始时（抽 5 张之前），预见 2。\n\n敲后：预见 2→3。',
   },
   {
     name: '步步为营',
@@ -409,9 +421,9 @@ const cards = [
     file: 'TestSkill.cs',
     type: '技能',
     cost: '0',
-    rarity: '蓝（Uncommon）',
+    rarity: '金（Rare）',
     effect:
-      '将你的所有手牌置于抽牌堆顶，预见 8，然后抽取等量的牌。\n消耗。\n\n敲后：预见 8→10。',
+      '将你的所有手牌置于抽牌堆顶，预见 8，然后抽取等量的牌。\n保留、消耗。\n\n敲后：预见 8→10。',
   },
   {
     name: '制敌机先',
@@ -420,6 +432,8 @@ const cards = [
     cost: '1',
     rarity: '蓝（Uncommon）',
     effect: '造成 9 点伤害。如果目标敌人的意图是攻击，给予其 2 层虚弱。\n\n敲后：伤害 9→12。',
+    effectTony:
+      '造成 9 点伤害。如果目标敌人的意图是攻击，给予其 1 层虚弱。\n\n敲后：伤害 9→12，虚弱 1→2。',
   },
   {
     name: '奇袭',
@@ -481,6 +495,8 @@ const cards = [
     rarity: '蓝（Uncommon）',
     effect:
       '获得 16 点格挡。给予自己 1 层虚弱。下回合获得 1 点能量。\n\n敲后：下回合能量 1→2（格挡与虚弱不变）。',
+    effectTony:
+      '获得 13 点格挡。给予自己 1 层虚弱。下回合获得 1 点能量。\n\n敲后：格挡 13→15；下回合能量 1→2（虚弱不变）。',
   },
   {
     name: '能量调和',
@@ -518,6 +534,8 @@ const cards = [
     rarity: '金（Rare）',
     effect:
       '打出时，获得卡面上显示的数字点生命上限（基础 2）。\n先知：只把卡面数字抬高 2（不给血上限），本场最多累计到 8。\n消耗。\n\n敲后：基础 2→3；先知增量 +2→+3，上限 8→12。',
+    effectTony:
+      '打出时，获得卡面上显示的数字点生命上限（基础 2）。\n先知：只把卡面数字抬高 2（不给血上限），本场最多累计到 6。\n消耗。\n\n敲后：基础 2→3；先知增量 +2→+3，上限 6→9。',
   },
   {
     name: '殚精竭虑',
@@ -536,6 +554,8 @@ const cards = [
     rarity: '金（Rare）',
     effect:
       '预见 6。消耗因此被弃置的牌，并触发它们的先知效果。抽取剩下的牌。\n\n敲后：预见 6→8。',
+    effectTony:
+      '预见 7。消耗因此被弃置的牌（不触发它们的先知效果）。抽取剩下的牌。\n\n敲后：预见不变（7）；触发被弃置牌的先知效果。',
   },
   {
     name: '请君入瓮',
@@ -545,6 +565,8 @@ const cards = [
     rarity: '金（Rare）',
     effect:
       '造成 12 点伤害。\n先知：对随机目标打出此牌，然后此牌伤害翻倍。\n\n敲后：伤害 12→16。',
+    effectTony:
+      '造成 12 点伤害。\n先知：此牌伤害翻倍。\n\n敲后：伤害 12→16。',
   },
   {
     name: '重整旗鼓',
@@ -569,9 +591,12 @@ const cards = [
     file: 'ShuffleReplay.cs',
     type: '攻击',
     cost: '2',
+    costTony: '3',
     rarity: '金（Rare）',
     effect:
       '对所有敌人造成 5 点伤害，4 次。\n本场战斗中你每洗牌一次，这张牌获得重放 1。\n\n敲后：次数 4→5。',
+    effectTony:
+      '对所有敌人造成 6 点伤害，4 次。\n本场战斗中你每洗牌一次，这张牌获得重放 1。\n\n敲后：次数 4→5。',
   },
   {
     name: '斩铁波',
@@ -588,6 +613,7 @@ const cards = [
     cost: '1',
     rarity: '白（Common）',
     effect: '获得 5 点格挡，2 次。\n\n敲后：格挡 5→7。',
+    effectTony: '获得 4 点格挡，2 次。\n\n敲后：格挡 4→6。',
   },
   {
     name: '水色之舞',
@@ -651,6 +677,8 @@ const cards = [
     rarity: '金（Rare）',
     effect:
       '重复 X 次：获得 1 点力量，对随机敌人造成 10 点伤害。\n\n敲后：伤害 10→14。',
+    effectTony:
+      '重复 X 次：获得 2 点临时力量，对随机敌人造成 7 点伤害。\n\n敲后：临时力量 2→3，伤害 7→9。',
   },
   {
     name: '银铃响起之时',
@@ -669,6 +697,8 @@ const cards = [
     rarity: '蓝（Uncommon）',
     effect:
       '获得 2 点临时敏捷。如果本回合未受到过伤害，改为永久获得，并且下回合额外获得 2 点能量。\n\n敲后：敏捷 2→3。',
+    effectTony:
+      '获得 2 点临时敏捷。如果本回合未受到过伤害，改为永久获得，并且下回合额外获得 2 点能量。\n消耗。\n\n敲后：敏捷 2→3。',
   },
   {
     name: '星光破晓之刻',
@@ -723,7 +753,7 @@ const cards = [
     type: '状态',
     cost: '1',
     rarity: '状态（Status）',
-    effect: '当此牌被消耗时，对随机敌人造成 6 点伤害。消耗。',
+    effect: '当此牌被消耗时，对随机敌人造成 6 点伤害，然后抽 1 张牌。消耗。',
   },
   {
     name: '幻想纯爱',
@@ -731,7 +761,7 @@ const cards = [
     type: '状态',
     cost: '1',
     rarity: '状态（Status）',
-    effect: '当此牌被消耗时，获得 4 点格挡。消耗。',
+    effect: '当此牌被消耗时，获得 4 点格挡，然后抽 1 张牌。消耗。',
   },
   {
     name: '风中笑颜',
@@ -826,7 +856,7 @@ const cards = [
     file: 'StatusDraw.cs',
     type: '能力',
     cost: '2',
-    rarity: '金（Rare）',
+    rarity: '蓝（Uncommon）',
     effect: '当你消耗一张状态牌时，抽一张牌。\n\n敲后：费用 2→1。',
   },
 
@@ -919,6 +949,71 @@ const keywords = [
   ['再生', '在你的回合结束时回复等量生命，然后减少 1 层。'],
 ];
 
+// --------------------------------------------------- source/table consistency
+
+// The numbers live in C# while the rendered text lives here, so the two can drift without either side
+// failing to compile. The one drift that matters for this table is a card that starts branching on
+// CardBalance.IsTony but never gets an effectTony: Sheet 1 would then quietly show only the original
+// numbers again (exactly the bug this table exists to prevent). The check is deliberately textual, not
+// a C# parser: a file "branches" when it contains the marker, and its table row is matched by filename
+// and by the Chinese name appearing as a quoted literal in the source. Any mismatch aborts the build
+// before the xlsx (and the README) is written.
+function checkCardTableAgainstSources() {
+  const cardDir = path.join(__dirname, '..', 'Yetannia', 'Code', 'Cards');
+  const files = fs.readdirSync(cardDir).filter((f) => f.endsWith('.cs'));
+  const byFile = new Map(cards.map((c) => [c.file, c]));
+  const errors = [];
+
+  const duplicates = (values) => [...new Set(values.filter((v, i) => values.indexOf(v) !== i))];
+  for (const name of duplicates(cards.map((c) => c.name))) errors.push(`卡名重复：${name}`);
+  for (const file of duplicates(cards.map((c) => c.file).filter((f) => f !== '(deleted)'))) {
+    errors.push(`源文件重复：${file}`);
+  }
+
+  const tonyFiles = files.filter((file) =>
+    fs.readFileSync(path.join(cardDir, file), 'utf8').includes('CardBalance.IsTony'));
+
+  for (const file of tonyFiles) {
+    const source = fs.readFileSync(path.join(cardDir, file), 'utf8');
+    const card = byFile.get(file);
+    if (!card) {
+      errors.push(`${file} 含 CardBalance.IsTony，但 cards[] 里没有对应条目`);
+      continue;
+    }
+    if (!card.effectTony || !card.effectTony.trim()) {
+      errors.push(`${card.name}（${file}）含 CardBalance.IsTony，但缺少 effectTony`);
+    } else if (card.effectTony.trim() === '同原版') {
+      errors.push(`${card.name}（${file}）的 effectTony 不能写「同原版」；两档一致时应省略该字段`);
+    }
+    if (!source.includes(`"${card.name}"`)) {
+      errors.push(`${card.name}（${file}）卡名对不上：源文件里找不到 "${card.name}"`);
+    }
+  }
+
+  // The opposite drift: an effectTony left behind after the branch was removed is just as misleading,
+  // because Sheet 1 would keep claiming the card differs between drafts.
+  for (const card of cards) {
+    if (!card.effectTony || card.file === '(deleted)') continue;
+    const file = path.join(cardDir, card.file);
+    if (!fs.existsSync(file)) {
+      errors.push(`${card.name} 的 effectTony 对应源文件 ${card.file} 不存在`);
+    } else if (!fs.readFileSync(file, 'utf8').includes('CardBalance.IsTony')) {
+      errors.push(`${card.name}（${card.file}）有 effectTony，但源文件已不再含 CardBalance.IsTony`);
+    }
+  }
+
+  if (errors.length > 0) {
+    console.error('自检失败，未生成表格：');
+    for (const error of errors) console.error(`  - ${error}`);
+    console.error('请先同步 .tools/cards-xlsx.js 的 cards[]（effectTony / 卡名 / 源文件）。');
+    process.exit(1);
+  }
+
+  console.log(`自检通过：${tonyFiles.length} 个含 CardBalance.IsTony 的源文件均有 effectTony，卡名全部对应。`);
+}
+
+checkCardTableAgainstSources();
+
 // ------------------------------------------------------------------ output
 
 // The mod's version, read straight from the manifest so the table always states which build it
@@ -936,43 +1031,44 @@ function readModVersion() {
 
 const MOD_VERSION = readModVersion();
 
-// Card faces state their upgrade inline as "<base effect>\n\n敲后：<what changes>". The table shows
-// that in its own column instead, so the upgraded card can be read on its own. Nothing is invented:
-// the text is split at the marker, and anything after a trailing "※ ..." note belongs to the base
-// text rather than to the upgrade.
-function splitUpgrade(effect) {
-  const marker = '敲后：';
-  const i = effect.indexOf(marker);
-  if (i < 0) return [effect, ''];
-
-  let base = effect.slice(0, i).replace(/\n+$/, '');
-  let up = effect.slice(i + marker.length).trim();
-
-  const note = up.indexOf('\n※');
-  if (note >= 0) {
-    base = `${base}\n${up.slice(note + 1).trim()}`;
-    up = up.slice(0, note).trim();
-  }
-
-  return [base, up];
-}
-
+// Card faces state their upgrade inline as "<base effect>\n\n敲后：<what changes>". Sheet 1 keeps that
+// whole string per draft instead of splitting it: the two effect columns can then be compared without
+// having to interleave a base/upgraded pair. A card with no CardBalance.IsTony branch has no effectTony
+// and renders 「同原版」, so the default is still "the two drafts are identical" rather than blank.
+//
 // The upgraded cost is already written into the upgrade text as "费用 1→0", so read it from there
-// rather than keeping a second copy of the number that could drift.
+// rather than keeping a second copy of the number that could drift. Each draft parses its own text
+// against its own base cost (the Tony draft can cost 2 vs 3, e.g. 冰刃轮舞).
 function upgradedCost(cost, effect) {
   const m = effect.match(/费用\s*([0-9X]+)\s*→\s*([0-9X]+)/);
   return m ? m[2] : cost;
 }
 
+// Only cards that actually diverge get a second number in a cell; the rest stay a single value.
+function dualValue(original, tony) {
+  if (tony === undefined || tony === null || String(tony) === String(original)) return original;
+  return `${original}（东尼 ${tony}）`;
+}
+
 const mainSheet = {
   name: '卡牌总表',
-  widths: [26, 8, 8, 12, 16, 62, 62],
+  widths: [26, 8, 14, 16, 16, 62, 62],
   rows: [
-    [`耶坦尼娅 Yetannia — 卡牌总表   ${MOD_VERSION}`, '', '', '', '', '', ''],
-    ['名称', '类型', '花费', '升级后花费', '稀有度', '效果', '升级后效果'],
+    [`耶坦尼娅 Yetannia — 卡牌总表（原版 / 东尼测试版）   ${MOD_VERSION}`, '', '', '', '', '', ''],
+    ['名称', '类型', '花费', '升级后花费', '稀有度', '效果（原版）', '效果（东尼测试版）'],
     ...cards.map((c) => {
-      const [base, up] = splitUpgrade(c.effect);
-      return [c.name, c.type, c.cost, upgradedCost(c.cost, c.effect), c.rarity, base, up];
+      const costTony = c.costTony ?? c.cost;
+      const upgradedOriginal = upgradedCost(c.cost, c.effect);
+      const upgradedTony = upgradedCost(costTony, c.effectTony ?? c.effect);
+      return [
+        c.name,
+        c.type,
+        dualValue(c.cost, c.costTony),
+        dualValue(upgradedOriginal, c.effectTony ? upgradedTony : undefined),
+        dualValue(c.rarity, c.rarityTony),
+        c.effect,
+        c.effectTony ?? '同原版',
+      ];
     }),
   ],
 };
@@ -981,7 +1077,13 @@ const refRows = [
   [`耶坦尼娅 Yetannia — 对照（源文件）   ${MOD_VERSION}`, '', '', '', ''],
   ['本表由 .tools/cards-xlsx.js 依最新代码与版本号自动生成，手改会在下次打包时被覆盖。', '', '', '', ''],
   ['名称', '源文件', '类型', '花费', '稀有度'],
-  ...cards.map((c) => [c.name, c.file, c.type, c.cost, c.rarity]),
+  ...cards.map((c) => [
+    c.name,
+    c.file,
+    c.type,
+    dualValue(c.cost, c.costTony),
+    dualValue(c.rarity, c.rarityTony),
+  ]),
   [],
   ['关键词', '说明'],
   ...keywords,
@@ -989,11 +1091,16 @@ const refRows = [
 
 const refSheet = {
   name: '对照（源文件）',
-  widths: [26, 32, 8, 8, 16],
+  widths: [26, 32, 8, 12, 16],
   rows: refRows,
 };
 
-const out = process.argv[2] || path.join(__dirname, '..', 'Yetannia-卡牌表.xlsx');
+// Flags are optional: the output path stays the first non-flag argument, and --no-readme suppresses the
+// README sync below when only the spreadsheet is being refreshed (e.g. while another change owns the
+// README this round).
+const args = process.argv.slice(2);
+const skipReadme = args.includes('--no-readme');
+const out = args.find((a) => !a.startsWith('--')) || path.join(__dirname, '..', 'Yetannia-卡牌表.xlsx');
 fs.writeFileSync(out, buildXlsx([mainSheet, refSheet]));
 
 const rarityCount = {};
@@ -1061,6 +1168,11 @@ function renderReadmeCardTable() {
 }
 
 function syncReadme() {
+  if (skipReadme) {
+    console.log('readme: skipped (--no-readme)');
+    return;
+  }
+
   const readme = path.join(__dirname, '..', 'README.md');
   if (!fs.existsSync(readme)) {
     console.log('readme: not found, skipped');

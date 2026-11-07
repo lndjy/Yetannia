@@ -6,6 +6,7 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
+using Yetannia.YetanniaCode.Config;
 
 namespace Yetannia.YetanniaCode.Cards;
 
@@ -13,14 +14,16 @@ namespace Yetannia.YetanniaCode.Cards;
 /// 挺身而出 — 蓝卡（Uncommon），2 费技能：
 /// 获得 16 点[格挡]，给予自己 1 层[虚弱]，下回合获得 1（升级 2）点[能量]。
 ///
+/// 东尼测试版（CardBalance.IsTony）：格挡改为敲前 13 / 敲后 15（原版保持 16 且升级不加格挡）。
+///
 /// The request left this row's name blank. The display name below is a deliberate placeholder so
 /// the card is not nameless in game; rename it by editing <see cref="Chinese"/> / <see cref="English"/>.
-///
-/// Only the next-turn energy scales with the upgrade — 16 Block and 1 Weak were given as fixed.
 /// </summary>
 public sealed class UnnamedTechnique : YetanniaCard
 {
-    private const int BlockAmount = 16;
+    private const int BlockAmount = 16;          // 原版：固定 16，不随升级变化
+    private const int TonyBlockAmount = 13;      // 东尼测试版：敲前 13
+    private const int TonyBlockUpgrade = 2;      // 东尼测试版：敲后 15
     private const int WeakAmount = 1;
     private const int BaseEnergy = 1;
     private const int EnergyUpgrade = 1; // 1 -> 2
@@ -34,7 +37,7 @@ public sealed class UnnamedTechnique : YetanniaCard
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(BlockAmount, ValueProp.Move),
+        new BlockVar(CardBalance.IsTony ? TonyBlockAmount : BlockAmount, ValueProp.Move),
         new PowerVar<WeakPower>(WeakAmount),
         new EnergyVar(BaseEnergy)
     ];
@@ -54,7 +57,15 @@ public sealed class UnnamedTechnique : YetanniaCard
             choiceContext, creature, DynamicVars.Energy.BaseValue, creature, this);
     }
 
-    protected override void OnUpgrade() => DynamicVars.Energy.UpgradeValueBy(EnergyUpgrade);
+    protected override void OnUpgrade()
+    {
+        DynamicVars.Energy.UpgradeValueBy(EnergyUpgrade);
+        // Only the Tony draft scales Block with the upgrade (13 -> 15); the Original keeps 16 flat.
+        if (CardBalance.IsTony)
+        {
+            DynamicVars.Block.UpgradeValueBy(TonyBlockUpgrade);
+        }
+    }
 
     public override List<(string, string)> Localization => Loc.Pick(Chinese, English);
 

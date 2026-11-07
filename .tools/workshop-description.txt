@@ -7,6 +7,12 @@
 
 [h2]更新记录[/h2]
 
+[b]v1.0.8[/b]
+[list]
+[*][b]联机数值统一[/b]：主机与客机的「卡牌数值」档位不同时，客机会在进入对局前自动改用主机的档位，不再出现数据不同步报错（卡面文字仍需下次启动才更新）。
+[*][b]东尼测试版[/b]：挺身而出的格挡改为敲前 13 / 敲后 15（原版仍是 16、升级不加格挡）。
+[/list]
+
 [b]v1.0.7[/b]
 [list]
 [*][b]修复营火 / 商店角色模型错位[/b]：v1.0.6 把战斗立绘重渲染到 1.5 倍后，这两个场景的帧区域还是旧图集的坐标，模型会破碎/错位；现已按新图集重建，尺寸与站位和战斗立绘一致。
@@ -21,11 +27,6 @@
 [b]v1.0.5[/b]
 [list]
 [*]状态牌（纯爱幻想 / 幻想纯爱）被消耗时[b]额外抽 1 张[/b]；[b]凯旋之路[/b]改为蓝卡；[b]运筹帷幄[/b]增加「保留」并升金。两档数值都生效。
-[/list]
-
-[b]v1.0.4[/b]
-[list]
-[*]新增「卡牌数值」设置（原版 / 东尼测试版，12 张卡，需重启）；修复局外收益牌被局内印牌生成；文案校对；先古对话补齐英文。
 [/list]
 
 [hr][/hr]
@@ -85,6 +86,12 @@
 
 [h2]Changelog[/h2]
 
+[b]v1.0.8[/b]
+[list]
+[*][b]Multiplayer draft sync[/b]: when the host and a client use different Card Numbers drafts, the client now adopts the host's draft before the run starts, which removes the desync error (card TEXT still updates on the next launch).
+[*][b]Anthony draft[/b]: Step Forward now gives 13 Block (15 upgraded); the Original draft keeps its flat 16.
+[/list]
+
 [b]v1.0.7[/b]
 [list]
 [*][b]Fixed the campfire (rest site) and merchant (shop) character models[/b]: after v1.0.6 re-rendered the combat sprite at 1.5x, those two scenes still used the old atlas frame rects and drew a broken figure. Both are rebuilt and now match the in-combat figure in size and placement.
@@ -99,11 +106,6 @@
 [b]v1.0.5[/b]
 [list]
 [*]Status cards draw 1 when exhausted; Road of Triumph is now Uncommon; Strategize gains Retain and moves up to Rare. All apply to both drafts.
-[/list]
-
-[b]v1.0.4[/b]
-[list]
-[*]Card Numbers setting (Original / Anthony Test Build, 12 cards, restart required); out-of-combat payoff cards can no longer be generated in combat; full proofread; 246 Ancient dialogue lines translated.
 [/list]
 
 [hr][/hr]
