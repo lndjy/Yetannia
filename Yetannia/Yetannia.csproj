@@ -59,7 +59,7 @@
 
   <ItemGroup>
     <!-- BaseLib is a separate runtime mod; only its API surface is needed at compile time. -->
-    <PackageReference Include="Alchyr.Sts2.BaseLib" Version="3.4.7" PrivateAssets="all" />
+    <PackageReference Include="Alchyr.Sts2.BaseLib" Version="3.4.8" PrivateAssets="all" />
   </ItemGroup>
 
   <Target Name="DeployModToGame" AfterTargets="Build" Condition="'$(DeployToGame)' == 'true'">

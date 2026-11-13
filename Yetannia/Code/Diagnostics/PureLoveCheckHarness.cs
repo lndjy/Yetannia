@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using HarmonyLib;
+using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Context;
@@ -11,6 +12,7 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
+using MegaCrit.Sts2.Core.Runs;
 using Yetannia.YetanniaCode.Cards;
 using Yetannia.YetanniaCode.Powers;
 
@@ -111,7 +113,7 @@ internal static class PureLoveCheckHarness
 
             // Kept installed across the whole scenario, not just the trigger call: the hook runs as its
             // own GameAction, so the nested scry happens *after* the trigger returns.
-            using (CardSelectCmd.UseSelector(new AutoCardSelector(), localOnly: true))
+            using (RunManager.Instance.CardSelectorStack.PushSelector(player, new AutoCardSelector()))
             {
                 var power = await PowerCmd.Apply<PureLoveFormPower>(
                     new BlockingPlayerChoiceContext(), player.Creature, 1, player.Creature, null);

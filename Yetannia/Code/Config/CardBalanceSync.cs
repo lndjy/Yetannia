@@ -212,7 +212,7 @@ internal static class CardBalanceSync
 /// with it. Both constructors are patched because the second one is used for time-server (daily) runs.
 /// </summary>
 [HarmonyPatch(typeof(StartRunLobby), MethodType.Constructor,
-    new[] { typeof(GameMode), typeof(INetGameService), typeof(IStartRunLobbyListener), typeof(int) })]
+    new[] { typeof(GameMode), typeof(bool), typeof(INetGameService), typeof(IStartRunLobbyListener), typeof(int) })]
 internal static class StartRunLobbyCtorPatch
 {
     [HarmonyPostfix]
@@ -220,7 +220,7 @@ internal static class StartRunLobbyCtorPatch
 }
 
 [HarmonyPatch(typeof(StartRunLobby), MethodType.Constructor,
-    new[] { typeof(GameMode), typeof(INetGameService), typeof(IStartRunLobbyListener), typeof(TimeServerResult), typeof(int) })]
+    new[] { typeof(GameMode), typeof(bool), typeof(INetGameService), typeof(IStartRunLobbyListener), typeof(TimeServerResult), typeof(int) })]
 internal static class StartRunLobbyDailyCtorPatch
 {
     [HarmonyPostfix]

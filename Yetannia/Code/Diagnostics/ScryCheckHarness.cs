@@ -19,6 +19,7 @@ using MegaCrit.Sts2.Core.Nodes.Cards;
 using MegaCrit.Sts2.Core.Nodes.GodotExtensions;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Nodes.Screens.CardSelection;
+using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.TestSupport;
 using Yetannia.YetanniaCode.Cards;
 
@@ -27,7 +28,7 @@ namespace Yetannia.YetanniaCode.Diagnostics;
 /// <summary>
 /// Answers card-selection prompts automatically, so a scry (which is a *player choice*) can be driven
 /// without a human at the keyboard. This is the same hook the game's own tests and AutoSlay use:
-/// <see cref="CardSelectCmd.UseSelector"/> swaps the selector for the duration of a scope.
+/// <see cref="CardSelectorStack"/> swaps the selector for the duration of a scope.
 ///
 /// For a scry the prompt asks for 0..N cards to discard, so returning the first <c>minSelect</c>
 /// options discards nothing — the friendliest default, and enough to prove the choice completes.
@@ -333,7 +334,7 @@ internal static class RealSelectScreenDriver
 ///
 /// For the last two the installed selector has to come off first: AutoSlay installs one for the whole
 /// run and <c>CardSelectCmd.FromSimpleGrid</c> only reaches its UI branch when no selector is active.
-/// <see cref="CardSelectCmd.SuspendSelectorForTest"/> is the game's own supported way to do that.
+/// <see cref="CardSelectorStack.SuspendTestSelector"/> is the game's own supported way to do that.
 /// </summary>
 [HarmonyPatch(typeof(NCombatRoom), nameof(NCombatRoom._Ready))]
 internal static class ScryCheckHarness
@@ -433,6 +434,33 @@ internal static class ScryCheckHarness
         }
     }
 
+    /// <summary>
+    /// v0.113 replaced the old CardSelectCmd.SuspendSelectorForTest helper with the static
+    /// CardSelectorStack.SuspendTestSelector, which THROWS when no test selector is installed. AutoSlay
+    /// installs one for a QA run; a plain run does not, so treat that case as a no-op scope.
+    /// </summary>
+    private static IDisposable TrySuspendTestSelector()
+    {
+        try
+        {
+            return CardSelectorStack.SuspendTestSelector();
+        }
+        catch (InvalidOperationException)
+        {
+            return NoOpScope.Instance;
+        }
+    }
+
+    /// <summary>Scope that does nothing, used when there is no test selector to suspend.</summary>
+    private sealed class NoOpScope : IDisposable
+    {
+        internal static readonly NoOpScope Instance = new NoOpScope();
+
+        public void Dispose()
+        {
+        }
+    }
+
     /// <summary>Returns true only when the play actually came back; a begin with no matching end is false.</summary>
     private static async Task<bool> PlayScryCard<T>(
         Player player, string label, bool useRealSelectionScreen, bool driveScreen)
@@ -454,8 +482,7 @@ internal static class ScryCheckHarness
                 // No selector may be active or the UI branch is skipped. AutoSlay installs one for the
                 // whole run, so it has to come off here - and go back on afterwards, or the bot's own
                 // card-reward and event choices would start waiting for a human.
-                using var suspendedGlobal = CardSelectCmd.SuspendSelectorForTest();
-                using var suspendedLocal = CardSelectCmd.SuspendSelectorForTest(localOnly: true);
+                using var suspendedGlobal = TrySuspendTestSelector();
 
                 // The driver is triggered from the screen-creation postfix, not polled for here: that
                 // postfix runs at the exact moment the screen exists, so there is no wait to get wrong.
@@ -467,7 +494,7 @@ internal static class ScryCheckHarness
             else
             {
                 // The selector swap is what lets the scry's choice resolve without a human.
-                using (CardSelectCmd.UseSelector(new AutoCardSelector(), localOnly: true))
+                using (RunManager.Instance.CardSelectorStack.PushSelector(player, new AutoCardSelector()))
                 {
                     var task = CardCmd.AutoPlay(context, card, null);
                     await task;

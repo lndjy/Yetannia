@@ -1,32 +1,32 @@
 [b]【只支持 beta 版 · BETA BRANCH ONLY】[/b]
 
-本 Mod 只在《杀戮尖塔 2》的 [b]beta 分支[/b]上开发与测试。正式分支（非 beta）不保证能加载，
+本 Mod 只在《杀戮尖塔 2》的 [b]beta 分支[/b]上开发与测试（当前适配游戏 [b]v0.113.0[/b]，需要 [b]BaseLib 3.4.8+[/b]）。正式分支（非 beta）不保证能加载，
 可能出现角色不出现、卡图丢失、事件对话报错等问题。请在 Steam 里把游戏切到 beta 分支后再使用。
 
 [hr][/hr]
 
 [h2]更新记录[/h2]
 
+[b]v1.0.9[/b]
+[list]
+[*][b]适配《杀戮尖塔 2》v0.113.0 本体更新[/b]（本体这次改了接口，旧版会加载失败）：依赖升级到 [b]BaseLib 3.4.8[/b]；修复[b]角色选择 / 随机选人[/b]的语音触发（本体改了选人方法参数，改为从选人按钮取角色）；卡牌/遗物/能力、预见、营火与商店模型、联机数值同步均按新接口回归通过。
+[*]本版起要求游戏 [b]>= v0.113.0[/b]、BaseLib [b]>= 3.4.8[/b]。
+[/list]
+
 [b]v1.0.8[/b]
 [list]
-[*][b]联机数值统一[/b]：主机与客机的「卡牌数值」档位不同时，客机会在进入对局前自动改用主机的档位，不再出现数据不同步报错（卡面文字仍需下次启动才更新）。
-[*][b]东尼测试版[/b]：挺身而出的格挡改为敲前 13 / 敲后 15（原版仍是 16、升级不加格挡）。
+[*]联机数值统一：主客机档位不同时，客机进入对局前自动改用主机档位，不再报数据不同步。
+[*]东尼测试版：挺身而出格挡改为敲前 13 / 敲后 15（原版仍为 16）。
 [/list]
 
 [b]v1.0.7[/b]
 [list]
-[*][b]修复营火 / 商店角色模型错位[/b]：v1.0.6 把战斗立绘重渲染到 1.5 倍后，这两个场景的帧区域还是旧图集的坐标，模型会破碎/错位；现已按新图集重建，尺寸与站位和战斗立绘一致。
+[*]修复营火 / 商店角色模型错位（v1.0.6 重渲染立绘后这两处场景未同步重建）。
 [/list]
 
 [b]v1.0.6[/b]
 [list]
-[*][b]战斗立绘重渲染[/b]：3D 模型按 1.5 倍分辨率重新渲染（人物源像素 179×216 → 253×305），屏幕显示尺寸不变（约 277px 高）；头发、金边、裙摆的细节现在是缩小显示而不是放大显示，实机明显更清晰。包体因此变大（pck 约 40MB → 57MB）。
-[*][b]联机手部图标重做[/b]：多人时显示在队友/选遗物处的那只手，改为与原版同款构图（手更大、小臂更短、袖口带褶、底部渐隐），手指也比之前长了一截；配色为她的淡肤色 + 海军蓝袖子 + 金色星点。
-[/list]
-
-[b]v1.0.5[/b]
-[list]
-[*]状态牌（纯爱幻想 / 幻想纯爱）被消耗时[b]额外抽 1 张[/b]；[b]凯旋之路[/b]改为蓝卡；[b]运筹帷幄[/b]增加「保留」并升金。两档数值都生效。
+[*]战斗立绘按 1.5 倍重渲染（显示尺寸不变、细节更清晰）；联机手部图标重做（构图、手指长度、配色）。
 [/list]
 
 [hr][/hr]
@@ -54,13 +54,13 @@
 
 [h2]卡牌数值（原版 / 东尼测试版）[/h2]
 
-设置里还会多一项 [b]卡牌数值[/b]，可选 [b]原版 / 东尼测试版[/b]。[b]原版[/b]是正式发布的数值；[b]东尼测试版[/b]对 12 张卡（试探、合击、修顿、有条不紊、制敌机先、积厚成势、请君入瓮、背水一战、交叉防御、临危不乱、夹击之势、冰刃轮舞）采用另一套数值草案，[b]其余 70 张卡两档完全一致[/b]。
+设置里还会多一项 [b]卡牌数值[/b]，可选 [b]原版 / 东尼测试版[/b]。[b]原版[/b]是正式发布的数值；[b]东尼测试版[/b]对 13 张卡（试探、合击、修顿、有条不紊、制敌机先、积厚成势、请君入瓮、背水一战、交叉防御、临危不乱、夹击之势、冰刃轮舞、挺身而出）采用另一套数值草案，[b]其余卡牌两档完全一致[/b]。
 
 卡牌数值和卡面文字都是游戏加载时生成的，所以[b]切换后需要重启游戏才会生效[/b]。
 
 [h2]安装[/h2]
 
-1. 先订阅 [b]BaseLib[/b]（版本 ≥ 3.4.7）。没有它本 Mod 不会加载，日志里也不会有任何 [code][Yetannia][/code] 字样。
+1. 先订阅 [b]BaseLib[/b]（版本 ≥ 3.4.8）。没有它本 Mod 不会加载，日志里也不会有任何 [code][Yetannia][/code] 字样。
 2. 在 Steam 里把《杀戮尖塔 2》切到 [b]beta 分支[/b]，然后[b]从 Steam 启动[/b]游戏。
 3. 在游戏主菜单打开 [b]Mod 列表[/b]，确认 BaseLib 和 Yetannia 都已[b]启用[/b]，然后重启游戏。
 4. 选人界面应能看到耶坦尼娅（角色不需要解锁）。
@@ -80,50 +80,30 @@
 
 [h1]English[/h1]
 
-[b]BETA BRANCH ONLY[/b] — this mod is developed and tested on the [b]beta branch[/b] of Slay the Spire 2 only. Please switch the game to the beta branch in Steam first.
+[b]BETA BRANCH ONLY[/b] — this mod is developed and tested on the [b]beta branch[/b] of Slay the Spire 2 only. Currently built for game [b]v0.113.0[/b] and requires [b]BaseLib 3.4.8+[/b]. Please switch the game to the beta branch in Steam first.
 
 [hr][/hr]
 
 [h2]Changelog[/h2]
 
+[b]v1.0.9[/b]
+[list]
+[*][b]Compatibility with Slay the Spire 2 v0.113.0[/b] (the game changed several APIs, so the previous build fails to load): the mod now builds against [b]BaseLib 3.4.8[/b]. Fixed the [b]character-select / random-select voice trigger[/b] (the game changed the selection method's parameters, so the model is now read from the selected button). Cards, relics, powers, Scry, the campfire/shop models and the multiplayer draft sync were re-verified on the new APIs.
+[*]This build requires game [b]>= v0.113.0[/b] and BaseLib [b]>= 3.4.8[/b].
+[/list]
+
 [b]v1.0.8[/b]
 [list]
-[*][b]Multiplayer draft sync[/b]: when the host and a client use different Card Numbers drafts, the client now adopts the host's draft before the run starts, which removes the desync error (card TEXT still updates on the next launch).
-[*][b]Anthony draft[/b]: Step Forward now gives 13 Block (15 upgraded); the Original draft keeps its flat 16.
+[*]Multiplayer draft sync: a client adopts the host's Card Numbers draft before the run starts, removing the desync error.
+[*]Anthony draft: Step Forward gives 13 Block (15 upgraded); the Original draft keeps 16.
 [/list]
 
 [b]v1.0.7[/b]
 [list]
-[*][b]Fixed the campfire (rest site) and merchant (shop) character models[/b]: after v1.0.6 re-rendered the combat sprite at 1.5x, those two scenes still used the old atlas frame rects and drew a broken figure. Both are rebuilt and now match the in-combat figure in size and placement.
+[*]Fixed the misaligned campfire / merchant character models (the two scenes were not rebuilt after the v1.0.6 sprite re-render).
 [/list]
 
 [b]v1.0.6[/b]
 [list]
-[*][b]Re-rendered combat sprite[/b]: the 3D model is re-rendered at 1.5x resolution (the figure is 253x305 source pixels now instead of 179x216) while the on-screen height stays ~277 px, so detail is downscaled rather than upscaled and reads noticeably sharper. The .pck grows from ~40 MB to ~57 MB as a result.
-[*][b]Redone multiplayer hand icons[/b]: the hand shown next to teammates and during relic picks now follows the base game's composition (larger hand, shorter forearm, folded sleeve, soft bottom fade) with longer fingers, in her pale skin / navy sleeve / gold speck palette.
-[/list]
-
-[b]v1.0.5[/b]
-[list]
-[*]Status cards draw 1 when exhausted; Road of Triumph is now Uncommon; Strategize gains Retain and moves up to Rare. All apply to both drafts.
-[/list]
-
-[hr][/hr]
-
-[b]Yetannia[/b] is a new character with [b]82 cards[/b] built around Scry, her own relic, the [b]Prophet[/b] keyword, Chinese / Japanese voice lines, and dedicated dialogue for all nine Ancients.
-
-[h2]Installation[/h2]
-
-1. Subscribe to [b]BaseLib[/b] first (version ≥ 3.4.7).
-2. Switch Slay the Spire 2 to the [b]beta branch[/b], then launch the game [b]from Steam[/b].
-3. Enable BaseLib and Yetannia in the in-game [b]Mods[/b] list, then restart the game.
-
-Zip version: extract the [code]Yetannia[/code] folder into [code]...\Slay the Spire 2\mods\[/code].
-
-[h2]Notes[/h2]
-
-[list]
-[*]Fan work based on Yetannia, a character from the Chinese mobile game 《千年之旅》. Voice and artwork come from the original game; contact me if you would like them removed.
-[*]In English, all card / power / relic / keyword text, the settings rows and [b]all 246 lines of Ancient dialogue[/b] are localized. Voice acting is Chinese / Japanese only.
-[*]Bug reports: attach the log ([code]%APPDATA%\SlayTheSpire2\logs\godot.log[/code]).
+[*]Combat sprite re-rendered at 1.5x (same on-screen size, noticeably sharper); multiplayer hand icons redone.
 [/list]

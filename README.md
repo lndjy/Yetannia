@@ -7,7 +7,7 @@
 - 源码仓库：<https://github.com/lndjy/Yetannia>
 - 开发文档 / 项目历史：[`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md)
 - 发布流程（含发布前的安全与隐私检查）：[`docs/RELEASE-WORKFLOW.md`](docs/RELEASE-WORKFLOW.md)
-- 当前版本：**v1.0.8**（以 `Yetannia/Yetannia.json` 为准）
+- 当前版本：**v1.0.9**（以 `Yetannia/Yetannia.json` 为准）
 
 > ### ⚠️ 只支持 beta 分支 · BETA BRANCH ONLY
 >
@@ -194,6 +194,15 @@ Yetannia is a fan work. Character, art and voice assets come from the Chinese mo
 3. 「关闭」只影响耶坦尼娅的台词，**不影响原版音效**；随时可以再打开。
 
 ## 更新记录
+
+### v1.0.9
+
+- **适配《杀戮尖塔 2》v0.113.0 本体更新**：本体这次调整了多处接口，旧版本会加载失败。
+  - 依赖升级到 **BaseLib 3.4.8**（需同为 3.4.8 或更高）。
+  - 修复**角色选择 / 随机选人**的语音触发：本体改了选人方法的参数，旧的挂钩取不到角色模型，
+    已改为从选人按钮读取。
+  - 其余功能（卡牌/遗物/能力、预见、营火与商店模型、联机数值同步）已按新接口回归通过。
+- 现在要求游戏 **>= v0.113.0**；仍在 beta 分支上开发与测试。
 
 ### v1.0.8
 

@@ -131,7 +131,7 @@ internal static class VoiceMoments
 internal static class VoiceSelectMomentPatch
 {
     [HarmonyPostfix]
-    private static void Postfix(NCharacterSelectScreen __instance, NCharacterSelectButton charSelectButton, CharacterModel characterModel)
+    private static void Postfix(NCharacterSelectScreen __instance, NCharacterSelectButton charSelectButton)
     {
         try
         {
@@ -140,6 +140,8 @@ internal static class VoiceSelectMomentPatch
             {
                 return;
             }
+            // v0.113 dropped the second SelectCharacter parameter, so the model now comes from the button.
+            var characterModel = charSelectButton?.Character;
             if (characterModel is not YetanniaCharacter)
             {
                 return;
@@ -276,15 +278,17 @@ internal static class VoiceSelectVisitClosePatch
 // would have introduced, so it is fixed here instead of being left as a trap: the seam is the resolved
 // character itself, so a roll onto her speaks exactly like a click on her tile, and it shares the same
 // per-visit gate (a roll followed by a manual click in the same visit is still one line, in either order).
-[HarmonyPatch(typeof(NCharacterSelectScreen), "OnLocalCharacterChangedForRandom", new[] { typeof(CharacterModel) })]
+[HarmonyPatch(typeof(NCharacterSelectScreen), "DoRandomCharacterChange", new[] { typeof(Player) })]
 internal static class VoiceSelectRandomMomentPatch
 {
     [HarmonyPostfix]
-    private static void Postfix(NCharacterSelectScreen __instance, CharacterModel characterModel)
+    private static void Postfix(NCharacterSelectScreen __instance, Player player)
     {
         try
         {
-            if (characterModel is not YetanniaCharacter)
+            // v0.113 removed OnLocalCharacterChangedForRandom; the roll now resolves inside
+            // DoRandomCharacterChange(player), which is also where the vanilla select sfx is played.
+            if (player?.Character is not YetanniaCharacter)
             {
                 return;
             }
@@ -636,10 +640,10 @@ internal static class VoicePatchSelfCheck
             Report1("sfx.play", AccessTools.Method(typeof(SfxCmd), "Play", new[] { typeof(string), typeof(float) }));
             Report1("audio.oneshot", AccessTools.Method(typeof(MegaCrit.Sts2.Core.Nodes.Audio.NAudioManager), "PlayOneShot", new[] { typeof(string), typeof(float) }));
             Report1("audio.oneshot.params", AccessTools.Method(typeof(MegaCrit.Sts2.Core.Nodes.Audio.NAudioManager), "PlayOneShot", new[] { typeof(string), typeof(Dictionary<string, float>), typeof(float) }));
-            Report1("moment.select", AccessTools.Method(typeof(NCharacterSelectScreen), "SelectCharacter", new[] { typeof(NCharacterSelectButton), typeof(CharacterModel) }));
+            Report1("moment.select", AccessTools.Method(typeof(NCharacterSelectScreen), "SelectCharacter", new[] { typeof(NCharacterSelectButton) }));
             Report1("select.visitopen", AccessTools.Method(typeof(NCharacterSelectScreen), "OnSubmenuOpened"));
             Report1("select.visitclose", AccessTools.Method(typeof(NCharacterSelectScreen), "OnSubmenuClosed"));
-            Report1("select.random", AccessTools.Method(typeof(NCharacterSelectScreen), "OnLocalCharacterChangedForRandom", new[] { typeof(CharacterModel) }));
+            Report1("select.random", AccessTools.Method(typeof(NCharacterSelectScreen), "DoRandomCharacterChange", new[] { typeof(Player) }));
             Report1("moment.runstart", AccessTools.Method(typeof(NRun), "Create", new[] { typeof(RunState) }));
             Report1("moment.combatstart", AccessTools.Method(typeof(NCombatRoom), "_Ready"));
             Report1("moment.cardreward", AccessTools.Method(typeof(NCardRewardSelectionScreen), "_Ready"));
