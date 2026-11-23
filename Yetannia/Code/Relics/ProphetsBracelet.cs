@@ -1,20 +1,31 @@
 using BaseLib.Abstracts;
+using BaseLib.Utils;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Models.RelicPools;
 using Yetannia.YetanniaCode.Patches;
 
 namespace Yetannia.YetanniaCode.Relics;
 
 /// <summary>
-/// 先知的手链 — 普通遗物：在所有**问号事件**里新增一个选项：跳过该事件并获得 50 金币。
+/// 先知的手链 — **事件遗物**（v1.1.0 起）：只在事件「记忆先知」的「献上自己的记忆」选项中获得，
+/// 不再出现在普通遗物掉落里。效果不变：在所有**问号事件**里新增一个选项——跳过该事件并获得 50 金币。
+///
+/// It sits in the base game's <see cref="EventRelicPool"/> (event relics' home pool) rather than
+/// <see cref="YetanniaRelicPool"/>. That is what "event relic" means mechanically here: the relic can only
+/// be handed out by events — ours grants it directly — and it stops appearing in normal chest/elite/boss
+/// relic rolls. <see cref="YetanniaRelicBase"/> (not <see cref="YetanniaRelic"/>) is the base class for
+/// exactly that reason: the pool attribute is inherited, so a second attribute on the relic itself would
+/// be rejected by BaseLib.
 ///
 /// The extra option itself is injected by <see cref="EventSkipOptionPatch"/>, which postfixes
 /// <c>EventModel.GenerateInitialOptionsWrapper</c> — the stable wrapper every event's options go
 /// through. This relic is just the marker that patch looks for, so the option only appears for a
 /// player who actually holds it.
 /// </summary>
-public sealed class ProphetsBracelet : YetanniaRelic
+[Pool(typeof(EventRelicPool))]
+public sealed class ProphetsBracelet : YetanniaRelicBase
 {
     private const int GoldReward = 50;
 

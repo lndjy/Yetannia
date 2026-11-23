@@ -8,6 +8,8 @@ using HarmonyLib;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Models.Acts;
+using MegaCrit.Sts2.Core.Models.RelicPools;
 using MegaCrit.Sts2.Core.Nodes.Cards;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.RestSite;
@@ -16,6 +18,7 @@ using MegaCrit.Sts2.Core.Nodes.Screens.Shops;
 using MegaCrit.Sts2.Core.Saves.Runs;
 using Yetannia.YetanniaCode.Cards;
 using Yetannia.YetanniaCode.Character;
+using Yetannia.YetanniaCode.Events;
 using Yetannia.YetanniaCode.Keywords;
 using Yetannia.YetanniaCode.Powers;
 using Yetannia.YetanniaCode.Relics;
@@ -80,6 +83,33 @@ internal static class ModSelfCheck
 
             log.Info($"self-check relic pool : {ModelDb.RelicPool<YetanniaRelicPool>().AllRelics.Count()} relic(s)");
             log.Info($"self-check relic loc  : title={ExistsIn("relics", typeof(ProphetsEye), ".title")} description={ExistsIn("relics", typeof(ProphetsEye), ".description")}");
+
+            // v1.1.0: 先知的手链 moved from the ordinary pool to the base game's event-relic pool, and a new
+            // ordinary relic (希楠之约) joined YetanniaRelicPool. These three lines make that split auditable
+            // from a log alone: the old build would print braceletEventPool=False / braceletNormalPool=True.
+            log.Info(
+                $"self-check relic event : xinansPact={Registered(typeof(XinansPact))} " +
+                $"braceletEventPool={Probe(() => ModelDb.RelicPool<EventRelicPool>().AllRelics.Any(r => r is ProphetsBracelet))} " +
+                $"braceletNormalPool={Probe(() => ModelDb.RelicPool<YetanniaRelicPool>().AllRelics.Any(r => r is ProphetsBracelet))}");
+
+            // v1.1.0 events. Registering is one thing; being reachable from the pools the game rolls from is
+            // another, so print both: shared events come from ModelDb.AllSharedEvents, and act events from
+            // that act's AllEvents list (BaseLib appends custom events to both).
+            log.Info(
+                $"self-check events     : memoryProphet={Registered(typeof(MemoryProphet))} " +
+                $"ritualOfHarmony={Registered(typeof(RitualOfHarmony))}");
+            log.Info(
+                $"self-check event pool : memoryShared={Probe(() => ModelDb.AllSharedEvents.Any(e => e is MemoryProphet))} " +
+                $"ritualInGlory={Probe(() => ModelDb.Act<Glory>().AllEvents.Any(e => e is RitualOfHarmony))}");
+            log.Info(
+                $"self-check event loc  : memoryTitle={ExistsIn("events", typeof(MemoryProphet), ".title")} " +
+                $"memoryInitial={ExistsIn("events", typeof(MemoryProphet), ".pages.INITIAL.description")} " +
+                $"memoryOption={ExistsIn("events", typeof(MemoryProphet), ".pages.INITIAL.options.MEMORY.title")} " +
+                $"ritualTitle={ExistsIn("events", typeof(RitualOfHarmony), ".title")} " +
+                $"ritualChaos={ExistsIn("events", typeof(RitualOfHarmony), ".pages.CHAOS.description")}");
+            log.Info(
+                $"self-check event art  : memory={Describe(LoadTexture(ModAssets.Image("events/memory_prophet.png")))} " +
+                $"ritual={Describe(LoadTexture(ModAssets.Image("events/ritual_of_harmony.png")))}");
 
             var character = ModelDb.Character<YetanniaCharacter>();
             var deck = character.StartingDeck.ToList();
@@ -891,6 +921,19 @@ internal static class ModSelfCheck
     /// <summary>Merchant figure: NMerchantCharacter has no required named nodes.</summary>
     internal static string TryConvertMerchant(string path) =>
         TryConvert<NMerchantCharacter>(path);
+
+    /// <summary>Read-only probe for a pool/membership question: any throw is reported, never swallowed.</summary>
+    private static string Probe(Func<bool> probe)
+    {
+        try
+        {
+            return probe().ToString();
+        }
+        catch (Exception e)
+        {
+            return "ERR:" + e.GetType().Name + ":" + e.Message;
+        }
+    }
 
     private static string Registered(Type type) => ModelDb.Contains(type).ToString();
 

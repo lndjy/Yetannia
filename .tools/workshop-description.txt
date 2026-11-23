@@ -7,6 +7,14 @@
 
 [h2]更新记录[/h2]
 
+[b]v1.1.0[/b]
+[list]
+[*]新增两个事件：[b]记忆先知[/b]（献上记忆→事件遗物「先知的手链」；祈祷→50 金币）与[b]调和仪式[/b]（第三层限定、需全队都有非永恒诅咒：秩序→移除随机诅咒并失去 10% 当前生命；混乱→每张诅咒牌加入两张随机升级卡）。
+[*]新增普通遗物[b]希楠之约[/b]：消耗状态牌时获得 2 点格挡；[b]先知的手链[/b]改为事件遗物，不再普通掉落。
+[*][b]全力进攻[/b]升级效果调整：不再降到 0 费（仍 1 费），改为获得「保留」。
+[*]新事件立绘与新遗物图标目前为程序生成的占位图，后续替换正式美术。
+[/list]
+
 [b]v1.0.9[/b]
 [list]
 [*][b]适配《杀戮尖塔 2》v0.113.0 本体更新[/b]（本体这次改了接口，旧版会加载失败）：依赖升级到 [b]BaseLib 3.4.8[/b]；修复[b]角色选择 / 随机选人[/b]的语音触发（本体改了选人方法参数，改为从选人按钮取角色）；卡牌/遗物/能力、预见、营火与商店模型、联机数值同步均按新接口回归通过。
@@ -24,10 +32,6 @@
 [*]修复营火 / 商店角色模型错位（v1.0.6 重渲染立绘后这两处场景未同步重建）。
 [/list]
 
-[b]v1.0.6[/b]
-[list]
-[*]战斗立绘按 1.5 倍重渲染（显示尺寸不变、细节更清晰）；联机手部图标重做（构图、手指长度、配色）。
-[/list]
 
 [hr][/hr]
 
@@ -44,6 +48,15 @@
 [*][b]九位先古之民的专属对话[/b]（涅奥 / 欧洛巴斯 / 佩尔 / 瓦库 / 坦克斯 / 特兹卡塔拉 / 诺奴佩普 / 达弗 / 建筑师）
 [*]战斗、营火、商人三处都用[b]会动的角色[/b]，不是静态立绘
 [*]选人界面、能量球、地图标记、卡牌与遗物图标均为独立美术
+[/list]
+
+[h2]事件（v1.1.0 新增）[/h2]
+
+[list]
+[*][b]记忆先知[/b]（共享事件）：献上自己的记忆，获得事件遗物[b]先知的手链[/b]；在先知周围祈祷，获得[b]50 金币[/b]。
+[*][b]调和仪式[/b]（[b]第三层限定[/b]，需要[b]所有玩家[/b]都带着非永恒诅咒牌）：左侧[b]秩序[/b]能量移除随机一张非永恒诅咒牌并失去 10% 当前生命；右侧[b]混乱[/b]能量按你当前的诅咒牌数，每张诅咒牌向卡组加入[b]两张随机升级过的卡牌[/b]。
+[*]新普通遗物[b]希楠之约[/b]：每当你消耗一张状态牌，获得 2 点格挡。
+[*][b]先知的手链[/b]改为事件遗物，不再从普通遗物掉落中出现。
 [/list]
 
 [h2]语音语言[/h2]
@@ -86,6 +99,14 @@
 
 [h2]Changelog[/h2]
 
+[b]v1.1.0[/b]
+[list]
+[*]Two new events: [b]Memory Prophet[/b] (offer your memories -> the event relic Prophet's Bracelet; pray -> 50 gold) and [b]Ritual of Harmony[/b] (Act 3 only, requires every player to carry a non-Eternal curse: order -> remove a random curse and lose 10% current HP; chaos -> for each curse, add two random upgraded cards).
+[*]New common relic [b]Xinan's Pact[/b]: gain 2 Block whenever you Exhaust a Status card. [b]Prophet's Bracelet[/b] is now an event relic.
+[*][b]All-Out Attack[/b] upgrade changed: it no longer costs 0; it stays at 1 cost and gains Retain instead.
+[*]The new event portraits and relic icon are generated placeholders for now.
+[/list]
+
 [b]v1.0.9[/b]
 [list]
 [*][b]Compatibility with Slay the Spire 2 v0.113.0[/b] (the game changed several APIs, so the previous build fails to load): the mod now builds against [b]BaseLib 3.4.8[/b]. Fixed the [b]character-select / random-select voice trigger[/b] (the game changed the selection method's parameters, so the model is now read from the selected button). Cards, relics, powers, Scry, the campfire/shop models and the multiplayer draft sync were re-verified on the new APIs.
@@ -103,7 +124,3 @@
 [*]Fixed the misaligned campfire / merchant character models (the two scenes were not rebuilt after the v1.0.6 sprite re-render).
 [/list]
 
-[b]v1.0.6[/b]
-[list]
-[*]Combat sprite re-rendered at 1.5x (same on-screen size, noticeably sharper); multiplayer hand icons redone.
-[/list]

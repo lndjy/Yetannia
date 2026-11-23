@@ -7,7 +7,8 @@ namespace Yetannia.YetanniaCode.Cards;
 
 /// <summary>
 /// 全力进攻 — 金卡（Rare），1 费技能：
-/// 你手牌中所有牌的耗能降低 1，直到它被打出。敲后：这张牌自己的费用 1 → 0。
+/// 你手牌中所有牌的耗能降低 1，直到它被打出。敲后（v1.1.0 起）：**费用不再降到 0**（仍是 1 费），
+/// 改为获得「保留」。
 ///
 /// "Until it is played" is exactly what <c>CardEnergyCost.AddThisTurnOrUntilPlayed</c> expresses
 /// (its expiry is EndOfTurn | WhenPlayed), so the discount drops off as soon as the card is used
@@ -16,7 +17,6 @@ namespace Yetannia.YetanniaCode.Cards;
 public sealed class AllOutAttack : YetanniaCard
 {
     private const int CostReduction = 1;
-    private const int SelfCostUpgrade = -1; // this card's own cost 1 -> 0
 
     public AllOutAttack()
         : base(1, CardType.Skill, CardRarity.Rare, TargetType.Self)
@@ -37,7 +37,12 @@ public sealed class AllOutAttack : YetanniaCard
         return Task.CompletedTask;
     }
 
-    protected override void OnUpgrade() => EnergyCost.UpgradeBy(SelfCostUpgrade);
+    /// <summary>
+    /// v1.1.0: the upgrade no longer lowers this card's own cost (it stays 1); it gains Retain instead.
+    /// <c>AddKeyword</c> is the runtime keyword API vanilla enchantments use as well, and the keyword's
+    /// own line is appended to the description automatically.
+    /// </summary>
+    protected override void OnUpgrade() => AddKeyword(CardKeyword.Retain);
 
     public override List<(string, string)> Localization => Loc.Pick(Chinese, English);
 

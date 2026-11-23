@@ -6,11 +6,15 @@ using Yetannia.YetanniaCode.Character;
 namespace Yetannia.YetanniaCode.Relics;
 
 /// <summary>
-/// Base class for Yetannia's relics. The <see cref="PoolAttribute"/> ties every subclass to
-/// <see cref="YetanniaRelicPool"/>, so individual relics only need to set their rarity and effects.
+/// Shared art plumbing for every Yetannia relic — deliberately WITHOUT a <see cref="PoolAttribute"/>.
+///
+/// Most relics of this mod derive from <see cref="YetanniaRelic"/> and therefore land in
+/// <see cref="YetanniaRelicPool"/>. Event-only relics (先知的手链) derive from this class instead and
+/// declare their own pool (<c>EventRelicPool</c>), so they never show up as ordinary relic drops. A pool
+/// attribute on this base would be inherited by both branches and would drag the event relic back into
+/// the normal pool.
 /// </summary>
-[Pool(typeof(YetanniaRelicPool))]
-public abstract class YetanniaRelic : CustomRelicModel
+public abstract class YetanniaRelicBase : CustomRelicModel
 {
     /// <summary>
     /// File-name stem of this relic's art, shipped in the mod's pck as
@@ -44,4 +48,13 @@ public abstract class YetanniaRelic : CustomRelicModel
     /// the real path is what makes the check meaningful.
     /// </summary>
     public string BigIconPathForCheck => BigIconPath;
+}
+
+/// <summary>
+/// Base class for Yetannia's ordinary relics. The <see cref="PoolAttribute"/> ties every subclass to
+/// <see cref="YetanniaRelicPool"/>, so individual relics only need to set their rarity and effects.
+/// </summary>
+[Pool(typeof(YetanniaRelicPool))]
+public abstract class YetanniaRelic : YetanniaRelicBase
+{
 }

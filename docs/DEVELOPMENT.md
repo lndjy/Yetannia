@@ -19,6 +19,33 @@
 
 ---
 
+## v1.1.0（当前版本）
+
+- 新增两个事件：`Code/Events/MemoryProphet.cs`（共享事件，给事件遗物「先知的手链」/50 金币）与
+  `Code/Events/RitualOfHarmony.cs`（第三层限定 `Acts => [ModelDb.Act<Glory>()]`，`IsAllowed` 额外要求
+  所有玩家的卡组里都有非永恒诅咒牌）。事件走 BaseLib `CustomEventModel`，文案用 `EventLoc`/`EventPageLoc`
+  /`EventOptionLoc`；立绘走 `CustomInitialPortraitPath`，放在 `pckproject/Yetannia/images/events/`。
+- 「先知的手链」改为事件遗物：`ProphetsBracelet` 改继承 `YetanniaRelicBase`（无 Pool 特性）并显式
+  `[Pool(typeof(EventRelicPool))]`；普通遗物基类拆成 `YetanniaRelicBase`（美术管线）+ `YetanniaRelic`
+  （`[Pool(YetanniaRelicPool)]`），避免继承把事件遗物带回普通池。
+- 新普通遗物「希楠之约」：`Code/Relics/XinansPact.cs`，走原版战斗钩子 `AfterCardExhausted`，只认
+  `CardType.Status` 且 `card.Owner == Owner`，用 `ValueProp.Unpowered` 给 2 格挡（不吃敏捷）。
+- 「全力进攻」升级改为 `AddKeyword(CardKeyword.Retain)`，不再调用 `EnergyCost.UpgradeBy`；数值表
+  `.tools/cards-xlsx.js` 里同步改成「费用不变（仍 1 费），获得保留」。
+- 新事件立绘与新遗物图标由 `.tools/qa/gen-v110-art.py` 程序化生成（占位），正式美术后续替换。
+- QA 脚手架新增 `--qav110=<case>`（`YetanniaQA/Code/QaV110.cs`）：`event-memory-gain`、`event-memory-pray`、
+  `event-ritual-order`、`event-ritual-chaos`、`relic-xinans`。事件用例用 `--bootstrap --qaevent=memory|ritual`
+  强制进事件房间；**不要**在 bootstrap 设置里覆盖 `Language`——那会在 ModelDb.Init 之后重载本地化表，
+  把 BaseLib 为 mod 模型注入的 loc 全部冲掉（表现为 UI 和 LocString 都显示 `events.KEY` 原文）。
+- 修复 `Code/Diagnostics/ScryTrace.cs`：`IsOverOrEnding()` 的跳过分支原来直接 `return default`，
+  绕过了后面的 `try/finally`（没有 `cancellation.Cancel()`、没有 `slot.Release()`、没有递减 in-flight），
+  于是被跳过的预见在 300 秒后被 watchdog 误报成 `STILL PENDING`，BEGIN/END 也对不上。
+  现在该分支自己做同样的清理；判定口径是「每个 BEGIN 都有 END 或 SKIPPED」，而不是 BEGIN==END。
+- `ModSelfCheck` 新增 `self-check relic event` / `events` / `event pool` / `event loc` / `event art` 五行，
+  用来从日志直接验证事件注册、事件池归属、loc 与立绘加载。
+
+---
+
 内容已完成并在游戏内验证通过（数值、注册、本地化、美术资源加载、场景转换全部实测）。
 
 > **本轮改动（第十七批）**：修 **因果切断** 的斩杀升级。

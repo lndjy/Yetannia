@@ -34,18 +34,29 @@ $modName = "Yetannia"
 
 if (-not $SkipBuild) {
     $env:DOTNET_CLI_HOME          = Join-Path $PSScriptRoot "clihome"
-    $env:NUGET_PACKAGES           = Join-Path $PSScriptRoot "nuget"
+    # NUGET_PACKAGES is intentionally NOT overridden here. The assets file that enables
+    # `--no-restore` below was produced against the machine cache; pointing the build at a
+    # different (isolated) package folder makes MSBuild treat the assets as stale and attempt a
+    # restore against the local NuGet proxy, which is usually not running in this workspace.
+    # Restore once with the machine cache before releasing (see docs/RELEASE-WORKFLOW.md).
     $env:NUGET_HTTP_CACHE_PATH    = Join-Path $PSScriptRoot "nuget-http"
     $env:NUGET_PLUGINS_CACHE_PATH = Join-Path $PSScriptRoot "nuget-plugins"
     $env:DOTNET_ROOT              = Join-Path $PSScriptRoot "dotnet"
     $env:DOTNET_CLI_UI_LANGUAGE   = "en"
     $env:DOTNET_NOLOGO            = "1"
 
+    # --no-restore is deliberate. This script points NUGET_PACKAGES at .tools\nuget, and the NuGet
+    # source in this workspace is a local proxy that is usually NOT running; letting the build restore
+    # turns packaging into a net-error. Restore once by hand before releasing (see
+    # docs/RELEASE-WORKFLOW.md), then this step only compiles.
     Write-Host "building Release..."
     Push-Location $project
     try {
-        & (Join-Path $PSScriptRoot "dotnet\dotnet.exe") build -c Release -v minimal |
-            Select-String -Pattern "error|Build succeeded" | ForEach-Object { $_.Line.Trim() }
+        $buildLog = & (Join-Path $PSScriptRoot "dotnet\dotnet.exe") build -c Release -v minimal --no-restore 2>&1
+        $buildLog | Select-String -Pattern "error|Build succeeded" | ForEach-Object { $_.Line.Trim() }
+        if ($LASTEXITCODE -ne 0) {
+            throw "Release build failed (exit $LASTEXITCODE); packaging aborted so a stale dll is never shipped"
+        }
     } finally {
         Pop-Location
     }

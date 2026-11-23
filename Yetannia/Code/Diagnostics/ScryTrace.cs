@@ -131,6 +131,19 @@ internal static class ScryTrace
         {
             MainFile.Logger.Info(
                 $"[scry] #{id} SKIPPED {label}: the combat is already over or ending (no choice reserved)");
+
+            // This path returns before the try/finally below, so it has to do the same cleanup itself.
+            // It used to just `return default`, which left the watchdog armed and the in-flight slot
+            // held: 300s later the watchdog logged a bogus "STILL PENDING after 300s" for a scry that
+            // had already been (correctly) skipped, and BEGIN/END stopped matching. Caught by the
+            // v1.1.0 release QA: a full AutoSlay run hit two CutThroughFate skips at combat end
+            // (BEGIN=84 / END=82, two false STILL PENDING errors).
+            cancellation.Cancel();
+            if (slot.Release())
+            {
+                Interlocked.Decrement(ref _inFlight);
+            }
+
             return default;
         }
 
