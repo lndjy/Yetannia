@@ -7,6 +7,11 @@
 
 [h2]更新记录[/h2]
 
+[b]v1.1.1 热修复[/b]
+[list]
+[*]修复「临时力量」「临时敏捷」名称显示为原始 key 的问题；预见监控日志误报收尾。
+[/list]
+
 [b]v1.1.0[/b]
 [list]
 [*]新增两个事件：[b]记忆先知[/b]（献上记忆→事件遗物「先知的手链」；祈祷→50 金币）与[b]调和仪式[/b]（第三层限定、需全队都有非永恒诅咒：秩序→移除随机诅咒并失去 10% 当前生命；混乱→每张诅咒牌加入两张随机升级卡）。
@@ -21,11 +26,6 @@
 [*]本版起要求游戏 [b]>= v0.113.0[/b]、BaseLib [b]>= 3.4.8[/b]。
 [/list]
 
-[b]v1.0.8[/b]
-[list]
-[*]联机数值统一：主客机档位不同时，客机进入对局前自动改用主机档位，不再报数据不同步。
-[*]东尼测试版：挺身而出格挡改为敲前 13 / 敲后 15（原版仍为 16）。
-[/list]
 
 
 
@@ -95,6 +95,11 @@
 
 [h2]Changelog[/h2]
 
+[b]v1.1.1 hotfix[/b]
+[list]
+[*]Fixed the Temporary Strength / Temporary Dexterity names rendering as raw keys, and cleaned up the scry watchdog's false log lines at combat end.
+[/list]
+
 [b]v1.1.0[/b]
 [list]
 [*]Two new events: [b]Memory Prophet[/b] (offer your memories -> the event relic Prophet's Bracelet; pray -> 50 gold) and [b]Ritual of Harmony[/b] (Act 3 only, requires every player to carry a non-Eternal curse: order -> remove a random curse and lose 10% current HP; chaos -> for each curse, add two random upgraded cards).
@@ -109,10 +114,5 @@
 [*]This build requires game [b]>= v0.113.0[/b] and BaseLib [b]>= 3.4.8[/b].
 [/list]
 
-[b]v1.0.8[/b]
-[list]
-[*]Multiplayer draft sync: a client adopts the host's Card Numbers draft before the run starts, removing the desync error.
-[*]Anthony draft: Step Forward gives 13 Block (15 upgraded); the Original draft keeps 16.
-[/list]
 
 

@@ -22,15 +22,28 @@ namespace Yetannia.YetanniaCode.Powers;
 ///
 /// <see cref="ICustomPower"/> supplies the art that the vanilla base class has no seam for; see
 /// <see cref="TempMightPower"/> for why it is needed. It is a pure addition — the inherited
-/// apply/remove cycle is untouched.
+/// apply/remove cycle is untouched. <see cref="ILocalizationProvider"/> supplies the title for the
+/// mod-owned power id (see the same note on <see cref="TempMightPower"/>).
 /// </summary>
-public sealed class TempAgilityPower : TemporaryDexterityPower, ICustomPower
+public sealed class TempAgilityPower : TemporaryDexterityPower, ICustomPower, ILocalizationProvider
 {
     public override AbstractModel OriginModel => ModelDb.Card<Cards.SteadyAgility>();
 
     public string? CustomPackedIconPath => ModAssets.Image("powers/temp_agility.png");
 
     public string? CustomBigIconPath => ModAssets.Image("powers_big/temp_agility.png");
+
+    public List<(string, string)>? Localization => Loc.Pick(Chinese, English);
+
+    private static readonly List<(string, string)> Chinese = new PowerLoc(
+        "临时敏捷",
+        "在本回合结束前获得[gold]敏捷[/gold]。",
+        "在本回合结束前获得[gold]敏捷[/gold]。");
+
+    private static readonly List<(string, string)> English = new PowerLoc(
+        "Temporary Dexterity",
+        "Gain [gold]Dexterity[/gold] until the end of this turn.",
+        "Gain [gold]Dexterity[/gold] until the end of this turn.");
 
     public override async Task AfterSideTurnEnd(
         PlayerChoiceContext choiceContext, CombatSide side, IEnumerable<Creature> participants)

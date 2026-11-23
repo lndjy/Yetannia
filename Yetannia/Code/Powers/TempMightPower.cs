@@ -18,12 +18,30 @@ namespace Yetannia.YetanniaCode.Powers;
 /// vanilla's <c>missing_power.png</c> placeholder instead. ICustomPower carries default interface
 /// implementations, so implementing it adds art and nothing else; the power's behaviour stays
 /// exactly the vanilla temporary-strength cycle.
+///
+/// <see cref="ILocalizationProvider"/> is here for the same "mod model with no vanilla loc entry"
+/// reason: a mod power gets a <c>YETANNIA-…</c> id, so vanilla's <c>powers</c> table has no
+/// <c>.title</c> for it and BaseLib logs <c>Key 'YETANNIA-TEMP_MIGHT_POWER.title' not found</c>
+/// (visible in a release self-check until v1.1.1). The description happened to render from the
+/// vanilla base class's own text, but the title did not.
 /// </summary>
-public sealed class TempMightPower : TemporaryStrengthPower, ICustomPower
+public sealed class TempMightPower : TemporaryStrengthPower, ICustomPower, ILocalizationProvider
 {
     public override AbstractModel OriginModel => ModelDb.Card<Cards.RisingMight>();
 
     public string? CustomPackedIconPath => ModAssets.Image("powers/temp_might.png");
 
     public string? CustomBigIconPath => ModAssets.Image("powers_big/temp_might.png");
+
+    public List<(string, string)>? Localization => Loc.Pick(Chinese, English);
+
+    private static readonly List<(string, string)> Chinese = new PowerLoc(
+        "临时力量",
+        "在本回合结束前获得[gold]力量[/gold]。",
+        "在本回合结束前获得[gold]力量[/gold]。");
+
+    private static readonly List<(string, string)> English = new PowerLoc(
+        "Temporary Strength",
+        "Gain [gold]Strength[/gold] until the end of this turn.",
+        "Gain [gold]Strength[/gold] until the end of this turn.");
 }

@@ -247,7 +247,9 @@ tested".
 New content needs its own forced scenarios, because random events are not reachable reliably from a
 blind autoslay run. `YetanniaQA` grows one `--qav110=<case>` case per checkable behaviour of the release
 under test (v1.1.0: `event-memory-gain`, `event-memory-pray`, `event-ritual-order`, `event-ritual-chaos`,
-`relic-xinans`; events are forced with `--bootstrap --qaevent=memory|ritual`). The cases log a single
+`relic-xinans`, `gate-events`, `scry-skip`; events are forced with `--bootstrap --qaevent=memory|ritual`;
+`scry-skip` needs `--autoslay` so the bot wins a fight and the rig can raise a scry inside the real
+`IsOverOrEnding` window, then watches 320s to prove the skipped scry does not trip the watchdog). The cases log a single
 `[v110] RESULT` line so QA can assert exact before/after values, and save engine screenshots under
 `user://qa-v110/`. Two traps worth remembering:
 
@@ -407,6 +409,21 @@ client and the already-authenticated `gh` login; do not paste a credential anywh
 ---
 
 ## 9. Upload
+
+### 9.0 Upload gate — no open issues, no upload (added v1.1.1)
+
+Do **not** upload while any known issue or unverified item remains — not the normal release, not a hotfix.
+Before §9.1/§9.2, all of the following must be true:
+
+* every defect found this round is fixed **and re-verified on the exact build being uploaded**;
+* every item that was listed as "not verified" is either closed with evidence, or explicitly accepted by
+  the author (a limitation is not a pass, and must not be reported as one);
+* the independent QA in §7 has PASSed the affected scenarios on that same build (byte hash compared);
+* §8 privacy/security gate has PASSed on that same zip.
+
+A hotfix follows the same gate as a normal release: fix -> re-run the affected QA on the frozen build ->
+package -> §8 -> upload. The version may be a patch bump (v1.1.0 -> v1.1.1) or the same version, but the
+tested artifact and the uploaded artifact must be byte-identical.
 
 ### 9.1 Workshop
 

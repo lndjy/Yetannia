@@ -283,6 +283,7 @@ internal static class ScryTrace
     private static async Task WatchForCombatEnd(CancellationToken token)
     {
         var sawCombat = false;
+        var startedUtc = DateTime.UtcNow;
         while (!token.IsCancellationRequested)
         {
             try
@@ -291,7 +292,22 @@ internal static class ScryTrace
                 if (combat == null) return;
 
                 if (combat.IsOverOrEnding) return;
-                if (combat.IsInProgress) sawCombat = true;
+                if (combat.IsInProgress)
+                {
+                    sawCombat = true;
+                }
+                else if (!sawCombat && (DateTime.UtcNow - startedUtc).TotalSeconds >= 15)
+                {
+                    // The fight was never observed running at all. That is not a scry raised during a
+                    // normal combat start -- it is a scry raised into a room whose combat state is already
+                    // gone (QA hit this by tearing a fight down before the room had finished initialising,
+                    // after which an unrelated scry began and waited forever: the 300s watchdog fired and
+                    // the player choice stayed unanswered). Treat it as ended so the scry is abandoned and
+                    // cleaned up instead of hanging.
+                    MainFile.Logger.Warn(
+                        "[scry] combat was never observed in progress for 15s; treating the fight as ended");
+                    return;
+                }
 
                 await Task.Delay(100, token);
             }

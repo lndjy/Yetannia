@@ -7,7 +7,7 @@
 - 源码仓库：<https://github.com/lndjy/Yetannia>
 - 开发文档 / 项目历史：[`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md)
 - 发布流程（含发布前的安全与隐私检查）：[`docs/RELEASE-WORKFLOW.md`](docs/RELEASE-WORKFLOW.md)
-- 当前版本：**v1.1.0**（以 `Yetannia/Yetannia.json` 为准）
+- 当前版本：**v1.1.1**（以 `Yetannia/Yetannia.json` 为准）
 
 > ### ⚠️ 只支持 beta 分支 · BETA BRANCH ONLY
 >
@@ -204,6 +204,13 @@ Yetannia is a fan work. Character, art and voice assets come from the Chinese mo
 3. 「关闭」只影响耶坦尼娅的台词，**不影响原版音效**；随时可以再打开。
 
 ## 更新记录
+
+### v1.1.1（v1.1.0 热修复）
+
+- 修复「临时力量」「临时敏捷」在状态栏里显示成原始 key（`YETANNIA-TEMP_..._POWER.title`）的问题。
+- 预见监控再补两处健壮性：战斗结束被跳过的预见不再误报 `STILL PENDING`；极端情况下（战斗还没真正
+  进入进行中就已结束）也不会一直等下去。
+- 发布流程新增硬性规则：**只要还有未修复/未验证项，就不上传**；全部通过后才发布或热更新。
 
 ### v1.1.0
 

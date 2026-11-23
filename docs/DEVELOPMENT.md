@@ -19,7 +19,25 @@
 
 ---
 
-## v1.1.0（当前版本）
+## v1.1.1（v1.1.0 热修复）
+
+- `TempMightPower` / `TempAgilityPower` 补 `ILocalizationProvider`（`PowerLoc`）：它们继承原版
+  `TemporaryStrengthPower` / `TemporaryDexterityPower`，但拥有自己的 `YETANNIA-…` id，原版 `powers`
+  表里没有它们的 `.title`，BaseLib 会报 `Key 'YETANNIA-TEMP_MIGHT_POWER.title' not found`，状态栏
+  显示原始 key。补 `PowerLoc(title, desc, smartDesc)` 后 self-check 的 power name 显示「临时力量」/
+  「临时敏捷」。
+- `ScryTrace.WatchForCombatEnd`：如果战斗**从未**被观测到 `IsInProgress`（例如房间初始化中途被拆掉，
+  或效果在战斗已结束后才启动），15 秒后按已结束处理并放弃等待，避免 300 秒后才由 watchdog 报错、
+  而玩家选择一直没人回答。正常战斗开始时的预见（`IsInProgress` 立刻为真）不受影响。
+- `YetanniaQA` 新增两个强制场景，补掉 v1.1.0 遗留的未验证项：
+  - `--qav110=gate-events`：用反射改 `RunState._currentActIndex`，逐格验证调和仪式的 `IsAllowed`
+    组合（任意层共享事件总是允许；调和仪式需要第三层 + 全员非永恒诅咒，改回第一层后拒绝）。
+  - `--qav110=scry-skip`（配 `--autoslay`）：等机器人赢下一场战斗、在 `IsOverOrEnding` 为真的窗口里
+    直接调 `ScryTrace.Run`，验证 SKIPPED 分支清理干净（in-flight 回 0），并观察 320 秒确认没有被跳过
+    的预见再触发 `STILL PENDING` 误报。
+- 发布流程新增硬门槛：只要存在未修复/未验证项就不上传（含热更新），见 `RELEASE-WORKFLOW.md` §9.0。
+
+## v1.1.0
 
 - 新增两个事件：`Code/Events/MemoryProphet.cs`（共享事件，给事件遗物「先知的手链」/50 金币）与
   `Code/Events/RitualOfHarmony.cs`（第三层限定 `Acts => [ModelDb.Act<Glory>()]`，`IsAllowed` 额外要求
