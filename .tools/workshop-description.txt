@@ -27,10 +27,6 @@
 [*]东尼测试版：挺身而出格挡改为敲前 13 / 敲后 15（原版仍为 16）。
 [/list]
 
-[b]v1.0.7[/b]
-[list]
-[*]修复营火 / 商店角色模型错位（v1.0.6 重渲染立绘后这两处场景未同步重建）。
-[/list]
 
 
 [hr][/hr]
@@ -119,8 +115,4 @@
 [*]Anthony draft: Step Forward gives 13 Block (15 upgraded); the Original draft keeps 16.
 [/list]
 
-[b]v1.0.7[/b]
-[list]
-[*]Fixed the misaligned campfire / merchant character models (the two scenes were not rebuilt after the v1.0.6 sprite re-render).
-[/list]
 
