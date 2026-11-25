@@ -39,6 +39,13 @@ internal static class EventSkipOptionPatch
             // to finish. It is deliberately exempt.
             if (__instance is TheArchitect) return;
 
+            // v0.114 shared events: in multiplayer every player votes on an option *index*, and the
+            // winning option runs for everyone. Appending an option that exists only for the bracelet
+            // holder would make the option lists (and therefore the vote indexes) differ between
+            // peers -- exactly the "different option, different result, desync" case. The bracelet is
+            // deliberately inert in these co-op voting events: no option is added on any peer.
+            if (__instance.IsShared) return;
+
             var player = __instance.Owner;
             if (player == null) return;
             if (!ProphetsBracelet.IsHeldBy(player)) return;

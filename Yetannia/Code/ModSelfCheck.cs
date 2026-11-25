@@ -55,6 +55,7 @@ internal static class ModSelfCheck
 
             log.Info($"self-check keyword loc: title={LocString.Exists("card_keywords", "YETANNIA-PROPHET.title")} description={LocString.Exists("card_keywords", "YETANNIA-PROPHET.description")}");
             log.Info($"self-check char loc   : title={ExistsIn("characters", typeof(YetanniaCharacter), ".title")} unlockText={ExistsIn("characters", typeof(YetanniaCharacter), ".unlockText")}");
+            log.Info($"self-check char short : shortTitle={ExistsIn("characters", typeof(YetanniaCharacter), ".shortTitle")} rendered='{ShortTitleText()}'");
 
             var pool = ModelDb.CardPool<YetanniaCardPool>();
             var poolCards = pool.AllCards.ToList();
@@ -959,6 +960,23 @@ internal static class ModSelfCheck
     {
         try { return LocString.Exists(table, ModelDb.GetId(type).Entry + suffix).ToString(); }
         catch (Exception e) { return $"<{e.GetType().Name}>"; }
+    }
+
+    /// <summary>
+    /// v0.114 Dread character select renders CharacterModel.ShortTitle; a missing loc entry shows the
+    /// raw key there, so log the resolved text (and flag raw-key leakage) on every load.
+    /// </summary>
+    private static string ShortTitleText()
+    {
+        try
+        {
+            var text = ModelDb.Character<YetanniaCharacter>().ShortTitle.GetFormattedText();
+            return text.Contains("YETANNIA", StringComparison.OrdinalIgnoreCase) ? "<RAW KEY: " + text + ">" : text;
+        }
+        catch (Exception e)
+        {
+            return $"<{e.GetType().Name}: {e.Message}>";
+        }
     }
 }
 

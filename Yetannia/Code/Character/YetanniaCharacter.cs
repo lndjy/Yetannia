@@ -283,7 +283,11 @@ public class YetanniaCharacter : PlaceholderCharacterModel
         ExtraLoc:
         [
             ("bestiaryQuote", "我还未看清此物的终局。"),
-            ("unlockText", "进行一局游戏来解锁这个角色。")
+            ("unlockText", "进行一局游戏来解锁这个角色。"),
+            // v0.114 Dread mode: NDreadNameText reads CharacterModel.ShortTitle ("<ID>.shortTitle" in
+            // the characters table), which BaseLib's CharacterLoc does not emit. Without it the Dread
+            // character-select banner prints the raw loc key instead of the name.
+            ("shortTitle", "耶坦尼娅")
         ]);
 
     private static readonly List<(string, string)> English = new CharacterLoc(
@@ -304,6 +308,9 @@ public class YetanniaCharacter : PlaceholderCharacterModel
         ExtraLoc:
         [
             ("bestiaryQuote", "I have not yet seen how this one ends."),
-            ("unlockText", "Play a single run to unlock this character.")
+            ("unlockText", "Play a single run to unlock this character."),
+            // v0.114 Dread mode: same reason as the Chinese block -- ShortTitle is read by the Dread
+            // character-select banner and is missing from BaseLib's CharacterLoc.
+            ("shortTitle", "Yetannia")
         ]);
 }

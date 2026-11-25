@@ -93,6 +93,39 @@ builds set `DebugType=none`, and `.tools/package-mod.ps1` defaults `-IncludePdb`
 The QA runners (`.tools/qa/rt*-run.py`) do this deployment themselves, hash-gated: they refuse to launch
 unless all four workspace files match the hashes they expect.
 
+### 3.1 A local `mods\Yetannia` build shadows the Workshop copy
+
+The game loads Workshop mods **and** `mods\` at the same time. If a local build with the same mod ID is
+still parked in `mods\Yetannia`, the game logs
+
+```
+[WARN] Mod with ID Yetannia and version v1.1.1 is loaded both via Steam and local mods directory.
+       Disabling the Steam workshop version.
+```
+
+and then runs the **local** DLL, not the one subscribers actually get. On 2026-11-24 the author's machine
+reported "mod fails to load here, works on other machines" for exactly this reason: the stale local
+`mods\Yetannia\Yetannia.dll` (329,728 B) still patched
+`NCharacterSelectScreen.SelectCharacter` with the pre-v0.113 parameter name, so its initializer threw
+
+```
+[ERROR] Exception thrown when calling mod initializer of type Yetannia.YetanniaCode.MainFile:
+        HarmonyException: Patching exception in method ... SelectCharacter(NCharacterSelectButton charSelectButton)
+        ---> System.Exception: Parameter "characterModel" not found ...
+```
+
+while the Workshop build (399,872 B, patched by button) loaded fine. "Everybody else is fine" is the tell.
+
+Rules:
+
+* to verify a **published** build, `mods\Yetannia` must not exist — delete or rename it first;
+* to verify a **local** build, do not also install the Workshop copy into `mods\`;
+* after any launch of the build you are testing, `godot.log` must contain
+  `Finished mod initialization for 'Yetannia'` and must not contain
+  `Exception thrown when calling mod initializer of type Yetannia`;
+* `YetanniaQA` / `MultiplayerBrainhole` are harness mods: they may be deployed for a QA round, but they are
+  not part of a published install and need BaseLib to load.
+
 ---
 
 ## 4. Re-export the packed art (if anything under `.tools/pckproject/` changed)
@@ -501,7 +534,11 @@ directory — so every round ends with a sweep:
 * never `git add -A` — stage explicit paths (§8.5), and check `git status --porcelain --untracked-files=no`
   after committing;
 * leave the machine as found: the game closed, the mods folder un-staged (`rt48-mp.py unstage`), the
-  settings/`mod_configs` the author had before the round restored, Steam running again if it was running.
+  settings/`mod_configs` the author had before the round restored, Steam running again if it was running;
+* remove (or rename) any local dev build left in `<game>\mods\Yetannia` — it silently shadows the Workshop
+  copy on this machine and makes "the published mod is broken" reports impossible to reproduce (§3.1).
+  Also delete the local harness mods (`YetanniaQA`, `BrainholeQA`, `MultiplayerBrainhole`) when the round
+  did not install them deliberately.
 
 Report what was deleted, so the author can tell cleanup from data loss.
 

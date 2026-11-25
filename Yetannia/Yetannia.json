@@ -3,8 +3,8 @@
   "name": "Yetannia",
   "author": "lndjy",
   "description": "Adds the character Yetannia, her starter relic, the Prophet keyword, and her cards.\n本mod反馈交流QQ群：1135190898",
-  "version": "v1.1.1",
-  "min_game_version": "0.113.0",
+  "version": "v1.2.0",
+  "min_game_version": "0.114.0",
   "has_pck": true,
   "has_dll": true,
   "dependencies": [

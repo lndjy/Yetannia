@@ -7,7 +7,7 @@
 - 源码仓库：<https://github.com/lndjy/Yetannia>
 - 开发文档 / 项目历史：[`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md)
 - 发布流程（含发布前的安全与隐私检查）：[`docs/RELEASE-WORKFLOW.md`](docs/RELEASE-WORKFLOW.md)
-- 当前版本：**v1.1.1**（以 `Yetannia/Yetannia.json` 为准）
+- 当前版本：**v1.2.0**（以 `Yetannia/Yetannia.json` 为准；仅支持游戏 v0.114.0+）
 
 > ### ⚠️ 只支持 beta 分支 · BETA BRANCH ONLY
 >
@@ -29,8 +29,8 @@
 
 | | Requirement |
 |---|---|
-| Game | *Slay the Spire 2* **≥ 0.107.0**, on the **beta branch** |
-| Dependency | **BaseLib ≥ 3.4.7** (Steam Workshop) |
+| Game | *Slay the Spire 2* **≥ 0.114.0**, on the **beta branch** |
+| Dependency | **BaseLib ≥ 3.4.8** (Steam Workshop) |
 | Launch | Start the game **through Steam** |
 | After installing | Enable both mods once in the in-game **Mods** list |
 
@@ -38,15 +38,14 @@
 
 1. Subscribe to **BaseLib** on the Workshop (author **Alchyr**; also on [GitHub releases](https://github.com/Alchyr/BaseLib-StS2/releases)). It must be **≥ 3.4.7** — this mod will not load without it.
 2. Subscribe to **[Yetannia](https://steamcommunity.com/sharedfiles/filedetails/?id=3819506337)**.
+   **Do not also unpack the zip into `mods\Yetannia`** — a local copy shadows the Workshop build and causes version mismatches.
 3. In Steam, switch *Slay the Spire 2* to the **beta branch**, then launch the game from Steam.
 4. Open **Mods** from the main menu and make sure both BaseLib and Yetannia are enabled.
 5. Restart the game. Yetannia appears on the character-select screen; the character does not need to be unlocked.
 
 ### Manual installation (zip)
 
-1. Subscribe to BaseLib as above.
-2. Extract the `Yetannia` folder into `<Steam>\steamapps\common\Slay the Spire 2\mods\`, so that `...\mods\Yetannia\Yetannia.dll`, `Yetannia.json` and `Yetannia.pck` sit side by side.
-3. Launch the game from Steam, enable Yetannia in the **Mods** list, then restart. **Do not skip the enable step**: a mod that was never enabled is loaded as disabled, which is the most common reason a mod "suddenly stops working".
+**Not recommended, and the Workshop description no longer documents it.** A local `mods\Yetannia` copy shadows the Workshop version (the game logs *loaded both via Steam and local mods directory*) and is the usual reason a player sees an old version. Subscribe on the Workshop instead; if you must test a local build, delete/rename `mods\Yetannia` afterwards.
 
 ### What this mod adds
 
@@ -90,8 +89,8 @@ Yetannia is a fan work. Character, art and voice assets come from the Chinese mo
 
 | | 要求 | 为什么 |
 |---|---|---|
-| 游戏 | 《杀戮尖塔 2》**≥ 0.107.0**，且**必须是 beta 分支** | Mod 清单里 `min_game_version` 是 `0.107.0`；创意工坊条目锁定 `public-beta` |
-| 前置 Mod | **BaseLib ≥ 3.4.7**（创意工坊订阅） | 没有它本 Mod 不会加载，日志里也不会有任何 `[Yetannia]` 字样 |
+| 游戏 | 《杀戮尖塔 2》**≥ 0.114.0**，且**必须是 beta 分支** | Mod 清单里 `min_game_version` 是 `0.114.0`；创意工坊条目锁定 `public-beta` |
+| 前置 Mod | **BaseLib ≥ 3.4.8**（创意工坊订阅） | 没有它本 Mod 不会加载，日志里也不会有任何 `[Yetannia]` 字样 |
 | 启动方式 | **必须从 Steam 启动游戏** | 直接双击 exe 启动会 Steam 初始化失败 |
 | 安装之后 | 在游戏内 Mod 列表里**手动启用一次** | 游戏会把新装的 Mod 默认设成禁用，不启用永远不会加载 |
 
@@ -204,6 +203,13 @@ Yetannia is a fan work. Character, art and voice assets come from the Chinese mo
 3. 「关闭」只影响耶坦尼娅的台词，**不影响原版音效**；随时可以再打开。
 
 ## 更新记录
+
+### v1.2.0（适配游戏 v0.114.0）
+
+- **适配《杀戮尖塔 2》v0.114.0 本体更新**（仅支持 beta 分支；需要 BaseLib 3.4.8+）。
+- 修复 v0.114「恐惧模式（Dread）」选人界面里角色名显示成原始 key 的问题：补上 `shortTitle` 本地化。
+- 「先知的手链」在多人合作投票事件（v0.114 共享事件）中保持不生效，避免不同玩家的选项列表 / 投票索引不一致导致数据不同步。
+- 不再建议手动安装压缩包；只走创意工坊订阅（本地 mods 目录会顶掉工坊版）。
 
 ### v1.1.1（v1.1.0 热修复）
 

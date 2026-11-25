@@ -1,11 +1,18 @@
 [b]【只支持 beta 版 · BETA BRANCH ONLY】[/b]
 
-本 Mod 只在《杀戮尖塔 2》的 [b]beta 分支[/b]上开发与测试（当前适配游戏 [b]v0.113.0[/b]，需要 [b]BaseLib 3.4.8+[/b]）。正式分支（非 beta）不保证能加载，
+本 Mod 只在《杀戮尖塔 2》的 [b]beta 分支[/b]上开发与测试（当前适配游戏 [b]v0.114.0[/b]，需要 [b]BaseLib 3.4.8+[/b]）。正式分支（非 beta）不保证能加载，
 可能出现角色不出现、卡图丢失、事件对话报错等问题。请在 Steam 里把游戏切到 beta 分支后再使用。
 
 [hr][/hr]
 
 [h2]更新记录[/h2]
+
+[b]v1.2.0 · 适配 v0.114.0[/b]
+[list]
+[*]适配《杀戮尖塔 2》[b]v0.114.0[/b] 本体更新（仅支持 beta 分支；需 BaseLib 3.4.8+）。
+[*]修复「恐惧模式」选人界面角色名显示成原始 key 的问题。
+[*]「先知的手链」在多人合作投票事件中不生效，避免不同玩家选项 / 数据不同步。
+[/list]
 
 [b]v1.1.1 热修复[/b]
 [list]
@@ -22,8 +29,7 @@
 
 [b]v1.0.9[/b]
 [list]
-[*][b]适配《杀戮尖塔 2》v0.113.0 本体更新[/b]（本体这次改了接口，旧版会加载失败）：依赖升级到 [b]BaseLib 3.4.8[/b]；修复[b]角色选择 / 随机选人[/b]的语音触发（本体改了选人方法参数，改为从选人按钮取角色）；卡牌/遗物/能力、预见、营火与商店模型、联机数值同步均按新接口回归通过。
-[*]本版起要求游戏 [b]>= v0.113.0[/b]、BaseLib [b]>= 3.4.8[/b]。
+[*][b]适配《杀戮尖塔 2》v0.113.0 本体更新[/b]（接口变更，旧版会加载失败）；依赖升级到 BaseLib 3.4.8。
 [/list]
 
 
@@ -74,8 +80,6 @@
 3. 在游戏主菜单打开 [b]Mod 列表[/b]，确认 BaseLib 和 Yetannia 都已[b]启用[/b]，然后重启游戏。
 4. 选人界面应能看到耶坦尼娅（角色不需要解锁）。
 
-如果你用的是压缩包版本：把 [code]Yetannia[/code] 文件夹解压到 [code]...\Slay the Spire 2\mods\[/code]，得到 [code]mods\Yetannia\Yetannia.dll[/code]、[code]Yetannia.json[/code]、[code]Yetannia.pck[/code] 并列的结构，再按上面的第 2–4 步操作。
-
 [h2]说明[/h2]
 
 [list]
@@ -89,11 +93,18 @@
 
 [h1]English[/h1]
 
-[b]BETA BRANCH ONLY[/b] — this mod is developed and tested on the [b]beta branch[/b] of Slay the Spire 2 only. Currently built for game [b]v0.113.0[/b] and requires [b]BaseLib 3.4.8+[/b]. Please switch the game to the beta branch in Steam first.
+[b]BETA BRANCH ONLY[/b] — this mod is developed and tested on the [b]beta branch[/b] of Slay the Spire 2 only. Currently built for game [b]v0.114.0[/b] and requires [b]BaseLib 3.4.8+[/b]. Please switch the game to the beta branch in Steam first.
 
 [hr][/hr]
 
 [h2]Changelog[/h2]
+
+[b]v1.2.0 — v0.114.0 compatibility[/b]
+[list]
+[*]Adapted to Slay the Spire 2 [b]v0.114.0[/b] (beta branch only; requires BaseLib 3.4.8+).
+[*]Fixed the Dread-mode character select showing the raw loc key instead of the character name.
+[*]Prophet's Bracelet is now inert in multiplayer co-op voting events, so option lists and vote indexes stay identical across peers.
+[/list]
 
 [b]v1.1.1 hotfix[/b]
 [list]
@@ -110,8 +121,7 @@
 
 [b]v1.0.9[/b]
 [list]
-[*][b]Compatibility with Slay the Spire 2 v0.113.0[/b] (the game changed several APIs, so the previous build fails to load): the mod now builds against [b]BaseLib 3.4.8[/b]. Fixed the [b]character-select / random-select voice trigger[/b] (the game changed the selection method's parameters, so the model is now read from the selected button). Cards, relics, powers, Scry, the campfire/shop models and the multiplayer draft sync were re-verified on the new APIs.
-[*]This build requires game [b]>= v0.113.0[/b] and BaseLib [b]>= 3.4.8[/b].
+[*][b]Compatibility with Slay the Spire 2 v0.113.0[/b] (API changes; the previous build fails to load); now builds against BaseLib 3.4.8.
 [/list]
 
 

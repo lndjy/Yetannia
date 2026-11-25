@@ -66,6 +66,13 @@ YetanniaQA/
 Yetannia/bin/
 Yetannia/obj/
 Yetannia/build/
+MultiplayerBrainhole/bin/
+MultiplayerBrainhole/obj/
+MultiplayerBrainhole/tools/PatchTargetCheck/bin/
+MultiplayerBrainhole/tools/PatchTargetCheck/obj/
+# Verification harness (a mod, but a test scaffold rather than release content) and its reports.
+BrainholeQA/bin/
+BrainholeQA/obj/
 *.pck
 *.pdb
 *.dll

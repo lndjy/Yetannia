@@ -42,7 +42,7 @@ cfg = {
     # Public: the user asked for the workshop item to be published openly. (The earlier "don't make
     # it public" referred to the *voice assets* on GitHub, not to this item's visibility.)
     "visibility": "public",
-    "changeNote": "v1.0.5：\n· 纯爱幻想 / 幻想纯爱（状态牌）：被消耗时额外抽 1 张牌（6 点随机伤害 / 4 点格挡不变）。\n· 凯旋之路（消耗状态牌时抽 1 张）：稀有度 金卡 → 蓝卡。\n· 运筹帷幄（手牌控顶、预见 8）：增加「保留」、升为金卡（「消耗」原本就有）。\n· 以上三条对原版与东尼测试版都生效。\n· 英文措辞修正：东尼是安东尼的简称，选项英文改为 Anthony Test Build。\nv1.0.5:\n· Pure Love Fantasy / Fantasy of Pure Love (Status cards): now draw 1 card when exhausted.\n· Road of Triumph: rarity Rare -> Uncommon.\n· Strategize: gains Retain and moves up to Rare (Exhaust was already there).\n· All three apply to both the Original and Anthony Test Build drafts.\n· English wording fix: the option is now \"Anthony Test Build\".",
+    "changeNote": "v1.2.0：适配《杀戮尖塔 2》v0.114.0；修复恐惧模式选人界面角色名显示为原始 key 的问题；先知的手链在多人合作投票事件中不生效，避免选项 / 数据不同步。\n",
     "tags": [],
     # 3737335127 is BaseLib's Workshop item id -- not a guess: the uploader itself resolves the mod's
     # declared BaseLib dependency to exactly this id and prints "Removed dependency on 3737335127" when
