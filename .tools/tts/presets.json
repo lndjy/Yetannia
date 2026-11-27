@@ -1,0 +1,38 @@
+{
+  "default": "channel",
+  "comment": "Channel voice presets. Every future video should be voiced with the `channel` preset unless the author picks another one. Post-processing is applied by voice.py (EQ + gentle compression + loudness).",
+  "presets": {
+    "channel": {
+      "label": "频道女声（播客/解说感）",
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-2%",
+      "pitch": "-6Hz",
+      "chain": "highpass=f=80,equalizer=f=240:t=q:w=1.2:g=2.0,equalizer=f=3200:t=q:w=1.0:g=1.5,acompressor=threshold=0.08:ratio=3:attack=8:release=160:makeup=1.2",
+      "lufs": "-16"
+    },
+    "podcast": {
+      "label": "真人播客女（更松弛）",
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "+2%",
+      "pitch": "-10Hz",
+      "chain": "highpass=f=80,equalizer=f=220:t=q:w=1.2:g=2.4,equalizer=f=2800:t=q:w=1.0:g=1.0,acompressor=threshold=0.10:ratio=2.5:attack=10:release=200:makeup=1.1",
+      "lufs": "-16"
+    },
+    "male": {
+      "label": "频道男声（游戏解说）",
+      "voice": "zh-CN-YunjianNeural",
+      "rate": "+3%",
+      "pitch": "-5Hz",
+      "chain": "highpass=f=85,equalizer=f=200:t=q:w=1.0:g=1.8,equalizer=f=3000:t=q:w=1.0:g=1.2,acompressor=threshold=0.08:ratio=3:attack=6:release=140:makeup=1.3",
+      "lufs": "-16"
+    },
+    "youth": {
+      "label": "频道少年声（资讯/整活）",
+      "voice": "zh-CN-YunxiNeural",
+      "rate": "+6%",
+      "pitch": "+0Hz",
+      "chain": "highpass=f=90,equalizer=f=260:t=q:w=1.0:g=1.5,equalizer=f=3500:t=q:w=1.0:g=1.0,acompressor=threshold=0.09:ratio=3:attack=6:release=120:makeup=1.25",
+      "lufs": "-16"
+    }
+  }
+}

@@ -30,3 +30,4 @@
 | 联机档位同步 | `Yetannia/Code/Config/CardBalanceSync.cs`（客机跟随主机） |
 | 卡牌表生成 | `.tools/cards-xlsx.js` → `Yetannia-卡牌表.xlsx` |
 | 打包 / 上传 | `.tools/package-mod.ps1`、`.tools/make-workshop.py`、`.tools/uploader/win/ModUploader.exe` |
+| 视频 AI 配音 | `.tools/tts/`（固定用 `channel` preset；`python .tools/tts/voice.py --text "…" --out voice.mp3`） |
